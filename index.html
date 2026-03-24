@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&D 5e Character Manager - v1.26</title>
+    <title>D&D 5e Character Manager - v1.27</title>
     <style>
         /* Base Variables */
         :root {
@@ -143,10 +143,10 @@
             background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); padding: 6px; border-radius: 4px; box-sizing: border-box; max-width: 100%; transition: background-color 0.2s, border-color 0.2s;
         }
 
-        button, .btn-style {
+        button {
             background: var(--accent-color); color: #000; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: opacity 0.2s; display: inline-block; text-align: center;
         }
-        button:hover, .btn-style:hover { opacity: 0.8; }
+        button:hover { opacity: 0.8; }
 
         .stat-block { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
         
@@ -217,7 +217,7 @@
 <body>
 
     <div class="menu-bar">
-        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span class="version-tag">v1.26</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
+        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span class="version-tag">v1.27</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
         
         <div style="margin-left: 20px; display: flex; gap: 5px;">
             <button class="lang-btn active" onclick="setLanguage('en')" id="btn-lang-en">EN</button>
@@ -233,7 +233,7 @@
             <button id="toggleModeBtn" onclick="toggleViewMode()" style="background: #ff9800; color: #fff;" data-i18n="readMode">Read Mode</button>
             <button onclick="stampaScheda()" style="background: #2196F3; color: white;" data-i18n="summary">Summary</button>
             <button onclick="salvaJSON()" data-i18n="save">Save</button>
-            <label for="fileInput" class="btn-style" data-i18n="open">Open</label>
+            <button onclick="document.getElementById('fileInput').click()" data-i18n="open">Open</button>
             <input type="file" id="fileInput" accept=".json" onchange="caricaJSON(event)" style="display: none;">
         </div>
     </div>
@@ -243,47 +243,31 @@
             <span class="close-modal" onclick="closeChangelog()">&times;</span>
             <h2 style="margin-top: 0;" data-i18n="changelogTitle">Changelog</h2>
 
-            <div class="log-version">v1.26 - Attuale</div>
+            <div class="log-version">v1.27 - Attuale</div>
+            <span class="log-note">Sistema Pesi, Proprietà Armi e Design.</span>
+            <div class="log-section log-miglioramenti">Miglioramenti:</div>
+            <ul class="log-ul">
+                <li><strong>Sistema Carico:</strong> Aggiunto campo "Peso" (kg) nelle sezioni Armi, Armature ed Equipaggiamento.</li>
+                <li><strong>Calcolo Peso:</strong> Nel pannello Personaggio è ora visibile la somma automatica del peso trasportato e un campo modificabile per il "Carico Massimo".</li>
+                <li><strong>Proprietà Armi:</strong> Aggiunto un nuovo campo da 200 caratteri nel box Armi per gestire tag come (Accurata, Pesante, Versatile, ecc.).</li>
+                <li><strong>Design UI:</strong> Uniformato il pulsante "Apri" nell'intestazione. Il Timestamp di creazione delle entry è stato spostato sotto il nome per una maggiore pulizia visiva.</li>
+            </ul>
+
+            <div class="log-version">v1.26</div>
             <span class="log-note">Tracciamento temporale e Higher Level Slots.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li>Tutte le nuove entry nei vari box vengono ora aggiunte <strong>in cima alla lista</strong> anziché in fondo.</li>
-                <li>Implementato un <strong>Timestamp dinamico</strong>: ad ogni inserimento o modifica di una entry viene registrata e mostrata la data e l'ora locale del browser.</li>
-                <li>Aggiunto il campo <code>higherLevelSlot</code> al modulo Incantesimi. Il Database json popolerà automaticamente questo nuovo campo.</li>
+                <li>LIFO (Last In, First Out): Nuove entry aggiunte in cima alla lista.</li>
+                <li>Timestamp dinamico: registrazione e aggiornamento di data/ora per ogni inserimento ed editing.</li>
+                <li>Aggiunto campo <code>higherLevelSlot</code> al modulo Incantesimi popolato da Database.</li>
             </ul>
 
-            <div class="log-version">v1.25</div>
-            <span class="log-note">Mappatura Classi per Incantesimi.</span>
+            <div class="log-version">v1.23 - v1.25</div>
+            <span class="log-note">Avanzamento Dettaglio Incantesimi.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li>Aggiunto il campo "Classi" nei moduli degli Incantesimi, auto-popolato dal JSON. Mostrato nel riepilogo in corsivo.</li>
-            </ul>
-
-            <div class="log-version">v1.24</div>
-            <span class="log-note">Miglioramenti Header e Bugfix DB.</span>
-            <div class="log-section log-miglioramenti">Miglioramenti:</div>
-            <ul class="log-ul">
-                <li>Visualizzazione dinamica del nome del personaggio nella barra dell'intestazione superiore.</li>
-            </ul>
-            <div class="log-section log-fix">Fix:</div>
-            <ul class="log-ul">
-                <li>Risolti bug minori sul parsing del JSON legati al caricamento della lingua.</li>
-            </ul>
-            
-            <div class="log-version">v1.23</div>
-            <span class="log-note">Dettaglio Incantesimi avanzato.</span>
-            <div class="log-section log-miglioramenti">Miglioramenti:</div>
-            <ul class="log-ul">
-                <li>Box Incantesimi potenziato con nuovi campi: Raggio, Durata e Cantrip Upgrade.</li>
-            </ul>
-
-            <div class="log-version">v1.20 - v1.22</div>
-            <span class="log-note">Dizionari Multilingua e Blindatura Mod. Lettura.</span>
-            <div class="log-section log-miglioramenti">Miglioramenti:</div>
-            <ul class="log-ul">
-                <li>Lettura DB <code>spells_&lt;lingua&gt;.json</code> e persistenza preferenze.</li>
-                <li>In Modalità Lettura ora è impossibile modificare i dati.</li>
-                <li>Traduzione completa dell'interfaccia (EN, IT, FR, DE, ES).</li>
+                <li>Mappatura classi incantatore, range, durata e cantrip upgrade. Estrazione intelligente dal JSON multilingua.</li>
+                <li>Nome del personaggio dinamicamente ancorato alla barra superiore.</li>
             </ul>
             
             <div style="text-align: center; margin-top: 30px; font-size: 0.8em; color: #666;">
@@ -303,6 +287,13 @@
                 <div><label data-i18n="lblCharClass">Main Class:</label> <input type="text" id="charClassPrimary"></div>
                 <div><label data-i18n="lblCharLvl">Class Level:</label> <input type="number" id="charLevel" value="1" min="1" max="20" oninput="updateSheet()" style="width: 60px;"></div>
                 <div><label data-i18n="lblTotLvl">Total Level:</label> <span id="totalLevelDisplay" style="font-weight:bold; font-size: 1.2em;">1</span></div>
+                
+                <div style="background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 4px; border: 1px solid var(--border-color);">
+                    <label data-i18n="lblWeightCarried">Weight Carried:</label> 
+                    <span id="totalWeightDisplay" style="font-weight:bold; color: var(--accent-color);">0</span> / 
+                    <input type="number" id="maxWeight" value="150" style="width: 60px;"> <span data-i18n="lblKg">kg</span>
+                </div>
+
                 <div><label data-i18n="lblBackground">Background:</label> <input type="text" id="charBackground"></div>
                 <div><label data-i18n="lblHeight">Height:</label> <input type="text" id="charHeight" style="width: 80px;"></div>
                 <div><label data-i18n="lblWeight">Weight:</label> <input type="text" id="charWeight" style="width: 80px;"></div>
@@ -420,6 +411,7 @@
                 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                     <input type="text" id="protName" placeholder="Name (e.g. Shield)" style="flex-grow: 1;">
                     <input type="number" id="protAC" placeholder="AC Bonus (e.g. 2)" style="width: 150px;">
+                    <input type="number" id="protWeight" placeholder="kg" data-i18n-ph="phWeight" step="0.1" style="width: 80px;">
                 </div>
                 <textarea id="protDesc" maxlength="200" placeholder="Description (max 200 char)" data-i18n-ph="phDesc" style="height: 50px;"></textarea>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -437,8 +429,10 @@
                 <div style="display: flex; flex-wrap: wrap; gap: 5px;">
                     <input type="text" id="weaponName" placeholder="Weapon Name" style="flex-grow: 1;">
                     <input type="text" id="weaponDamage" placeholder="Damage (e.g. 1d8)" style="width: 150px;">
+                    <input type="number" id="weaponWeight" placeholder="kg" data-i18n-ph="phWeight" step="0.1" style="width: 80px;">
                 </div>
-                <textarea id="weaponDesc" maxlength="200" placeholder="Properties (max 200 char)" data-i18n-ph="phProp" style="height: 50px;"></textarea>
+                <input type="text" id="weaponProps" maxlength="200" placeholder="Properties (Finesse, Light...)" data-i18n-ph="phWeaponProps" style="flex-grow: 1;">
+                <textarea id="weaponDesc" maxlength="200" placeholder="Other notes (max 200 char)" data-i18n-ph="phOtherNotes" style="height: 50px;"></textarea>
                 <button onclick="addWeaponItem()" data-i18n="btnAddWeap">Add Weapon</button>
             </div>
             <div id="weaponsList" class="list-container"></div>
@@ -448,7 +442,10 @@
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
             <h2 class="panel-title"><span data-i18n="pEquip">Equipment</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-equipment', 'Equipaggiamento')">👁️</button></h2>
             <div class="input-group edit-only">
-                <input type="text" id="equipName" placeholder="Item Name">
+                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                    <input type="text" id="equipName" placeholder="Item Name" style="flex-grow: 1;">
+                    <input type="number" id="equipWeight" placeholder="kg" data-i18n-ph="phWeight" step="0.1" style="width: 80px;">
+                </div>
                 <textarea id="equipDesc" maxlength="200" placeholder="Description (max 200 char)" data-i18n-ph="phDesc" style="height: 50px;"></textarea>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <label><input type="checkbox" id="equipMagic"> <span data-i18n="lblMagicItem">Magic Item</span></label>
@@ -585,13 +582,14 @@
     </div>
 
     <script>
-        const APP_VERSION = "1.26";
+        const APP_VERSION = "1.27";
         
         // --- MULTILINGUAL DICTIONARY (i18n) ---
         const i18n = {
             en: {
                 appTitle: "D&D 5e Character Manager", readMode: "Read Mode", editMode: "Edit Mode", summary: "Summary", save: "Save", open: "Open", changelogTitle: "Changelog",
                 pCharacter: "Character", lblCharName: "Name:", lblCharRace: "Race:", lblCharClass: "Main Class:", lblCharLvl: "Class Level:", lblTotLvl: "Total Level:", lblBackground: "Background:", lblHeight: "Height:", lblWeight: "Weight:", lblProfBonus: "Proficiency Bonus:",
+                lblWeightCarried: "Weight Carried:", lblKg: "kg",
                 pStats: "Ability Scores", pSaves: "Saving Throws", pSkills: "Skills",
                 pCombat: "Combat & AC", lblTotalAc: "Total AC:", lblInitiative: "Initiative:", lblSpeed: "Speed:", lblMaxHp: "Max HP:", lblCurHp: "Current HP:", lblHitDice: "Hit Dice:", lblPassPerc: "Passive Perception:", lblBaseAcCalc: "Base AC Calc", lblBaseAc: "Base AC:", lblAddDex: "Add DEX",
                 pFeatures: "Race & Class Features", hRaceTraits: "Racial Traits", hClassFeats: "Class Features", btnAddTrait: "Add Trait", btnAddFeature: "Add Feature",
@@ -604,12 +602,14 @@
                 pSlots: "Spell Slots", btnAddCareer: "Add Career",
                 pSpells: "Spells", lblDbLoad: "Load from Database:", optSelectSpell: "-- Select a Spell --", btnAddSpell: "Add Spell", lblClassesSpells: "Classes:", lblHigherLvl: "Higher Levels:",
                 pNotes: "Notes & Backstory", lblHiddenPanels: "Hidden Panels",
-                phTraitName: "Trait Name", phFeatName: "Feature Name", phDesc: "Description (max 200 char)", phProp: "Properties (max 200 char)", phDetails: "Details (optional)",
+                // Placeholders
+                phTraitName: "Trait Name", phFeatName: "Feature Name", phDesc: "Description (max 200 char)", phOtherNotes: "Other notes (max 200 char)", phProp: "Properties (max 200 char)", phWeaponProps: "Properties (Finesse, Light, Heavy...)", phDetails: "Details (optional)", phWeight: "kg",
                 phSpellName: "Spell Name", phSchool: "School", phRange: "Range", phDuration: "Duration", phClasses: "Classes (e.g. Wizard)", phDescEff: "Description & Effects", phCantrip: "Cantrip Upgrade (if any)", phHigherLevel: "At Higher Levels"
             },
             it: {
                 appTitle: "Gestione Personaggio D&D 5e", readMode: "Lettura", editMode: "Modifica", summary: "Sintesi", save: "Salva", open: "Apri", changelogTitle: "Registro Aggiornamenti",
-                pCharacter: "Personaggio", lblCharName: "Nome:", lblCharRace: "Razza:", lblCharClass: "Classe Princ.:", lblCharLvl: "Livello Classe:", lblTotLvl: "Livello Totale:", lblBackground: "Background:", lblHeight: "Statura:", lblWeight: "Peso:", lblProfBonus: "Bonus Comp.:",
+                pCharacter: "Personaggio", lblCharName: "Nome:", lblCharRace: "Razza:", lblCharClass: "Classe Princ.:", lblCharLvl: "Livello Classe:", lblTotLvl: "Livello Totale:", lblBackground: "Background:", lblHeight: "Statura:", lblWeight: "Peso base:", lblProfBonus: "Bonus Comp.:",
+                lblWeightCarried: "Carico Trasportato:", lblKg: "kg",
                 pStats: "Caratteristiche", pSaves: "Tiri Salvezza", pSkills: "Abilità",
                 pCombat: "Combattimento e CA", lblTotalAc: "CA Totale:", lblInitiative: "Iniziativa:", lblSpeed: "Velocità:", lblMaxHp: "PF Massimi:", lblCurHp: "PF Attuali:", lblHitDice: "Dadi Vita:", lblPassPerc: "Saggezza (Perc. Passiva):", lblBaseAcCalc: "Calcolo CA Base", lblBaseAc: "CA Base:", lblAddDex: "Aggiungi Mod. DES",
                 pFeatures: "Tratti di Razza e Classe", hRaceTraits: "Tratti Razza", hClassFeats: "Privilegi Classe", btnAddTrait: "Aggiungi Tratto", btnAddFeature: "Aggiungi Privilegio",
@@ -622,12 +622,13 @@
                 pSlots: "Slot Incantesimi", btnAddCareer: "Aggiungi Carriera",
                 pSpells: "Tutti gli Incantesimi", lblDbLoad: "Carica dal Database:", optSelectSpell: "-- Seleziona Incantesimo --", btnAddSpell: "Aggiungi Incantesimo", lblClassesSpells: "Classi:", lblHigherLvl: "Ai Livelli Superiori:",
                 pNotes: "Note Generali e Storia", lblHiddenPanels: "Pannelli Nascosti",
-                phTraitName: "Nome Tratto", phFeatName: "Nome Privilegio", phDesc: "Descrizione (max 200 car.)", phProp: "Proprietà (max 200 car.)", phDetails: "Dettagli (opzionale)",
+                phTraitName: "Nome Tratto", phFeatName: "Nome Privilegio", phDesc: "Descrizione (max 200 car.)", phOtherNotes: "Altre note (max 200 car.)", phProp: "Proprietà (max 200 car.)", phWeaponProps: "Proprietà (Accurata, Leggera...)", phDetails: "Dettagli (opzionale)", phWeight: "kg",
                 phSpellName: "Nome Incantesimo", phSchool: "Scuola", phRange: "Raggio", phDuration: "Durata", phClasses: "Classi (es. Mago)", phDescEff: "Descrizione e Effetti", phCantrip: "Miglioramento Trucchetto", phHigherLevel: "Lanciato a Livelli Superiori"
             },
             fr: {
                 appTitle: "Gestion de Personnage D&D 5e", readMode: "Lecture", editMode: "Modifier", summary: "Résumé", save: "Enregistrer", open: "Ouvrir", changelogTitle: "Journal des modifications",
                 pCharacter: "Personnage", lblCharName: "Nom:", lblCharRace: "Race:", lblCharClass: "Classe Prin.:", lblCharLvl: "Niveau de Classe:", lblTotLvl: "Niveau Total:", lblBackground: "Historique:", lblHeight: "Taille:", lblWeight: "Poids:", lblProfBonus: "Bonus de Maîtrise:",
+                lblWeightCarried: "Poids Porté:", lblKg: "kg",
                 pStats: "Caractéristiques", pSaves: "Jets de Sauvegarde", pSkills: "Compétences",
                 pCombat: "Combat et CA", lblTotalAc: "CA Totale:", lblInitiative: "Initiative:", lblSpeed: "Vitesse:", lblMaxHp: "PV Max:", lblCurHp: "PV Actuels:", lblHitDice: "Dés de Vie:", lblPassPerc: "Perception Passive:", lblBaseAcCalc: "Calcul CA Base", lblBaseAc: "CA Base:", lblAddDex: "Ajouter DEX",
                 pFeatures: "Traits et Capacités", hRaceTraits: "Traits Raciaux", hClassFeats: "Capacités de Classe", btnAddTrait: "Ajouter Trait", btnAddFeature: "Ajouter Capacité",
@@ -640,12 +641,13 @@
                 pSlots: "Emplacements de Sorts", btnAddCareer: "Ajouter Carrière",
                 pSpells: "Sorts", lblDbLoad: "Charger depuis la base de données:", optSelectSpell: "-- Sélectionner un Sort --", btnAddSpell: "Ajouter Sort", lblClassesSpells: "Classes:", lblHigherLvl: "Niveaux Supérieurs:",
                 pNotes: "Notes et Histoire", lblHiddenPanels: "Panneaux Masqués",
-                phTraitName: "Nom du Trait", phFeatName: "Nom de la Capacité", phDesc: "Description (max 200 car.)", phProp: "Propriétés (max 200 car.)", phDetails: "Détails (optionnel)",
+                phTraitName: "Nom du Trait", phFeatName: "Nom de la Capacité", phDesc: "Description (max 200 car.)", phOtherNotes: "Autres notes (max 200 car.)", phProp: "Propriétés (max 200 car.)", phWeaponProps: "Propriétés (Finesse, Lourd...)", phDetails: "Détails (optionnel)", phWeight: "kg",
                 phSpellName: "Nom du Sort", phSchool: "École", phRange: "Portée", phDuration: "Durée", phClasses: "Classes (ex. Magicien)", phDescEff: "Description et Effets", phCantrip: "Amélioration Mineur", phHigherLevel: "Aux Niveaux Supérieurs"
             },
             de: {
                 appTitle: "D&D 5e Charakter-Manager", readMode: "Lese-Modus", editMode: "Bearbeiten", summary: "Zusammenfassung", save: "Speichern", open: "Öffnen", changelogTitle: "Änderungsprotokoll",
                 pCharacter: "Charakter", lblCharName: "Name:", lblCharRace: "Volk:", lblCharClass: "Hauptklasse:", lblCharLvl: "Klassenstufe:", lblTotLvl: "Gesamtstufe:", lblBackground: "Hintergrund:", lblHeight: "Größe:", lblWeight: "Gewicht:", lblProfBonus: "Übungsbonus:",
+                lblWeightCarried: "Getragenes Gewicht:", lblKg: "kg",
                 pStats: "Attribute", pSaves: "Rettungswürfe", pSkills: "Fertigkeiten",
                 pCombat: "Kampf & RK", lblTotalAc: "Gesamt-RK:", lblInitiative: "Initiative:", lblSpeed: "Bewegung:", lblMaxHp: "Max. TP:", lblCurHp: "Aktuelle TP:", lblHitDice: "Trefferwürfel:", lblPassPerc: "Passive Wahrnehmung:", lblBaseAcCalc: "RK-Basis", lblBaseAc: "Basis-RK:", lblAddDex: "GES hinzufügen",
                 pFeatures: "Volks- & Klassenmerkmale", hRaceTraits: "Volksmerkmale", hClassFeats: "Klassenmerkmale", btnAddTrait: "Merkmal hinzufügen", btnAddFeature: "Klassenmerkmal hinzufügen",
@@ -658,12 +660,13 @@
                 pSlots: "Zauberplätze", btnAddCareer: "Karriere hinzufügen",
                 pSpells: "Zauber", lblDbLoad: "Aus Datenbank laden:", optSelectSpell: "-- Zauber auswählen --", btnAddSpell: "Zauber hinzufügen", lblClassesSpells: "Klassen:", lblHigherLvl: "Auf höheren Stufen:",
                 pNotes: "Notizen & Hintergrund", lblHiddenPanels: "Versteckte Panels",
-                phTraitName: "Merkmalname", phFeatName: "Klassenmerkmalname", phDesc: "Beschreibung (max. 200)", phProp: "Eigenschaften (max. 200)", phDetails: "Details (optional)",
+                phTraitName: "Merkmalname", phFeatName: "Klassenmerkmalname", phDesc: "Beschreibung (max. 200)", phOtherNotes: "Weitere Notizen (max 200)", phProp: "Eigenschaften (max. 200)", phWeaponProps: "Eigenschaften (Leicht, Schwer...)", phDetails: "Details (optional)", phWeight: "kg",
                 phSpellName: "Zaubername", phSchool: "Schule", phRange: "Reichweite", phDuration: "Dauer", phClasses: "Klassen (z.B. Magier)", phDescEff: "Beschreibung & Effekte", phCantrip: "Zaubertrick-Verbesserung", phHigherLevel: "Auf höheren Stufen"
             },
             es: {
                 appTitle: "Gestor de Personaje D&D 5e", readMode: "Lectura", editMode: "Editar", summary: "Resumen", save: "Guardar", open: "Abrir", changelogTitle: "Registro de Cambios",
                 pCharacter: "Personaje", lblCharName: "Nombre:", lblCharRace: "Raza:", lblCharClass: "Clase Prin.:", lblCharLvl: "Nivel de Clase:", lblTotLvl: "Nivel Total:", lblBackground: "Trasfondo:", lblHeight: "Altura:", lblWeight: "Peso:", lblProfBonus: "Bono Comp.:",
+                lblWeightCarried: "Peso Llevado:", lblKg: "kg",
                 pStats: "Características", pSaves: "Tiradas de Salvación", pSkills: "Habilidades",
                 pCombat: "Combate y CA", lblTotalAc: "CA Total:", lblInitiative: "Iniciativa:", lblSpeed: "Velocidad:", lblMaxHp: "PG Máximos:", lblCurHp: "PG Actuales:", lblHitDice: "Dados de Golpe:", lblPassPerc: "Percepción Pasiva:", lblBaseAcCalc: "Cálculo CA Base", lblBaseAc: "CA Base:", lblAddDex: "Añadir DES",
                 pFeatures: "Rasgos y Rasgos de Clase", hRaceTraits: "Rasgos Raciales", hClassFeats: "Rasgos de Clase", btnAddTrait: "Añadir Rasgo", btnAddFeature: "Añadir Rasgo",
@@ -676,7 +679,7 @@
                 pSlots: "Espacios de Conjuros", btnAddCareer: "Añadir Carrera",
                 pSpells: "Conjuros", lblDbLoad: "Cargar desde la base de datos:", optSelectSpell: "-- Seleccionar un Conjuro --", btnAddSpell: "Añadir Conjuro", lblClassesSpells: "Clases:", lblHigherLvl: "A Niveles Superiores:",
                 pNotes: "Notas y Trasfondo", lblHiddenPanels: "Paneles Ocultos",
-                phTraitName: "Nombre del Rasgo", phFeatName: "Nombre del Rasgo", phDesc: "Descripción (máx 200 car.)", phProp: "Propiedades (máx 200 car.)", phDetails: "Detalles (opcional)",
+                phTraitName: "Nombre del Rasgo", phFeatName: "Nombre del Rasgo", phDesc: "Descripción (máx 200 car.)", phOtherNotes: "Otras notas (máx 200)", phProp: "Propiedades (máx 200 car.)", phWeaponProps: "Propiedades (Sutil, Pesada...)", phDetails: "Detalles (opcional)", phWeight: "kg",
                 phSpellName: "Nombre del Conjuro", phSchool: "Escuela", phRange: "Alcance", phDuration: "Duración", phClasses: "Clases (ej. Mago)", phDescEff: "Descripción y Efectos", phCantrip: "Mejora de Truco", phHigherLevel: "A Niveles Superiores"
             }
         };
@@ -1014,6 +1017,24 @@
             if (document.getElementById("wizTotalPrep")) document.getElementById("wizTotalPrep").textContent = wizPrep;
             
             updateHeaderName();
+            updateTotalWeight();
+        }
+
+        // --- NEW Weight System ---
+        function updateTotalWeight() {
+            let totalWeight = 0;
+            ['weapons', 'equipment', 'protections'].forEach(list => {
+                charLists[list].forEach(item => {
+                    if (item.weight && !isNaN(item.weight)) {
+                        totalWeight += parseFloat(item.weight);
+                    }
+                });
+            });
+            const display = document.getElementById("totalWeightDisplay");
+            if (display) {
+                // Format to 2 decimal places max, remove trailing zeros
+                display.textContent = totalWeight.toFixed(2).replace(/\.?0+$/, '');
+            }
         }
 
         function getSlotsForClassLevel(className, level) {
@@ -1058,7 +1079,7 @@
                 let slotsHtml = slots.map(s => `<td>${s > 0 ? s : '-'}</td>`).join('');
                 let nameFormat = prog.className.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
-                let timeStr = prog.timestamp ? `<div style="font-size: 0.7em; color: #666; font-weight: normal;">${prog.timestamp}</div>` : '';
+                let timeStr = prog.timestamp ? `<div style="font-size: 0.7em; color: #666; font-weight: normal; margin-top:2px;">${prog.timestamp}</div>` : '';
 
                 html += `<tr>
                     <td><strong>${nameFormat}</strong>${timeStr}</td>
@@ -1112,7 +1133,7 @@
                 if (dbSel) dbSel.value = "";
             }
 
-            charLists[listName].unshift(newItem); // Unshift: inserts at the beginning
+            charLists[listName].unshift(newItem);
             nameInput.value = ""; 
             if(descInput) descInput.value = "";
             
@@ -1123,22 +1144,28 @@
             const name = document.getElementById('weaponName').value.trim();
             const desc = document.getElementById('weaponDesc').value.trim();
             const damage = document.getElementById('weaponDamage').value.trim();
+            const weight = document.getElementById('weaponWeight').value.trim();
+            const props = document.getElementById('weaponProps').value.trim();
             if(!name) return;
-            charLists.weapons.unshift({ name, desc, damage, timestamp: new Date().toLocaleString() });
+            charLists.weapons.unshift({ name, desc, damage, props, weight, timestamp: new Date().toLocaleString() });
             document.getElementById('weaponName').value = '';
             document.getElementById('weaponDesc').value = '';
             document.getElementById('weaponDamage').value = '';
+            document.getElementById('weaponWeight').value = '';
+            document.getElementById('weaponProps').value = '';
             renderCustomList('weapons');
         }
 
         function addEquipmentItem() {
             const name = document.getElementById('equipName').value.trim();
             const desc = document.getElementById('equipDesc').value.trim();
+            const weight = document.getElementById('equipWeight').value.trim();
             const magic = document.getElementById('equipMagic').checked;
             if(!name) return;
-            charLists.equipment.unshift({ name, desc, magic, timestamp: new Date().toLocaleString() });
+            charLists.equipment.unshift({ name, desc, weight, magic, timestamp: new Date().toLocaleString() });
             document.getElementById('equipName').value = '';
             document.getElementById('equipDesc').value = '';
+            document.getElementById('equipWeight').value = '';
             document.getElementById('equipMagic').checked = false;
             renderCustomList('equipment');
         }
@@ -1147,18 +1174,20 @@
             const nameInput = document.getElementById('protName');
             const acInput = document.getElementById('protAC');
             const descInput = document.getElementById('protDesc');
+            const weightInput = document.getElementById('protWeight');
             const magicInput = document.getElementById('protMagic');
             
             const name = nameInput.value.trim();
             const acBonus = parseInt(acInput.value) || 0;
             const desc = descInput.value.trim();
+            const weight = weightInput.value.trim();
             const magic = magicInput.checked;
 
             if(!name) return;
 
-            charLists.protections.unshift({ name, acBonus, desc, magic, timestamp: new Date().toLocaleString() });
+            charLists.protections.unshift({ name, acBonus, desc, weight, magic, timestamp: new Date().toLocaleString() });
             
-            nameInput.value = ""; acInput.value = ""; descInput.value = ""; magicInput.checked = false;
+            nameInput.value = ""; acInput.value = ""; descInput.value = ""; weightInput.value = ""; magicInput.checked = false;
             renderCustomList('protections');
             updateSheet();
         }
@@ -1183,10 +1212,6 @@
                 let controlsHTML = "";
                 let titleExtras = "";
                 
-                if (item.timestamp) {
-                    titleExtras += ` <span style="font-size:0.65em; color:#555; font-weight:normal;">(${item.timestamp})</span>`;
-                }
-
                 if (listName === "spells") {
                     let spellInfo = "";
                     if (item.level !== undefined && item.level !== "") spellInfo += `Lvl ${item.level}`;
@@ -1204,16 +1229,29 @@
                     `;
                 } else if (listName === "protections") {
                     const sign = item.acBonus > 0 ? "+" : "";
-                    titleExtras += ` <span style="font-size:0.9em; color:#aaa;">(${sign}${item.acBonus} AC)</span>${item.magic ? ' <span style="color:#00bcd4; font-size:0.8em;">[M]</span>' : ''}`;
+                    titleExtras += ` <span style="font-size:0.9em; color:#aaa;">(${sign}${item.acBonus} AC)</span>`;
+                    if(item.weight) titleExtras += ` <span style="font-size:0.85em; color:#aaa;">[${item.weight} kg]</span>`;
+                    if(item.magic) titleExtras += ` <span style="color:#00bcd4; font-size:0.8em;">[M]</span>`;
                 } else if (listName === "weapons") {
                     if (item.damage) titleExtras += ` <span style="font-size:0.85em; color:#f44336;">[${item.damage}]</span>`;
+                    if(item.weight) titleExtras += ` <span style="font-size:0.85em; color:#aaa;">[${item.weight} kg]</span>`;
                 } else if (listName === "equipment") {
+                    if(item.weight) titleExtras += ` <span style="font-size:0.85em; color:#aaa;">[${item.weight} kg]</span>`;
                     if (item.magic) titleExtras += ` <span style="color:#00bcd4; font-size:0.8em;">[M]</span>`;
                 }
 
                 let descHtml = "";
+                
+                // Timestamp moved down
+                if (item.timestamp) {
+                    descHtml += `<div style="font-size:0.65em; color:#555; margin-top:2px;">${item.timestamp}</div>`;
+                }
+
                 if (listName === "spells" && item.classes) {
                     descHtml += `<div style="font-size: 0.8em; color: #888; font-style: italic; margin-top: 2px;">${i18n[currentLang].lblClassesSpells || "Classes:"} ${item.classes}</div>`;
+                }
+                if (listName === "weapons" && item.props) {
+                    descHtml += `<div style="font-size: 0.85em; color: #888; font-style: italic; margin-top: 2px;">${item.props}</div>`;
                 }
                 if (item.desc) {
                     descHtml += `<div style="font-size: 0.85em; color: #aaa; margin-top: 4px; white-space: pre-wrap;">${item.desc}</div>`;
@@ -1241,6 +1279,8 @@
                     </div>
                 `;
             });
+            
+            updateTotalWeight();
 
             if (document.body.classList.contains('view-mode')) {
                 applyViewModeState(true);
@@ -1254,13 +1294,13 @@
             else if (listName === 'classFeatures') { document.getElementById('classFeatureName').value = item.name; document.getElementById('classFeatureDesc').value = item.desc; }
             else if (listName === 'multiClassFeatures') { document.getElementById('multiFeatureName').value = item.name; document.getElementById('multiFeatureDesc').value = item.desc; }
             else if (listName === 'protections') { 
-                document.getElementById('protName').value = item.name; document.getElementById('protAC').value = item.acBonus; document.getElementById('protDesc').value = item.desc; document.getElementById('protMagic').checked = !!item.magic; 
+                document.getElementById('protName').value = item.name; document.getElementById('protAC').value = item.acBonus; document.getElementById('protDesc').value = item.desc; document.getElementById('protWeight').value = item.weight || ""; document.getElementById('protMagic').checked = !!item.magic; 
             }
             else if (listName === 'weapons') { 
-                document.getElementById('weaponName').value = item.name; document.getElementById('weaponDesc').value = item.desc; document.getElementById('weaponDamage').value = item.damage || "";
+                document.getElementById('weaponName').value = item.name; document.getElementById('weaponDesc').value = item.desc; document.getElementById('weaponDamage').value = item.damage || ""; document.getElementById('weaponWeight').value = item.weight || ""; document.getElementById('weaponProps').value = item.props || "";
             }
             else if (listName === 'equipment') { 
-                document.getElementById('equipName').value = item.name; document.getElementById('equipDesc').value = item.desc; document.getElementById('equipMagic').checked = !!item.magic;
+                document.getElementById('equipName').value = item.name; document.getElementById('equipDesc').value = item.desc; document.getElementById('equipWeight').value = item.weight || ""; document.getElementById('equipMagic').checked = !!item.magic;
             }
             else if (listName === 'feats') { document.getElementById('featName').value = item.name; document.getElementById('featDesc').value = item.desc; }
             else if (listName === 'languages') { document.getElementById('langName').value = item.name; document.getElementById('langDesc').value = item.desc; }
@@ -1282,7 +1322,7 @@
                 document.getElementById('slotClassSel').value = item.className; document.getElementById('slotLevelSel').value = item.level;
             }
 
-            removeCustomItem(listName, index); // The item is removed. Saving it again will create a new timestamp!
+            removeCustomItem(listName, index);
 
             if (document.body.classList.contains('view-mode')) {
                 toggleViewMode();
@@ -1354,6 +1394,8 @@
             if (multiClass3 && lvl3 > 0) classeInfo += ` / ${multiClass3} (Lvl. ${lvl3})`;
             
             const totalLevel = document.getElementById("totalLevelDisplay") ? document.getElementById("totalLevelDisplay").textContent : 1;
+            const totWeight = document.getElementById("totalWeightDisplay") ? document.getElementById("totalWeightDisplay").textContent : 0;
+            const maxWeight = safeVal("maxWeight") || 150;
 
             let printWin = window.open('', '_blank');
             let content = `
@@ -1375,7 +1417,7 @@
             content += `<div class="header-info"><strong>Race:</strong> ${razza} | <strong>Class:</strong> ${classeInfo} | <strong>Level:</strong> ${totalLevel}</div>`;
             
             content += `<div class="columns">`;
-            content += `<p style="font-size:1.1em; text-align:center;"><strong>AC:</strong> ${document.getElementById("totalAC") ? document.getElementById("totalAC").textContent : 10} &nbsp;&nbsp;&bull;&nbsp;&nbsp; <strong>HP:</strong> ${safeVal("hpMax")}</p>`;
+            content += `<p style="font-size:1.1em; text-align:center;"><strong>AC:</strong> ${document.getElementById("totalAC") ? document.getElementById("totalAC").textContent : 10} &nbsp;&nbsp;&bull;&nbsp;&nbsp; <strong>HP:</strong> ${safeVal("hpMax")} &nbsp;&nbsp;&bull;&nbsp;&nbsp; <strong>Weight:</strong> ${totWeight} / ${maxWeight} kg</p>`;
             
             content += `<h2>Stats</h2>`;
             stats.forEach(stat => {
@@ -1393,6 +1435,8 @@
                     if(list === charLists.protections && item.magic) extra += ` [M]`;
                     if(list === charLists.weapons && item.damage) extra += ` [${item.damage}]`;
                     if(list === charLists.equipment && item.magic) extra += ` [M]`;
+                    
+                    if(item.weight) extra += ` [${item.weight} kg]`;
 
                     if(isSpell) {
                         if (item.level !== undefined && item.level !== "") extra += ` [Lvl: ${item.level}]`;
@@ -1402,10 +1446,13 @@
                         extra += item.prepared ? " [Prep]" : "";
                     }
                     html += `<div class="item"><span class="item-title">- ${item.name}</span>${extra}`;
+                    
+                    if(list === charLists.weapons && item.props) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>Prop: ${item.props}</i></span>`;
                     if(isSpell && item.classes) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>${i18n[currentLang].lblClassesSpells || "Classes:"} ${item.classes}</i></span>`;
+                    
                     if(item.desc) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; white-space: pre-wrap;">${item.desc}</span>`;
                     if(isSpell && item.cantripUpgrade) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; color: #555;"><strong>Upgrade:</strong> ${item.cantripUpgrade}</span>`;
-                    if(isSpell && item.higherLevelSlot) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; color: var(--positive-color);"><strong>Higher Levels:</strong> ${item.higherLevelSlot}</span>`;
+                    if(isSpell && item.higherLevelSlot) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block;"><strong>Higher Levels:</strong> ${item.higherLevelSlot}</span>`;
                     html += `</div>`;
                 });
                 return html;
@@ -1454,6 +1501,7 @@
                 hpMax: safeVal("hpMax"),
                 hpCurrent: safeVal("hpCurrent"),
                 hitDice: safeVal("hitDice"),
+                maxWeight: safeVal("maxWeight") || 150,
                 
                 baseACInput: safeVal("baseACInput") || 10,
                 addDexToAC: safeCheck("addDexToAC"),
@@ -1499,7 +1547,8 @@
                     const setCheck = (id, val) => { if(document.getElementById(id)) document.getElementById(id).checked = !!val; };
 
                     setVal("charName", data.name || ""); setVal("charRace", data.charRace || ""); setVal("charClassPrimary", data.charClassPrimary || ""); setVal("charClassNotes", data.charClassNotes || ""); setVal("multiClassName", data.multiClassName || ""); setVal("multiClassLevel", data.multiClassLevel || 0); setVal("multiClass3Name", data.multiClass3Name || ""); setVal("multiClass3Level", data.multiClass3Level || 0); setVal("charLevel", data.level || 1); setVal("charBackground", data.background || ""); setVal("charHeight", data.height || ""); setVal("charWeight", data.weight || ""); setVal("charSpeed", data.speed || "9m"); setVal("hpMax", data.hpMax || ""); setVal("hpCurrent", data.hpCurrent || ""); setVal("hitDice", data.hitDice || "");
-                    
+                    setVal("maxWeight", data.maxWeight || 150);
+
                     setVal("baseACInput", data.baseACInput || 10);
                     if(data.addDexToAC !== undefined) setCheck("addDexToAC", data.addDexToAC);
                     setVal("wizardLevel", data.wizardLevel || 0);
