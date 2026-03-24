@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestione Personaggio D&D 5e - v1.20</title>
+    <title>D&D 5e Character Manager - v1.22</title>
     <style>
+        /* Base Variables */
         :root {
             --bg-color: #121212;
             --panel-bg: #1e1e1e;
@@ -25,12 +26,12 @@
             padding-bottom: 100px;
         }
 
-        /* Gestione Modalità Vista */
+        /* View Mode Management */
         body.view-mode .edit-only { display: none !important; }
         body.view-mode .list-item button { display: none !important; }
         body.view-mode .drag-handle { display: none !important; }
         
-        /* Stili estetici per i campi in Modalità Lettura */
+        /* View Mode aesthetic tweaks for inputs */
         body.view-mode input[readonly], 
         body.view-mode textarea[readonly] {
             border-color: transparent !important;
@@ -42,7 +43,7 @@
             cursor: not-allowed;
         }
 
-        /* Layout Dinamico Flexbox Esterno */
+        /* Dynamic Elastic Flexbox Layout */
         .container {
             display: flex;
             flex-wrap: wrap;
@@ -53,7 +54,7 @@
             align-items: flex-start;
         }
 
-        /* Layout Dinamico Flexbox Interno (Colonna) */
+        /* Inner Flexbox Panel */
         .panel {
             background: var(--panel-bg);
             border: 1px solid var(--border-color);
@@ -78,9 +79,7 @@
             flex-direction: column;
         }
         
-        .panel:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
+        .panel:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
 
         .panel > h2, .panel > .input-group, .panel > .stat-block, .panel > .wealth-totals, .panel > .panel-title, .panel > p, .panel > div:not(.list-container) {
             flex-shrink: 0;
@@ -102,7 +101,7 @@
         
         .version-tag { font-size: 0.5em; color: gray; vertical-align: middle; margin-left: 10px; }
         
-        /* Pulsante Changelog */
+        /* Changelog Button */
         .changelog-btn {
             background: #000;
             color: gray;
@@ -118,91 +117,48 @@
         }
         .changelog-btn:hover { background: #222; color: #fff; border-color: var(--accent-color); }
 
+        /* Language Buttons */
+        .lang-btn {
+            background: #333; color: #ccc; border: 1px solid #555; padding: 4px 8px; font-size: 0.8em; border-radius: 4px; cursor: pointer; transition: all 0.2s;
+        }
+        .lang-btn:hover { background: #555; }
+        .lang-btn.active { background: var(--accent-color); color: #000; font-weight: bold; border-color: var(--accent-color); }
+
         .panel-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 1.5em;
+            display: flex; align-items: center; gap: 10px; margin-top: 0; margin-bottom: 15px; font-size: 1.5em;
         }
 
         .drag-handle {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            cursor: grab;
-            font-size: 1.5em;
-            color: #555;
-            user-select: none;
-            z-index: 10;
+            position: absolute; top: 15px; right: 15px; cursor: grab; font-size: 1.5em; color: #555; user-select: none; z-index: 10;
         }
         .drag-handle:active { cursor: grabbing; }
         .drop-zone { border: 2px dashed var(--accent-color) !important; }
 
         .hide-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-color);
-            cursor: pointer;
-            font-size: 0.8em; 
-            padding: 0;
-            opacity: 0.6;
-            transition: opacity 0.2s, transform 0.2s;
+            background: transparent; border: none; color: var(--text-color); cursor: pointer; font-size: 0.8em; padding: 0; opacity: 0.6; transition: opacity 0.2s, transform 0.2s;
         }
         .hide-btn:hover { opacity: 1; transform: scale(1.1); }
         
         input, select, textarea {
-            background: var(--bg-color);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            padding: 6px;
-            border-radius: 4px;
-            box-sizing: border-box;
-            max-width: 100%;
-            transition: background-color 0.2s, border-color 0.2s;
+            background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); padding: 6px; border-radius: 4px; box-sizing: border-box; max-width: 100%; transition: background-color 0.2s, border-color 0.2s;
         }
 
         button, .btn-style {
-            background: var(--accent-color);
-            color: #000;
-            border: none;
-            padding: 8px 15px;
-            cursor: pointer;
-            border-radius: 4px;
-            font-weight: bold;
-            transition: opacity 0.2s;
-            display: inline-block;
-            text-align: center;
+            background: var(--accent-color); color: #000; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: opacity 0.2s; display: inline-block; text-align: center;
         }
         button:hover, .btn-style:hover { opacity: 0.8; }
 
         .stat-block { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
         
         .stat-mod-highlight { 
-            font-weight: bold; 
-            font-size: 1.6em; 
-            color: var(--accent-color); 
-            background: #2a2a2a; 
-            padding: 4px 12px; 
-            border-radius: 6px; 
-            border: 1px solid var(--accent-color);
-            min-width: 45px;
-            text-align: center;
-            margin-left: auto;
+            font-weight: bold; font-size: 1.6em; color: var(--accent-color); background: #2a2a2a; padding: 4px 12px; border-radius: 6px; border: 1px solid var(--accent-color); min-width: 45px; text-align: center; margin-left: auto;
         }
         
         .skill-list { list-style-type: none; padding: 0; margin: 0; flex-grow: 1; overflow-y: auto; }
         .skill-list li { margin: 6px 0; display: flex; justify-content: space-between; align-items: center;}
 
         .list-container { 
-            flex-grow: 1; 
-            min-height: 50px;
-            overflow-y: auto; 
-            border: 1px solid var(--border-color); 
-            padding: 5px; 
-            margin-top: 10px; 
-            border-radius: 4px;
+            flex-grow: 1; min-height: 50px; overflow-y: auto; border: 1px solid var(--border-color); padding: 5px; margin-top: 10px; border-radius: 4px;
         }
         
         .flex-expand { flex-grow: 1; min-height: 50px; resize: none; }
@@ -210,12 +166,11 @@
         .list-item { border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 8px; }
         .list-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         
+        /* Sticky Menu Bar */
         .menu-bar { margin-bottom: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; position: sticky; top: 0; z-index: 1000; background: rgba(18, 18, 18, 0.95); backdrop-filter: blur(5px); padding: 10px 15px; margin: -15px -15px 20px -15px; border-bottom: 1px solid var(--border-color);}
 
         .wealth-totals {
-            display: flex; justify-content: space-around; background: var(--bg-color); 
-            padding: 10px; border-radius: 4px; border: 1px solid var(--border-color); margin-bottom: 15px;
-            flex-wrap: wrap; gap: 10px;
+            display: flex; justify-content: space-around; background: var(--bg-color); padding: 10px; border-radius: 4px; border: 1px solid var(--border-color); margin-bottom: 15px; flex-wrap: wrap; gap: 10px;
         }
         .wealth-totals div { text-align: center; flex: 1; }
         .wealth-totals span { font-size: 1.2em; font-weight: bold; }
@@ -231,50 +186,19 @@
         .flex-wrapper { display: flex; flex-wrap: wrap; gap: 20px; flex-grow: 1; min-height: 0; }
         .flex-col { display: flex; flex-direction: column; flex: 1; min-width: 250px; min-height: 0; }
 
+        /* Hidden Panels Footer */
         #footer-hidden-panels {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: var(--panel-bg);
-            border-top: 2px solid var(--accent-color);
-            padding: 15px;
-            box-sizing: border-box;
-            z-index: 100;
-            display: none;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--panel-bg); border-top: 2px solid var(--accent-color); padding: 15px; box-sizing: border-box; z-index: 100; display: none; box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
         }
 
-        /* Finestra Modale Changelog */
+        /* Changelog Modal */
         .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 2000; 
-            left: 0; 
-            top: 0; 
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0,0,0,0.7); 
-            backdrop-filter: blur(4px);
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
         }
         .modal-content {
-            background-color: var(--panel-bg);
-            margin: 5% auto; 
-            padding: 20px; 
-            border: 1px solid var(--accent-color);
-            width: 80%; 
-            max-width: 800px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            background-color: var(--panel-bg); margin: 5% auto; padding: 20px; border: 1px solid var(--accent-color); width: 80%; max-width: 800px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
-        .close-modal {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        .close-modal { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
         .close-modal:hover, .close-modal:focus { color: #fff; text-decoration: none; cursor: pointer; }
         .log-version { color: var(--accent-color); border-bottom: 1px solid #333; padding-bottom: 5px; margin-top: 25px; font-size: 1.2em; }
         .log-section { font-weight: bold; margin-top: 10px; font-size: 0.9em; text-transform: uppercase;}
@@ -284,6 +208,7 @@
         .log-ul { margin-top: 5px; padding-left: 20px; font-size: 0.95em;}
         .log-ul li { margin-bottom: 4px; }
 
+        /* Dynamic Responsive */
         @media (max-width: 768px) {
             .panel { flex: 1 1 100% !important; width: 100% !important; height: auto !important; resize: none; }
         }
@@ -292,12 +217,21 @@
 <body>
 
     <div class="menu-bar">
-        <h2 style="margin:0;">Gestione Personaggio D&D 5e<span class="version-tag">v1.20</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
+        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span class="version-tag">v1.22</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
+        
+        <div style="margin-left: 20px; display: flex; gap: 5px;">
+            <button class="lang-btn active" onclick="setLanguage('en')" id="btn-lang-en">EN</button>
+            <button class="lang-btn" onclick="setLanguage('it')" id="btn-lang-it">IT</button>
+            <button class="lang-btn" onclick="setLanguage('fr')" id="btn-lang-fr">FR</button>
+            <button class="lang-btn" onclick="setLanguage('de')" id="btn-lang-de">DE</button>
+            <button class="lang-btn" onclick="setLanguage('es')" id="btn-lang-es">ES</button>
+        </div>
+
         <div style="margin-left: auto; display: flex; gap: 10px; flex-wrap: wrap;">
-            <button id="toggleModeBtn" onclick="toggleViewMode()" style="background: #ff9800; color: #fff;">Lettura</button>
-            <button onclick="stampaScheda()" style="background: #2196F3; color: white;">Sintesi</button>
-            <button onclick="salvaJSON()">Salva</button>
-            <label for="fileInput" class="btn-style">Apri</label>
+            <button id="toggleModeBtn" onclick="toggleViewMode()" style="background: #ff9800; color: #fff;" data-i18n="readMode">Read Mode</button>
+            <button onclick="stampaScheda()" style="background: #2196F3; color: white;" data-i18n="summary">Summary</button>
+            <button onclick="salvaJSON()" data-i18n="save">Save</button>
+            <label for="fileInput" class="btn-style" data-i18n="open">Open</label>
             <input type="file" id="fileInput" accept=".json" onchange="caricaJSON(event)" style="display: none;">
         </div>
     </div>
@@ -305,14 +239,30 @@
     <div id="changelogModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeChangelog()">&times;</span>
-            <h2 style="margin-top: 0;">Registro degli Aggiornamenti (Changelog)</h2>
+            <h2 style="margin-top: 0;" data-i18n="changelogTitle">Changelog</h2>
             
-            <div class="log-version">v1.20 - Attuale</div>
+            <div class="log-version">v1.22 - Attuale</div>
+            <span class="log-note">Dizionari Incantesimi Multilingua e persistenza preferenze.</span>
+            <div class="log-section log-miglioramenti">Miglioramenti:</div>
+            <ul class="log-ul">
+                <li>Il caricamento dal database esterno ora punta dinamicamente al file <code>spells_&lt;lingua&gt;.json</code> in base all'idioma selezionato.</li>
+                <li>La lingua dell'interfaccia viene memorizzata all'interno del salvataggio del personaggio e ripristinata automaticamente al caricamento del file JSON.</li>
+            </ul>
+
+            <div class="log-version">v1.21</div>
+            <span class="log-note">Internazionalizzazione (i18n) e integrazione Database Incantesimi esterno.</span>
+            <div class="log-section log-miglioramenti">Miglioramenti:</div>
+            <ul class="log-ul">
+                <li>Traduzione completa dell'interfaccia (Inglese di default, + IT, FR, DE, ES) tramite selettore.</li>
+                <li>Integrazione file <code>spells.json</code> esterno per auto-popolare i campi degli incantesimi in fase di inserimento.</li>
+            </ul>
+
+            <div class="log-version">v1.20</div>
             <span class="log-note">Blindatura totale della Modalità Lettura.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li>In Modalità Lettura ora è impossibile modificare qualsiasi dato: input, textarea, checkbox e select vengono disabilitati e resi in sola lettura via codice.</li>
-                <li>I campi in sola lettura perdono i bordi e lo sfondo, assumendo un aspetto molto più pulito e "cartaceo" pur rimanendo navigabili.</li>
+                <li>In Modalità Lettura ora è impossibile modificare i dati: input, textarea e checkbox disabilitati.</li>
+                <li>Migliorato il design "cartaceo" dei campi protetti.</li>
             </ul>
 
             <div class="log-version">v1.19</div>
@@ -321,56 +271,32 @@
             <ul class="log-ul">
                 <li>Aggiunto pulsante e finestra modale per il Changelog integrata nell'interfaccia.</li>
             </ul>
-            <div class="log-section log-fix">Fix:</div>
-            <ul class="log-ul">
-                <li>Aggiornamento formale del numero di versione dimenticato nella build precedente.</li>
-            </ul>
 
             <div class="log-version">v1.18</div>
             <span class="log-note">Ottimizzazione User Experience (UX) verticale.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li>Le liste interne ai box e le text-area si espandono dinamicamente per occupare tutta l'altezza disponibile del box, eliminando spazi vuoti antiestetici durante il resize.</li>
+                <li>Le liste e text-area si espandono dinamicamente in altezza durante il resize del box (Flexbox).</li>
             </ul>
 
             <div class="log-version">v1.17</div>
             <span class="log-note">Integrazione interfaccia e stampa.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li>L'intestazione è ora un box standard rinominato "Personaggio", integrato nella griglia fluida.</li>
-                <li>Il tasto "Nascondi" è diventato un'elegante icona a forma di occhio (👁️) affiancata al titolo.</li>
-                <li>Sintesi di stampa re-impaginata a 3 colonne per sfruttare meglio il formato A4.</li>
+                <li>L'intestazione è ora un box standard rinominato "Personaggio". Tasto nascondi (👁️) affiancato ai titoli.</li>
+                <li>Sintesi di stampa re-impaginata a 3 colonne.</li>
             </ul>
 
             <div class="log-version">v1.16</div>
             <span class="log-note">Evoluzione del Multiclasse e dell'Equipaggiamento.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li>Possibilità di aggiungere una 3ª classe nel pannello Multiclasse.</li>
-                <li>Il Livello Totale e il Bonus Competenza sono calcolati sommando le 3 carriere.</li>
+                <li>Supporto 3ª classe nel pannello Multiclasse. Livello Totale e Bonus Competenza calcolati automaticamente.</li>
                 <li>Aggiunto campo "Danno" per le Armi e spunta "Oggetto Magico" per l'Equipaggiamento.</li>
-            </ul>
-
-            <div class="log-version">v1.15</div>
-            <span class="log-note">Restyling Header e Layout Combattimento.</span>
-            <div class="log-section log-miglioramenti">Miglioramenti:</div>
-            <ul class="log-ul">
-                <li>Il menu superiore è diventato "Sticky" (rimane visibile durante lo scorrimento).</li>
-                <li>Pulsanti header rinominati e resi più immediati.</li>
-                <li>Giustificazione dinamica destra/sinistra nel box Combattimento per migliorare la leggibilità.</li>
-            </ul>
-
-            <div class="log-version">v1.14 / v1.13</div>
-            <span class="log-note">Rifacimento Motore Layout ed Editing globale.</span>
-            <div class="log-section log-miglioramenti">Miglioramenti:</div>
-            <ul class="log-ul">
-                <li>Passaggio da CSS Grid a Flexbox elastico per evitare i "buchi neri" nel layout.</li>
-                <li>Aggiunti campi "Livello" e "Scuola" negli incantesimi.</li>
-                <li>Implementato tasto "E" (Edit) su ogni entry per modificarne i parametri istantaneamente.</li>
             </ul>
             
             <div style="text-align: center; margin-top: 30px; font-size: 0.8em; color: #666;">
-                Sviluppato con dedizione da Ambrogio per il Presidente del mondo.
+                Developed with dedication by Ambrogio for the President of the World.
             </div>
         </div>
     </div>
@@ -379,97 +305,97 @@
         
         <div class="panel span-2 header-panel" id="panel-header">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title" style="width: 100%;">Personaggio <button class="hide-btn edit-only" onclick="hidePanel('panel-header', 'Personaggio')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title" style="width: 100%;"><span data-i18n="pCharacter">Character</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-header', 'Personaggio')" title="Hide">👁️</button></h2>
             <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center; width: 100%;">
-                <div><label>Nome:</label> <input type="text" id="charName"></div>
-                <div><label>Razza:</label> <input type="text" id="charRace"></div>
-                <div><label>Classe Principale:</label> <input type="text" id="charClassPrimary"></div>
-                <div><label>Livello Classe Princ.:</label> <input type="number" id="charLevel" value="1" min="1" max="20" oninput="updateSheet()" style="width: 60px;"></div>
-                <div><label>Livello Totale:</label> <span id="totalLevelDisplay" style="font-weight:bold; font-size: 1.2em;">1</span></div>
-                <div><label>Background:</label> <input type="text" id="charBackground"></div>
-                <div><label>Statura:</label> <input type="text" id="charHeight" style="width: 80px;"></div>
-                <div><label>Peso:</label> <input type="text" id="charWeight" style="width: 80px;"></div>
-                <div style="width: 100%; margin-top: 5px;"><label>Bonus Comp.:</label> <span id="profBonus" style="font-weight:bold; color:var(--accent-color); font-size: 1.2em;">+2</span></div>
+                <div><label data-i18n="lblCharName">Name:</label> <input type="text" id="charName"></div>
+                <div><label data-i18n="lblCharRace">Race:</label> <input type="text" id="charRace"></div>
+                <div><label data-i18n="lblCharClass">Main Class:</label> <input type="text" id="charClassPrimary"></div>
+                <div><label data-i18n="lblCharLvl">Class Level:</label> <input type="number" id="charLevel" value="1" min="1" max="20" oninput="updateSheet()" style="width: 60px;"></div>
+                <div><label data-i18n="lblTotLvl">Total Level:</label> <span id="totalLevelDisplay" style="font-weight:bold; font-size: 1.2em;">1</span></div>
+                <div><label data-i18n="lblBackground">Background:</label> <input type="text" id="charBackground"></div>
+                <div><label data-i18n="lblHeight">Height:</label> <input type="text" id="charHeight" style="width: 80px;"></div>
+                <div><label data-i18n="lblWeight">Weight:</label> <input type="text" id="charWeight" style="width: 80px;"></div>
+                <div style="width: 100%; margin-top: 5px;"><label data-i18n="lblProfBonus">Proficiency Bonus:</label> <span id="profBonus" style="font-weight:bold; color:var(--accent-color); font-size: 1.2em;">+2</span></div>
             </div>
         </div>
 
         <div class="panel" id="panel-stats">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Caratteristiche <button class="hide-btn edit-only" onclick="hidePanel('panel-stats', 'Caratteristiche')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pStats">Ability Scores</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-stats', 'Caratteristiche')">👁️</button></h2>
             <div id="statsContainer"></div>
         </div>
 
         <div class="panel" id="panel-saves">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Tiri Salvezza <button class="hide-btn edit-only" onclick="hidePanel('panel-saves', 'Tiri Salvezza')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pSaves">Saving Throws</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-saves', 'Tiri Salvezza')">👁️</button></h2>
             <ul class="skill-list" id="savesContainer"></ul>
         </div>
 
         <div class="panel" id="panel-skills">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Abilità <button class="hide-btn edit-only" onclick="hidePanel('panel-skills', 'Abilità')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pSkills">Skills</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-skills', 'Abilità')">👁️</button></h2>
             <ul class="skill-list" id="skillsContainer"></ul>
         </div>
 
         <div class="panel" id="panel-combat">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Combattimento e CA <button class="hide-btn edit-only" onclick="hidePanel('panel-combat', 'Combattimento')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pCombat">Combat & AC</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-combat', 'Combattimento')">👁️</button></h2>
             
             <div class="stat-block" style="justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
-                <label style="font-weight: bold; font-size: 1.1em;">CA Totale:</label> 
+                <label style="font-weight: bold; font-size: 1.1em;" data-i18n="lblTotalAc">Total AC:</label> 
                 <span id="totalAC" class="stat-mod-highlight">10</span>
             </div>
             <div class="stat-block" style="justify-content: space-between;">
-                <label style="font-weight: bold;">Iniziativa:</label> 
+                <label style="font-weight: bold;" data-i18n="lblInitiative">Initiative:</label> 
                 <span id="initiativeModifier" style="font-size: 1.2em; font-weight: bold;">0</span>
             </div>
             <div class="stat-block" style="justify-content: space-between;">
-                <label style="font-weight: bold;">Velocità:</label> 
-                <input type="text" id="charSpeed" value="9m" style="width: 80px; text-align: center;">
+                <label style="font-weight: bold;" data-i18n="lblSpeed">Speed:</label> 
+                <input type="text" id="charSpeed" value="30ft" style="width: 80px; text-align: center;">
             </div>
             <div class="stat-block" style="justify-content: space-between;">
-                <label style="font-weight: bold;">PF Massimi:</label> 
+                <label style="font-weight: bold;" data-i18n="lblMaxHp">Max HP:</label> 
                 <input type="number" id="hpMax" style="width: 80px; text-align: center;">
             </div>
             <div class="stat-block" style="justify-content: space-between;">
-                <label style="font-weight: bold;">PF Attuali:</label> 
+                <label style="font-weight: bold;" data-i18n="lblCurHp">Current HP:</label> 
                 <input type="number" id="hpCurrent" style="width: 80px; text-align: center;">
             </div>
             <div class="stat-block" style="justify-content: space-between;">
-                <label style="font-weight: bold;">Dadi Vita:</label> 
-                <input type="text" id="hitDice" placeholder="es. 1d8" style="width: 80px; text-align: center;">
+                <label style="font-weight: bold;" data-i18n="lblHitDice">Hit Dice:</label> 
+                <input type="text" id="hitDice" placeholder="e.g. 1d8" style="width: 80px; text-align: center;">
             </div>
             <div class="stat-block" style="justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 15px;">
-                <label style="font-weight: bold;">Saggezza (Percezione Passiva):</label> 
+                <label style="font-weight: bold;" data-i18n="lblPassPerc">Passive Perception:</label> 
                 <span id="passivePerception" style="font-size: 1.2em; font-weight: bold; color: var(--accent-color);">10</span>
             </div>
             
-            <h3 style="margin-top:15px; font-size:1.1em;" class="edit-only">Calcolo CA Base</h3>
+            <h3 style="margin-top:15px; font-size:1.1em;" class="edit-only" data-i18n="lblBaseAcCalc">Base AC Calc</h3>
             <div class="edit-only" style="display: flex; gap: 10px; align-items: center; margin-bottom: 5px;">
-                <label>CA Base:</label> <input type="number" id="baseACInput" value="10" style="width: 60px;" oninput="updateSheet()">
-                <label><input type="checkbox" id="addDexToAC" checked onchange="updateSheet()"> Aggiungi Mod. DES</label>
+                <label data-i18n="lblBaseAc">Base AC:</label> <input type="number" id="baseACInput" value="10" style="width: 60px;" oninput="updateSheet()">
+                <label><input type="checkbox" id="addDexToAC" checked onchange="updateSheet()"> <span data-i18n="lblAddDex">Add DEX</span></label>
             </div>
         </div>
 
         <div class="panel span-2" id="panel-features">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Tratti di Razza e Classe Primaria <button class="hide-btn edit-only" onclick="hidePanel('panel-features', 'Tratti di Razza e Classe')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pFeatures">Race & Class Features</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-features', 'Tratti')">👁️</button></h2>
             <div class="flex-wrapper">
                 <div class="flex-col">
-                    <h3 style="margin-top:0; font-size: 1.1em;">Tratti Razza</h3>
+                    <h3 style="margin-top:0; font-size: 1.1em;" data-i18n="hRaceTraits">Racial Traits</h3>
                     <div class="input-group edit-only">
-                        <input type="text" id="raceTraitName" placeholder="Nome Tratto">
-                        <textarea id="raceTraitDesc" maxlength="200" placeholder="Descrizione (max 200 car.)" style="height: 50px;"></textarea>
-                        <button onclick="addCustomItem('raceTraits', 'raceTraitName', 'raceTraitDesc')">Aggiungi Tratto</button>
+                        <input type="text" id="raceTraitName" placeholder="Trait Name">
+                        <textarea id="raceTraitDesc" maxlength="200" placeholder="Description (max 200 char)" style="height: 50px;"></textarea>
+                        <button onclick="addCustomItem('raceTraits', 'raceTraitName', 'raceTraitDesc')" data-i18n="btnAddTrait">Add Trait</button>
                     </div>
                     <div id="raceTraitsList" class="list-container"></div>
                 </div>
                 <div class="flex-col">
-                    <h3 style="margin-top:0; font-size: 1.1em;">Privilegi Classe Principale</h3>
+                    <h3 style="margin-top:0; font-size: 1.1em;" data-i18n="hClassFeats">Class Features</h3>
                     <div class="input-group edit-only">
-                        <input type="text" id="classFeatureName" placeholder="Nome Privilegio">
-                        <textarea id="classFeatureDesc" maxlength="200" placeholder="Descrizione (max 200 car.)" style="height: 50px;"></textarea>
-                        <button onclick="addCustomItem('classFeatures', 'classFeatureName', 'classFeatureDesc')">Aggiungi Privilegio</button>
+                        <input type="text" id="classFeatureName" placeholder="Feature Name">
+                        <textarea id="classFeatureDesc" maxlength="200" placeholder="Description (max 200 char)" style="height: 50px;"></textarea>
+                        <button onclick="addCustomItem('classFeatures', 'classFeatureName', 'classFeatureDesc')" data-i18n="btnAddFeature">Add Feature</button>
                     </div>
                     <div id="classFeaturesList" class="list-container"></div>
                 </div>
@@ -478,36 +404,36 @@
 
         <div class="panel span-2" id="panel-multiclass">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Classi Aggiuntive (Multiclasse) <button class="hide-btn edit-only" onclick="hidePanel('panel-multiclass', 'Classi Aggiuntive')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pMulti">Additional Classes (Multiclass)</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-multiclass', 'Multiclasse')">👁️</button></h2>
             <div class="edit-only" style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 10px;">
-                <div><label>2ª Classe:</label> <input type="text" id="multiClassName" placeholder="es. Guerriero"></div>
-                <div><label>Livello:</label> <input type="number" id="multiClassLevel" value="0" min="0" max="20" style="width: 60px;" oninput="updateSheet()"></div>
+                <div><label data-i18n="lblClass2">2nd Class:</label> <input type="text" id="multiClassName" placeholder="e.g. Fighter"></div>
+                <div><label data-i18n="lblLevel">Level:</label> <input type="number" id="multiClassLevel" value="0" min="0" max="20" style="width: 60px;" oninput="updateSheet()"></div>
             </div>
             <div class="edit-only" style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;">
-                <div><label>3ª Classe:</label> <input type="text" id="multiClass3Name" placeholder="es. Warlock"></div>
-                <div><label>Livello:</label> <input type="number" id="multiClass3Level" value="0" min="0" max="20" style="width: 60px;" oninput="updateSheet()"></div>
+                <div><label data-i18n="lblClass3">3rd Class:</label> <input type="text" id="multiClass3Name" placeholder="e.g. Warlock"></div>
+                <div><label data-i18n="lblLevel">Level:</label> <input type="number" id="multiClass3Level" value="0" min="0" max="20" style="width: 60px;" oninput="updateSheet()"></div>
             </div>
-            <h3 style="margin-top:0; font-size: 1.1em;">Privilegi Classi Aggiuntive</h3>
+            <h3 style="margin-top:0; font-size: 1.1em;" data-i18n="hMultiFeats">Additional Class Features</h3>
             <div class="input-group edit-only">
-                <input type="text" id="multiFeatureName" placeholder="Nome Privilegio">
-                <textarea id="multiFeatureDesc" maxlength="200" placeholder="Descrizione (max 200 car.)" style="height: 50px;"></textarea>
-                <button onclick="addCustomItem('multiClassFeatures', 'multiFeatureName', 'multiFeatureDesc')">Aggiungi Privilegio</button>
+                <input type="text" id="multiFeatureName" placeholder="Feature Name">
+                <textarea id="multiFeatureDesc" maxlength="200" placeholder="Description (max 200 char)" style="height: 50px;"></textarea>
+                <button onclick="addCustomItem('multiClassFeatures', 'multiFeatureName', 'multiFeatureDesc')" data-i18n="btnAddMulti">Add Feature</button>
             </div>
             <div id="multiFeaturesList" class="list-container"></div>
         </div>
 
         <div class="panel span-2" id="panel-protections">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Armature e Protezioni <button class="hide-btn edit-only" onclick="hidePanel('panel-protections', 'Protezioni e Armature')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pProtections">Armor & Protections</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-protections', 'Protezioni')">👁️</button></h2>
             <div class="input-group edit-only">
                 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                    <input type="text" id="protName" placeholder="Nome (es. Scudo)" style="flex-grow: 1;">
-                    <input type="number" id="protAC" placeholder="Bonus CA (es. 2)" style="width: 120px;">
+                    <input type="text" id="protName" placeholder="Name (e.g. Shield)" style="flex-grow: 1;">
+                    <input type="number" id="protAC" placeholder="AC Bonus (e.g. 2)" style="width: 150px;">
                 </div>
-                <textarea id="protDesc" maxlength="200" placeholder="Descrizione (max 200 car.)" style="height: 50px;"></textarea>
+                <textarea id="protDesc" maxlength="200" placeholder="Description (max 200 char)" style="height: 50px;"></textarea>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <label><input type="checkbox" id="protMagic"> Oggetto Magico</label>
-                    <button onclick="addProtection()">Aggiungi Protezione</button>
+                    <label><input type="checkbox" id="protMagic"> <span data-i18n="lblMagicItem">Magic Item</span></label>
+                    <button onclick="addProtection()" data-i18n="btnAddProt">Add Protection</button>
                 </div>
             </div>
             <div id="protectionsList" class="list-container"></div>
@@ -515,27 +441,27 @@
 
         <div class="panel span-2" id="panel-weapons">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Armi <button class="hide-btn edit-only" onclick="hidePanel('panel-weapons', 'Armi')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pWeapons">Weapons</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-weapons', 'Armi')">👁️</button></h2>
             <div class="input-group edit-only">
                 <div style="display: flex; flex-wrap: wrap; gap: 5px;">
-                    <input type="text" id="weaponName" placeholder="Nome Arma" style="flex-grow: 1;">
-                    <input type="text" id="weaponDamage" placeholder="Danno (es. 1d8)" style="width: 120px;">
+                    <input type="text" id="weaponName" placeholder="Weapon Name" style="flex-grow: 1;">
+                    <input type="text" id="weaponDamage" placeholder="Damage (e.g. 1d8)" style="width: 150px;">
                 </div>
-                <textarea id="weaponDesc" maxlength="200" placeholder="Proprietà (max 200 car.)" style="height: 50px;"></textarea>
-                <button onclick="addWeaponItem()">Aggiungi Arma</button>
+                <textarea id="weaponDesc" maxlength="200" placeholder="Properties (max 200 char)" style="height: 50px;"></textarea>
+                <button onclick="addWeaponItem()" data-i18n="btnAddWeap">Add Weapon</button>
             </div>
             <div id="weaponsList" class="list-container"></div>
         </div>
 
         <div class="panel span-2" id="panel-equipment">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Equipaggiamento Generico <button class="hide-btn edit-only" onclick="hidePanel('panel-equipment', 'Equipaggiamento')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pEquip">Equipment</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-equipment', 'Equipaggiamento')">👁️</button></h2>
             <div class="input-group edit-only">
-                <input type="text" id="equipName" placeholder="Nome Oggetto">
-                <textarea id="equipDesc" maxlength="200" placeholder="Descrizione (max 200 car.)" style="height: 50px;"></textarea>
+                <input type="text" id="equipName" placeholder="Item Name">
+                <textarea id="equipDesc" maxlength="200" placeholder="Description (max 200 char)" style="height: 50px;"></textarea>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <label><input type="checkbox" id="equipMagic"> Oggetto Magico</label>
-                    <button onclick="addEquipmentItem()">Aggiungi Oggetto</button>
+                    <label><input type="checkbox" id="equipMagic"> <span data-i18n="lblMagicItem">Magic Item</span></label>
+                    <button onclick="addEquipmentItem()" data-i18n="btnAddEquip">Add Item</button>
                 </div>
             </div>
             <div id="equipmentList" class="list-container"></div>
@@ -543,82 +469,82 @@
 
         <div class="panel span-2" id="panel-wealth">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Ricchezze e Contabilità <button class="hide-btn edit-only" onclick="hidePanel('panel-wealth', 'Ricchezze')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pWealth">Wealth</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-wealth', 'Ricchezze')">👁️</button></h2>
             <div class="wealth-totals">
-                <div><strong>MR</strong><br><span id="tot_mr">0</span></div>
-                <div><strong>MA</strong><br><span id="tot_ma">0</span></div>
-                <div><strong>ME</strong><br><span id="tot_me">0</span></div>
-                <div><strong>MO</strong><br><span id="tot_mo" class="mo-color">0</span></div>
-                <div><strong>MP</strong><br><span id="tot_mp" class="mp-color">0</span></div>
+                <div><strong>CP</strong><br><span id="tot_mr">0</span></div>
+                <div><strong>SP</strong><br><span id="tot_ma">0</span></div>
+                <div><strong>EP</strong><br><span id="tot_me">0</span></div>
+                <div><strong>GP</strong><br><span id="tot_mo" class="mo-color">0</span></div>
+                <div><strong>PP</strong><br><span id="tot_mp" class="mp-color">0</span></div>
             </div>
             
             <div class="edit-only" style="display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px;">
-                <input type="number" id="wealthAmount" placeholder="Q.tà" style="width: 80px;">
+                <input type="number" id="wealthAmount" placeholder="Qty" style="width: 80px;">
                 <select id="wealthType" style="width: 80px;">
-                    <option value="mr">MR</option>
-                    <option value="ma">MA</option>
-                    <option value="me">ME</option>
-                    <option value="mo" selected>MO</option>
-                    <option value="mp">MP</option>
+                    <option value="mr">CP</option>
+                    <option value="ma">SP</option>
+                    <option value="me">EP</option>
+                    <option value="mo" selected>GP</option>
+                    <option value="mp">PP</option>
                 </select>
-                <input type="text" id="wealthReason" placeholder="Inserisci causale dell'operazione..." style="flex-grow: 1;">
-                <button onclick="addWealth()" title="Aggiungi o sottrai (usa il -)">Aggiungi Transazione</button>
+                <input type="text" id="wealthReason" placeholder="Reason/Description..." style="flex-grow: 1;">
+                <button onclick="addWealth()" title="Use minus for subtracting" data-i18n="btnAddTrans">Add Transaction</button>
             </div>
             <div id="wealthList" class="list-container" style="max-height: 200px;"></div>
         </div>
 
         <div class="panel span-2" id="panel-feats">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Talenti <button class="hide-btn edit-only" onclick="hidePanel('panel-feats', 'Talenti')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pFeats">Feats</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-feats', 'Talenti')">👁️</button></h2>
             <div class="input-group edit-only">
-                <input type="text" id="featName" placeholder="Nome Talento">
-                <textarea id="featDesc" maxlength="200" placeholder="Descrizione (max 200 car.)" style="height: 50px;"></textarea>
-                <button onclick="addCustomItem('feats', 'featName', 'featDesc')">Aggiungi Talento</button>
+                <input type="text" id="featName" placeholder="Feat Name">
+                <textarea id="featDesc" maxlength="200" placeholder="Description (max 200 char)" style="height: 50px;"></textarea>
+                <button onclick="addCustomItem('feats', 'featName', 'featDesc')" data-i18n="btnAddFeat">Add Feat</button>
             </div>
             <div id="featsList" class="list-container"></div>
         </div>
 
         <div class="panel span-2" id="panel-languages">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Lingue Conosciute <button class="hide-btn edit-only" onclick="hidePanel('panel-languages', 'Lingue')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pLangs">Languages</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-languages', 'Lingue')">👁️</button></h2>
             <div class="input-group edit-only">
-                <input type="text" id="langName" placeholder="Lingua (es. Elfico)">
-                <textarea id="langDesc" maxlength="200" placeholder="Dettagli (opzionale)" style="height: 50px;"></textarea>
-                <button onclick="addCustomItem('languages', 'langName', 'langDesc')">Aggiungi Lingua</button>
+                <input type="text" id="langName" placeholder="Language (e.g. Elvish)">
+                <textarea id="langDesc" maxlength="200" placeholder="Details (optional)" style="height: 50px;"></textarea>
+                <button onclick="addCustomItem('languages', 'langName', 'langDesc')" data-i18n="btnAddLang">Add Language</button>
             </div>
             <div id="languagesList" class="list-container"></div>
         </div>
 
         <div class="panel span-2" id="panel-wizard">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Preparazione Incantesimi (Mago) <button class="hide-btn edit-only" onclick="hidePanel('panel-wizard', 'Preparazione Mago')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pWiz">Wizard Preparation</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-wizard', 'Mago')">👁️</button></h2>
             <div style="display: flex; align-items: center; gap: 15px;">
-                <div><label>Livello da Mago:</label> <input type="number" id="wizardLevel" value="0" min="0" max="20" style="width: 60px;" oninput="updateSheet()"></div>
-                <div><label>Modificatore INT:</label> <span id="wizIntMod" style="font-weight: bold; font-size: 1.2em; color: var(--accent-color);">+0</span></div>
-                <div><label>Totale Preparabili:</label> <span id="wizTotalPrep" style="font-weight: bold; font-size: 1.5em; color: var(--positive-color);">0</span></div>
+                <div><label data-i18n="lblWizLvl">Wizard Level:</label> <input type="number" id="wizardLevel" value="0" min="0" max="20" style="width: 60px;" oninput="updateSheet()"></div>
+                <div><label data-i18n="lblWizInt">INT Mod:</label> <span id="wizIntMod" style="font-weight: bold; font-size: 1.2em; color: var(--accent-color);">+0</span></div>
+                <div><label data-i18n="lblWizPrep">Prepared Spells:</label> <span id="wizTotalPrep" style="font-weight: bold; font-size: 1.5em; color: var(--positive-color);">0</span></div>
             </div>
-            <p style="font-size: 0.8em; color: gray; margin-top: 10px;">(Calcolo automatico: Livello Mago + Modificatore Intelligenza. Minimo 1 se livello > 0)</p>
+            <p style="font-size: 0.8em; color: gray; margin-top: 10px;" data-i18n="lblWizNote">(Auto-calc: Wizard Level + INT Modifier. Min 1 if level > 0)</p>
         </div>
 
         <div class="panel span-2" id="panel-spell-slots">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Slot Incantesimi per Classe <button class="hide-btn edit-only" onclick="hidePanel('panel-spell-slots', 'Slot Incantesimi')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pSlots">Spell Slots</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-spell-slots', 'Slot')">👁️</button></h2>
             <div class="input-group edit-only">
                 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                     <select id="slotClassSel" style="flex-grow: 1; min-width: 150px;">
-                        <option value="bardo">Bardo</option>
-                        <option value="chierico">Chierico</option>
-                        <option value="druido">Druido</option>
-                        <option value="mago">Mago</option>
-                        <option value="stregone">Stregone</option>
-                        <option value="paladino">Paladino</option>
+                        <option value="bardo">Bard / Bardo</option>
+                        <option value="chierico">Cleric / Chierico</option>
+                        <option value="druido">Druid / Druido</option>
+                        <option value="mago">Wizard / Mago</option>
+                        <option value="stregone">Sorcerer / Stregone</option>
+                        <option value="paladino">Paladin / Paladino</option>
                         <option value="ranger">Ranger</option>
-                        <option value="cavaliere_mistico">Cavaliere Mistico</option>
-                        <option value="mistificatore_arcano">Mistificatore Arcano</option>
+                        <option value="cavaliere_mistico">Eldritch Knight</option>
+                        <option value="mistificatore_arcano">Arcane Trickster</option>
                         <option value="warlock">Warlock</option>
                     </select>
-                    <input type="number" id="slotLevelSel" placeholder="Liv." min="1" max="20" style="width: 80px;">
-                    <button onclick="addSlotProgression()">Aggiungi Carriera</button>
+                    <input type="number" id="slotLevelSel" placeholder="Lvl" min="1" max="20" style="width: 80px;">
+                    <button onclick="addSlotProgression()" data-i18n="btnAddCareer">Add Career</button>
                 </div>
             </div>
             <div id="slotProgressionsList" class="list-container" style="overflow-x: auto; min-height: 50px;"></div>
@@ -626,47 +552,163 @@
 
         <div class="panel span-2" id="panel-spells">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Tutti gli Incantesimi <button class="hide-btn edit-only" onclick="hidePanel('panel-spells', 'Incantesimi')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pSpells">Spells</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-spells', 'Incantesimi')">👁️</button></h2>
             <div class="input-group edit-only">
-                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
-                    <input type="text" id="spellName" placeholder="Nome Incantesimo" style="flex-grow: 1; min-width: 150px;">
-                    <input type="number" id="spellLevel" placeholder="Liv." min="0" max="9" style="width: 60px;">
-                    <input type="text" id="spellSchool" placeholder="Scuola" style="width: 100px;">
+                
+                <div style="display:flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; padding: 5px; border: 1px solid var(--accent-color); border-radius: 4px;">
+                    <label style="width: 100%; color: var(--accent-color); font-size: 0.85em;" data-i18n="lblDbLoad">Load from Database:</label>
+                    <select id="spellDbSelect" onchange="onSpellSelect()" style="flex-grow: 1;">
+                        </select>
                 </div>
-                <textarea id="spellDesc" maxlength="200" placeholder="Descrizione o effetti (max 200 car.)" style="height: 50px;"></textarea>
-                <button onclick="addCustomItem('spells', 'spellName', 'spellDesc', 'spellLevel', 'spellSchool')">Aggiungi Incantesimo</button>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                    <input type="text" id="spellName" placeholder="Spell Name" style="flex-grow: 1; min-width: 150px;">
+                    <input type="number" id="spellLevel" placeholder="Lvl" min="0" max="9" style="width: 60px;">
+                    <input type="text" id="spellSchool" placeholder="School" style="width: 100px;">
+                </div>
+                <textarea id="spellDesc" class="flex-expand" placeholder="Description & Effects" style="height: 60px;"></textarea>
+                <button onclick="addCustomItem('spells', 'spellName', 'spellDesc', 'spellLevel', 'spellSchool')" data-i18n="btnAddSpell">Add Spell</button>
             </div>
-            <div id="spellsList" class="list-container" style="max-height: 400px;"></div>
+            <div id="spellsList" class="list-container" style="max-height: 500px;"></div>
         </div>
 
         <div class="panel span-2" id="panel-notes">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title">Note Generali e Storia <button class="hide-btn edit-only" onclick="hidePanel('panel-notes', 'Note Generali')" title="Nascondi">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pNotes">Notes & Backstory</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-notes', 'Note')">👁️</button></h2>
             <textarea id="notesArea" class="flex-expand" style="width: 100%;"></textarea>
         </div>
 
     </div>
 
     <div id="footer-hidden-panels">
-        <h3 style="margin: 0 0 10px 0; font-size: 1em;">Pannelli Nascosti</h3>
+        <h3 style="margin: 0 0 10px 0; font-size: 1em;" data-i18n="lblHiddenPanels">Hidden Panels</h3>
         <div id="hiddenPanelsContainer" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
     </div>
 
     <script>
-        const APP_VERSION = "1.20";
+        const APP_VERSION = "1.22";
+        
+        // --- MULTILINGUAL DICTIONARY (i18n) ---
+        const i18n = {
+            en: {
+                appTitle: "D&D 5e Character Manager", readMode: "Read Mode", editMode: "Edit Mode", summary: "Summary", save: "Save", open: "Open", changelogTitle: "Changelog",
+                pCharacter: "Character", lblCharName: "Name:", lblCharRace: "Race:", lblCharClass: "Main Class:", lblCharLvl: "Class Level:", lblTotLvl: "Total Level:", lblBackground: "Background:", lblHeight: "Height:", lblWeight: "Weight:", lblProfBonus: "Proficiency Bonus:",
+                pStats: "Ability Scores", pSaves: "Saving Throws", pSkills: "Skills",
+                pCombat: "Combat & AC", lblTotalAc: "Total AC:", lblInitiative: "Initiative:", lblSpeed: "Speed:", lblMaxHp: "Max HP:", lblCurHp: "Current HP:", lblHitDice: "Hit Dice:", lblPassPerc: "Passive Perception:", lblBaseAcCalc: "Base AC Calc", lblBaseAc: "Base AC:", lblAddDex: "Add DEX",
+                pFeatures: "Race & Class Features", hRaceTraits: "Racial Traits", hClassFeats: "Class Features", btnAddTrait: "Add Trait", btnAddFeature: "Add Feature",
+                pMulti: "Additional Classes (Multiclass)", lblClass2: "2nd Class:", lblClass3: "3rd Class:", lblLevel: "Level:", hMultiFeats: "Additional Class Features", btnAddMulti: "Add Feature",
+                pProtections: "Armor & Protections", lblMagicItem: "Magic Item", btnAddProt: "Add Protection",
+                pWeapons: "Weapons", btnAddWeap: "Add Weapon", pEquip: "Equipment", btnAddEquip: "Add Item",
+                pWealth: "Wealth", btnAddTrans: "Add Transaction",
+                pFeats: "Feats", btnAddFeat: "Add Feat", pLangs: "Languages", btnAddLang: "Add Language",
+                pWiz: "Wizard Preparation", lblWizLvl: "Wizard Level:", lblWizInt: "INT Mod:", lblWizPrep: "Prepared Spells:", lblWizNote: "(Auto-calc: Wizard Level + INT Modifier. Min 1 if level > 0)",
+                pSlots: "Spell Slots", btnAddCareer: "Add Career",
+                pSpells: "Spells", lblDbLoad: "Load from Database:", optSelectSpell: "-- Select a Spell --", btnAddSpell: "Add Spell",
+                pNotes: "Notes & Backstory", lblHiddenPanels: "Hidden Panels"
+            },
+            it: {
+                appTitle: "Gestione Personaggio D&D 5e", readMode: "Lettura", editMode: "Modifica", summary: "Sintesi", save: "Salva", open: "Apri", changelogTitle: "Registro Aggiornamenti",
+                pCharacter: "Personaggio", lblCharName: "Nome:", lblCharRace: "Razza:", lblCharClass: "Classe Princ.:", lblCharLvl: "Livello Classe:", lblTotLvl: "Livello Totale:", lblBackground: "Background:", lblHeight: "Statura:", lblWeight: "Peso:", lblProfBonus: "Bonus Comp.:",
+                pStats: "Caratteristiche", pSaves: "Tiri Salvezza", pSkills: "Abilità",
+                pCombat: "Combattimento e CA", lblTotalAc: "CA Totale:", lblInitiative: "Iniziativa:", lblSpeed: "Velocità:", lblMaxHp: "PF Massimi:", lblCurHp: "PF Attuali:", lblHitDice: "Dadi Vita:", lblPassPerc: "Saggezza (Perc. Passiva):", lblBaseAcCalc: "Calcolo CA Base", lblBaseAc: "CA Base:", lblAddDex: "Aggiungi Mod. DES",
+                pFeatures: "Tratti di Razza e Classe", hRaceTraits: "Tratti Razza", hClassFeats: "Privilegi Classe", btnAddTrait: "Aggiungi Tratto", btnAddFeature: "Aggiungi Privilegio",
+                pMulti: "Classi Aggiuntive (Multiclasse)", lblClass2: "2ª Classe:", lblClass3: "3ª Classe:", lblLevel: "Livello:", hMultiFeats: "Privilegi Classi Aggiuntive", btnAddMulti: "Aggiungi Privilegio",
+                pProtections: "Armature e Protezioni", lblMagicItem: "Oggetto Magico", btnAddProt: "Aggiungi Protezione",
+                pWeapons: "Armi", btnAddWeap: "Aggiungi Arma", pEquip: "Equipaggiamento Generico", btnAddEquip: "Aggiungi Oggetto",
+                pWealth: "Ricchezze e Contabilità", btnAddTrans: "Aggiungi Transazione",
+                pFeats: "Talenti", btnAddFeat: "Aggiungi Talento", pLangs: "Lingue Conosciute", btnAddLang: "Aggiungi Lingua",
+                pWiz: "Preparazione Incantesimi (Mago)", lblWizLvl: "Livello da Mago:", lblWizInt: "Modificatore INT:", lblWizPrep: "Totale Preparabili:", lblWizNote: "(Calcolo: Livello Mago + Mod. INT. Minimo 1)",
+                pSlots: "Slot Incantesimi", btnAddCareer: "Aggiungi Carriera",
+                pSpells: "Tutti gli Incantesimi", lblDbLoad: "Carica dal Database:", optSelectSpell: "-- Seleziona Incantesimo --", btnAddSpell: "Aggiungi Incantesimo",
+                pNotes: "Note Generali e Storia", lblHiddenPanels: "Pannelli Nascosti"
+            },
+            fr: {
+                appTitle: "Gestion de Personnage D&D 5e", readMode: "Lecture", editMode: "Modifier", summary: "Résumé", save: "Enregistrer", open: "Ouvrir", changelogTitle: "Journal des modifications",
+                pCharacter: "Personnage", lblCharName: "Nom:", lblCharRace: "Race:", lblCharClass: "Classe Prin.:", lblCharLvl: "Niveau de Classe:", lblTotLvl: "Niveau Total:", lblBackground: "Historique:", lblHeight: "Taille:", lblWeight: "Poids:", lblProfBonus: "Bonus de Maîtrise:",
+                pStats: "Caractéristiques", pSaves: "Jets de Sauvegarde", pSkills: "Compétences",
+                pCombat: "Combat et CA", lblTotalAc: "CA Totale:", lblInitiative: "Initiative:", lblSpeed: "Vitesse:", lblMaxHp: "PV Max:", lblCurHp: "PV Actuels:", lblHitDice: "Dés de Vie:", lblPassPerc: "Perception Passive:", lblBaseAcCalc: "Calcul CA Base", lblBaseAc: "CA Base:", lblAddDex: "Ajouter DEX",
+                pFeatures: "Traits et Capacités", hRaceTraits: "Traits Raciaux", hClassFeats: "Capacités de Classe", btnAddTrait: "Ajouter Trait", btnAddFeature: "Ajouter Capacité",
+                pMulti: "Classes Supplémentaires", lblClass2: "2ème Classe:", lblClass3: "3ème Classe:", lblLevel: "Niveau:", hMultiFeats: "Capacités Supplémentaires", btnAddMulti: "Ajouter Capacité",
+                pProtections: "Armures et Protections", lblMagicItem: "Objet Magique", btnAddProt: "Ajouter Protection",
+                pWeapons: "Armes", btnAddWeap: "Ajouter Arme", pEquip: "Équipement", btnAddEquip: "Ajouter Objet",
+                pWealth: "Richesses", btnAddTrans: "Ajouter Transaction",
+                pFeats: "Dons", btnAddFeat: "Ajouter Don", pLangs: "Langues", btnAddLang: "Ajouter Langue",
+                pWiz: "Préparation (Magicien)", lblWizLvl: "Niveau Magicien:", lblWizInt: "Mod. INT:", lblWizPrep: "Sorts Préparés:", lblWizNote: "(Calcul: Niv + INT. Minimum 1)",
+                pSlots: "Emplacements de Sorts", btnAddCareer: "Ajouter Carrière",
+                pSpells: "Sorts", lblDbLoad: "Charger depuis la base de données:", optSelectSpell: "-- Sélectionner un Sort --", btnAddSpell: "Ajouter Sort",
+                pNotes: "Notes et Histoire", lblHiddenPanels: "Panneaux Masqués"
+            },
+            de: {
+                appTitle: "D&D 5e Charakter-Manager", readMode: "Lese-Modus", editMode: "Bearbeiten", summary: "Zusammenfassung", save: "Speichern", open: "Öffnen", changelogTitle: "Änderungsprotokoll",
+                pCharacter: "Charakter", lblCharName: "Name:", lblCharRace: "Volk:", lblCharClass: "Hauptklasse:", lblCharLvl: "Klassenstufe:", lblTotLvl: "Gesamtstufe:", lblBackground: "Hintergrund:", lblHeight: "Größe:", lblWeight: "Gewicht:", lblProfBonus: "Übungsbonus:",
+                pStats: "Attribute", pSaves: "Rettungswürfe", pSkills: "Fertigkeiten",
+                pCombat: "Kampf & RK", lblTotalAc: "Gesamt-RK:", lblInitiative: "Initiative:", lblSpeed: "Bewegung:", lblMaxHp: "Max. TP:", lblCurHp: "Aktuelle TP:", lblHitDice: "Trefferwürfel:", lblPassPerc: "Passive Wahrnehmung:", lblBaseAcCalc: "RK-Basis", lblBaseAc: "Basis-RK:", lblAddDex: "GES hinzufügen",
+                pFeatures: "Volks- & Klassenmerkmale", hRaceTraits: "Volksmerkmale", hClassFeats: "Klassenmerkmale", btnAddTrait: "Merkmal hinzufügen", btnAddFeature: "Klassenmerkmal hinzufügen",
+                pMulti: "Zusätzliche Klassen (Multiklass.)", lblClass2: "2. Klasse:", lblClass3: "3. Klasse:", lblLevel: "Stufe:", hMultiFeats: "Zusätzliche Merkmale", btnAddMulti: "Merkmal hinzufügen",
+                pProtections: "Rüstungen & Schutz", lblMagicItem: "Magischer Gegenstand", btnAddProt: "Schutz hinzufügen",
+                pWeapons: "Waffen", btnAddWeap: "Waffe hinzufügen", pEquip: "Ausrüstung", btnAddEquip: "Gegenstand hinzufügen",
+                pWealth: "Vermögen", btnAddTrans: "Transaktion hinzufügen",
+                pFeats: "Talente", btnAddFeat: "Talent hinzufügen", pLangs: "Sprachen", btnAddLang: "Sprache hinzufügen",
+                pWiz: "Magier-Vorbereitung", lblWizLvl: "Magierstufe:", lblWizInt: "INT-Mod:", lblWizPrep: "Vorbereitete Zauber:", lblWizNote: "(Auto: Stufe + INT. Minimum 1)",
+                pSlots: "Zauberplätze", btnAddCareer: "Karriere hinzufügen",
+                pSpells: "Zauber", lblDbLoad: "Aus Datenbank laden:", optSelectSpell: "-- Zauber auswählen --", btnAddSpell: "Zauber hinzufügen",
+                pNotes: "Notizen & Hintergrund", lblHiddenPanels: "Versteckte Panels"
+            },
+            es: {
+                appTitle: "Gestor de Personaje D&D 5e", readMode: "Lectura", editMode: "Editar", summary: "Resumen", save: "Guardar", open: "Abrir", changelogTitle: "Registro de Cambios",
+                pCharacter: "Personaje", lblCharName: "Nombre:", lblCharRace: "Raza:", lblCharClass: "Clase Prin.:", lblCharLvl: "Nivel de Clase:", lblTotLvl: "Nivel Total:", lblBackground: "Trasfondo:", lblHeight: "Altura:", lblWeight: "Peso:", lblProfBonus: "Bono Comp.:",
+                pStats: "Características", pSaves: "Tiradas de Salvación", pSkills: "Habilidades",
+                pCombat: "Combate y CA", lblTotalAc: "CA Total:", lblInitiative: "Iniciativa:", lblSpeed: "Velocidad:", lblMaxHp: "PG Máximos:", lblCurHp: "PG Actuales:", lblHitDice: "Dados de Golpe:", lblPassPerc: "Percepción Pasiva:", lblBaseAcCalc: "Cálculo CA Base", lblBaseAc: "CA Base:", lblAddDex: "Añadir DES",
+                pFeatures: "Rasgos y Rasgos de Clase", hRaceTraits: "Rasgos Raciales", hClassFeats: "Rasgos de Clase", btnAddTrait: "Añadir Rasgo", btnAddFeature: "Añadir Rasgo",
+                pMulti: "Clases Adicionales (Multiclase)", lblClass2: "2ª Clase:", lblClass3: "3ª Clase:", lblLevel: "Nivel:", hMultiFeats: "Rasgos Adicionales", btnAddMulti: "Añadir Rasgo",
+                pProtections: "Armaduras y Protección", lblMagicItem: "Objeto Mágico", btnAddProt: "Añadir Protección",
+                pWeapons: "Armas", btnAddWeap: "Añadir Arma", pEquip: "Equipamiento", btnAddEquip: "Añadir Objeto",
+                pWealth: "Riqueza", btnAddTrans: "Añadir Transacción",
+                pFeats: "Dotes", btnAddFeat: "Añadir Dote", pLangs: "Idiomas", btnAddLang: "Añadir Idioma",
+                pWiz: "Preparación de Mago", lblWizLvl: "Nivel de Mago:", lblWizInt: "Mod INT:", lblWizPrep: "Conjuros Preparados:", lblWizNote: "(Auto: Nivel + INT. Mínimo 1)",
+                pSlots: "Espacios de Conjuros", btnAddCareer: "Añadir Carrera",
+                pSpells: "Conjuros", lblDbLoad: "Cargar desde la base de datos:", optSelectSpell: "-- Seleccionar un Conjuro --", btnAddSpell: "Añadir Conjuro",
+                pNotes: "Notas y Trasfondo", lblHiddenPanels: "Paneles Ocultos"
+            }
+        };
+
+        let currentLang = 'en'; // Default
+        
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            const btn = document.getElementById('btn-lang-' + lang);
+            if(btn) btn.classList.add('active');
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    if (el.tagName === 'INPUT' && el.type === 'button') el.value = i18n[lang][key];
+                    else el.textContent = i18n[lang][key];
+                }
+            });
+
+            // Update UI elements that depend on translations
+            renderHiddenPanels();
+            updateSheet();
+            loadSpellsDB(); // Re-fetch the spells database for the newly selected language
+        }
+
+        // Base Data
         const stats = ["FOR", "DES", "COS", "INT", "SAG", "CAR"];
-        const statNames = { "FOR": "Forza", "DES": "Destrezza", "COS": "Costituzione", "INT": "Intelligenza", "SAG": "Saggezza", "CAR": "Carisma" };
+        const statNames = { "FOR": "STR", "DES": "DEX", "COS": "CON", "INT": "INT", "SAG": "WIS", "CAR": "CHA" }; 
+        const statNamesIt = { "FOR": "Forza", "DES": "Destrezza", "COS": "Costituzione", "INT": "Intelligenza", "SAG": "Saggezza", "CAR": "Carisma" };
         
         const skills = [
-            { id: "acrobazia", name: "Acrobazia", stat: "DES" }, { id: "addestrare", name: "Addestrare Animali", stat: "SAG" },
-            { id: "arcano", name: "Arcano", stat: "INT" }, { id: "atletica", name: "Atletica", stat: "FOR" },
-            { id: "furtivita", name: "Furtività", stat: "DES" }, { id: "indagare", name: "Indagare", stat: "INT" },
-            { id: "inganno", name: "Inganno", stat: "CAR" }, { id: "intimidire", name: "Intimidire", stat: "CAR" },
-            { id: "intrattenere", name: "Intrattenere", stat: "CAR" }, { id: "intuizione", name: "Intuizione", stat: "SAG" },
-            { id: "medicina", name: "Medicina", stat: "SAG" }, { id: "natura", name: "Natura", stat: "INT" },
-            { id: "percezione", name: "Percezione", stat: "SAG" }, { id: "persuasione", name: "Persuasione", stat: "CAR" },
-            { id: "rapidita", name: "Rapidità di Mano", stat: "DES" }, { id: "religione", name: "Religione", stat: "INT" },
-            { id: "sopravvivenza", name: "Sopravvivenza", stat: "SAG" }, { id: "storia", name: "Storia", stat: "INT" }
+            { id: "acrobazia", name: "Acrobatics (Acrobazia)", stat: "DES" }, { id: "addestrare", name: "Animal Handl. (Addestrare)", stat: "SAG" },
+            { id: "arcano", name: "Arcana (Arcano)", stat: "INT" }, { id: "atletica", name: "Athletics (Atletica)", stat: "FOR" },
+            { id: "furtivita", name: "Stealth (Furtività)", stat: "DES" }, { id: "indagare", name: "Investigation (Indagare)", stat: "INT" },
+            { id: "inganno", name: "Deception (Inganno)", stat: "CAR" }, { id: "intimidire", name: "Intimidation (Intimidire)", stat: "CAR" },
+            { id: "intrattenere", name: "Performance (Intrattenere)", stat: "CAR" }, { id: "intuizione", name: "Insight (Intuizione)", stat: "SAG" },
+            { id: "medicina", name: "Medicine (Medicina)", stat: "SAG" }, { id: "natura", name: "Nature (Natura)", stat: "INT" },
+            { id: "percezione", name: "Perception (Percezione)", stat: "SAG" }, { id: "persuasione", name: "Persuasion (Persuasione)", stat: "CAR" },
+            { id: "rapidita", name: "Sleight of Hand (Rapidità)", stat: "DES" }, { id: "religione", name: "Religion (Religione)", stat: "INT" },
+            { id: "sopravvivenza", name: "Survival (Sopravvivenza)", stat: "SAG" }, { id: "storia", name: "History (Storia)", stat: "INT" }
         ];
 
         const fullCasterSlots = [ [0,0,0,0,0,0,0,0,0], [2,0,0,0,0,0,0,0,0], [3,0,0,0,0,0,0,0,0], [4,2,0,0,0,0,0,0,0], [4,3,0,0,0,0,0,0,0], [4,3,2,0,0,0,0,0,0], [4,3,3,0,0,0,0,0,0], [4,3,3,1,0,0,0,0,0], [4,3,3,2,0,0,0,0,0], [4,3,3,3,1,0,0,0,0], [4,3,3,3,2,0,0,0,0], [4,3,3,3,2,1,0,0,0], [4,3,3,3,2,1,0,0,0], [4,3,3,3,2,1,1,0,0], [4,3,3,3,2,1,1,0,0], [4,3,3,3,2,1,1,1,0], [4,3,3,3,2,1,1,1,0], [4,3,3,3,2,1,1,1,1], [4,3,3,3,3,1,1,1,1], [4,3,3,3,3,2,1,1,1], [4,3,3,3,3,2,2,1,1] ];
@@ -680,7 +722,65 @@
             languages: [], protections: [], slotProgressions: [], hiddenPanels: []
         };
 
+        // --- Spells DB Logic ---
+        let spellDatabase = [];
+
+        async function loadSpellsDB() {
+            const sel = document.getElementById("spellDbSelect");
+            // Clear existing options except the default one
+            sel.innerHTML = `<option value="" data-i18n="optSelectSpell">${i18n[currentLang].optSelectSpell || "-- Select a Spell --"}</option>`;
+            
+            try {
+                // Fetch the localized spells database
+                const response = await fetch(`spells_${currentLang}.json`);
+                if (response.ok) {
+                    spellDatabase = await response.json();
+                    spellDatabase.sort((a,b) => a.name.localeCompare(b.name));
+                    
+                    spellDatabase.forEach((spell, index) => {
+                        let opt = document.createElement('option');
+                        opt.value = index;
+                        opt.textContent = `${spell.name} (Lvl ${spell.level})`;
+                        sel.appendChild(opt);
+                    });
+                } else {
+                    console.log(`Could not find spells_${currentLang}.json on the server.`);
+                    spellDatabase = [];
+                }
+            } catch (e) {
+                console.log(`Error loading spells_${currentLang}.json. Remember to use a local web server (e.g. python3 -m http.server 8000) to bypass CORS issues.`, e);
+                spellDatabase = [];
+            }
+        }
+
+        function onSpellSelect() {
+            const sel = document.getElementById("spellDbSelect");
+            if (sel.value === "") return;
+            
+            const spell = spellDatabase[sel.value];
+            document.getElementById("spellName").value = spell.name || "";
+            document.getElementById("spellLevel").value = spell.level !== undefined ? spell.level : "";
+            document.getElementById("spellSchool").value = spell.school || "";
+            
+            let fullDesc = spell.description || "";
+            if (spell.cantripUpgrade) fullDesc += "\n\nUpgrade: " + spell.cantripUpgrade;
+            
+            let metaParts = [];
+            if (spell.actionType) metaParts.push(`Act: ${spell.actionType}`);
+            if (spell.range) metaParts.push(`Rng: ${spell.range}`);
+            if (spell.duration) metaParts.push(`Dur: ${spell.duration}`);
+            if (spell.components) metaParts.push(`Comp: ${spell.components.join(',')}`);
+            
+            let meta = `[${metaParts.join(' | ')}]`;
+            if (spell.concentration) meta += " [C]";
+            if (spell.ritual) meta += " [R]";
+            
+            document.getElementById("spellDesc").value = meta + "\n" + fullDesc;
+        }
+
+        // --- Application Init ---
         function init() {
+            setLanguage('en'); // Defaults to English
             renderBaseStats();
             initDragAndDrop();
             updateSheet();
@@ -688,6 +788,7 @@
             renderSlotProgressions();
             renderHiddenPanels();
             
+            // Close modal on outside click
             window.onclick = function(event) {
                 const modal = document.getElementById('changelogModal');
                 if (event.target == modal) {
@@ -696,10 +797,11 @@
             }
         }
 
+        // Modals
         function openChangelog() { document.getElementById('changelogModal').style.display = 'block'; }
         function closeChangelog() { document.getElementById('changelogModal').style.display = 'none'; }
 
-        // --- Gestione Stato Input in Modalità Lettura ---
+        // --- View Mode Logic ---
         function applyViewModeState(isViewMode) {
             const elements = document.querySelectorAll('#mainContainer input, #mainContainer textarea, #mainContainer select');
             elements.forEach(el => {
@@ -717,10 +819,10 @@
             const isViewMode = body.classList.contains('view-mode');
             const btn = document.getElementById('toggleModeBtn');
             if(isViewMode) {
-                btn.textContent = 'Modifica';
+                btn.textContent = i18n[currentLang].editMode;
                 btn.style.background = '#4caf50';
             } else {
-                btn.textContent = 'Lettura';
+                btn.textContent = i18n[currentLang].readMode;
                 btn.style.background = '#ff9800';
             }
             applyViewModeState(isViewMode);
@@ -737,7 +839,7 @@
                 statsDiv.innerHTML += `
                     <div class="stat-block" style="justify-content: space-between;">
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <label style="width: 35px; font-weight: bold; font-size: 1.1em;">${stat}:</label>
+                            <label style="width: 35px; font-weight: bold; font-size: 1.1em;">${statNames[stat]}:</label>
                             <input type="number" id="base_${stat}" value="10" min="1" max="30" oninput="updateSheet()" style="width: 60px; font-size: 1.2em; text-align:center;">
                             <span class="stat-mod-highlight" id="mod_${stat}">+0</span>
                         </div>
@@ -747,7 +849,7 @@
                     <li>
                         <label>
                             <input type="checkbox" id="save_${stat}" onchange="updateSheet()"> 
-                            ${statNames[stat]} <span style="font-size: 0.8em; opacity: 0.7;">(${stat})</span>
+                            ${statNamesIt[stat] || stat} <span style="font-size: 0.8em; opacity: 0.7;">(${statNames[stat]})</span>
                         </label>
                         <span id="save_bonus_${stat}" style="font-weight:bold;">+0</span>
                     </li>
@@ -759,7 +861,7 @@
                     <li>
                         <label>
                             <input type="checkbox" id="skill_${skill.id}" onchange="updateSheet()"> 
-                            ${skill.name} <span style="font-size: 0.8em; opacity: 0.7;">(${skill.stat})</span>
+                            ${skill.name} <span style="font-size: 0.8em; opacity: 0.7;">(${statNames[skill.stat]})</span>
                         </label>
                         <span id="bonus_${skill.id}" style="font-weight:bold;">+0</span>
                     </li>
@@ -767,10 +869,10 @@
             });
         }
 
-        function hidePanel(panelId, title) {
+        function hidePanel(panelId, titleStrKey) {
             document.getElementById(panelId).style.display = 'none';
             if (!charLists.hiddenPanels.find(p => p.id === panelId)) {
-                charLists.hiddenPanels.push({ id: panelId, title: title });
+                charLists.hiddenPanels.push({ id: panelId, titleKey: titleStrKey });
             }
             renderHiddenPanels();
         }
@@ -793,7 +895,8 @@
             
             footer.style.display = 'block';
             charLists.hiddenPanels.forEach(p => {
-                container.innerHTML += `<button onclick="restorePanel('${p.id}')" style="background:#555;">Mostra ${p.title}</button>`;
+                const dispTitle = i18n[currentLang][p.titleKey] || p.titleKey;
+                container.innerHTML += `<button onclick="restorePanel('${p.id}')" style="background:#555;">+ ${dispTitle}</button>`;
             });
         }
 
@@ -909,13 +1012,13 @@
         function renderSlotProgressions() {
             const container = document.getElementById("slotProgressionsList");
             if (charLists.slotProgressions.length === 0) {
-                container.innerHTML = "<p style='color:gray; font-size:0.9em;'>Nessuna progressione aggiunta.</p>";
+                container.innerHTML = "<p style='color:gray; font-size:0.9em;'>...</p>";
                 return;
             }
 
             let html = `
                 <table class="slots-table">
-                    <tr><th>Classe</th><th>Liv</th><th>1°</th><th>2°</th><th>3°</th><th>4°</th><th>5°</th><th>6°</th><th>7°</th><th>8°</th><th>9°</th><th class="edit-only"></th></tr>
+                    <tr><th>Class</th><th>Lvl</th><th>1°</th><th>2°</th><th>3°</th><th>4°</th><th>5°</th><th>6°</th><th>7°</th><th>8°</th><th>9°</th><th class="edit-only"></th></tr>
             `;
 
             charLists.slotProgressions.forEach((prog, index) => {
@@ -966,6 +1069,9 @@
             if (levelId && document.getElementById(levelId)) document.getElementById(levelId).value = "";
             if (schoolId && document.getElementById(schoolId)) document.getElementById(schoolId).value = "";
             
+            const dbSel = document.getElementById("spellDbSelect");
+            if (dbSel) dbSel.value = "";
+
             renderCustomList(listName);
         }
 
@@ -1035,23 +1141,23 @@
                 
                 if (listName === "spells") {
                     let spellInfo = "";
-                    if (item.level !== undefined && item.level !== "") spellInfo += `Liv. ${item.level}`;
-                    if (item.school) spellInfo += (spellInfo ? ` - ${item.school}` : `Scuola: ${item.school}`);
+                    if (item.level !== undefined && item.level !== "") spellInfo += `Lvl ${item.level}`;
+                    if (item.school) spellInfo += (spellInfo ? ` - ${item.school}` : `${item.school}`);
                     if (spellInfo) titleExtras += ` <span style="font-size:0.85em; color:var(--accent-color);">[${spellInfo}]</span>`;
 
                     controlsHTML = `
                         <div style="font-size: 0.85em; display: flex; gap: 10px; align-items: center; margin-right: 10px;">
-                            <label><input type="checkbox" ${item.prepared ? 'checked' : ''} onchange="toggleItemState('${listName}', ${index}, 'prepared', this.checked)"> Studiato</label>
-                            <label><input type="checkbox" ${item.cast ? 'checked' : ''} onchange="toggleItemState('${listName}', ${index}, 'cast', this.checked)"> Lanciato</label>
+                            <label><input type="checkbox" ${item.prepared ? 'checked' : ''} onchange="toggleItemState('${listName}', ${index}, 'prepared', this.checked)"> Prep</label>
+                            <label><input type="checkbox" ${item.cast ? 'checked' : ''} onchange="toggleItemState('${listName}', ${index}, 'cast', this.checked)"> Cast</label>
                         </div>
                     `;
                 } else if (listName === "protections") {
                     const sign = item.acBonus > 0 ? "+" : "";
-                    titleExtras = ` <span style="font-size:0.9em; color:#aaa;">(${sign}${item.acBonus} CA)</span>${item.magic ? ' <span style="color:#00bcd4; font-size:0.8em;">[Magico]</span>' : ''}`;
+                    titleExtras = ` <span style="font-size:0.9em; color:#aaa;">(${sign}${item.acBonus} AC)</span>${item.magic ? ' <span style="color:#00bcd4; font-size:0.8em;">[M]</span>' : ''}`;
                 } else if (listName === "weapons") {
                     if (item.damage) titleExtras = ` <span style="font-size:0.85em; color:#f44336;">[${item.damage}]</span>`;
                 } else if (listName === "equipment") {
-                    if (item.magic) titleExtras = ` <span style="color:#00bcd4; font-size:0.8em;">[Magico]</span>`;
+                    if (item.magic) titleExtras = ` <span style="color:#00bcd4; font-size:0.8em;">[M]</span>`;
                 }
 
                 container.innerHTML += `
@@ -1059,7 +1165,7 @@
                         <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                             <div style="flex-grow: 1;">
                                 <strong style="color: var(--accent-color);">${item.name}</strong>${titleExtras}
-                                ${item.desc ? `<div style="font-size: 0.85em; color: #aaa; margin-top: 4px; word-wrap: break-word;">${item.desc}</div>` : ''}
+                                ${item.desc ? `<div style="font-size: 0.85em; color: #aaa; margin-top: 4px; word-wrap: break-word; white-space: pre-wrap;">${item.desc}</div>` : ''}
                             </div>
                             <div style="display:flex; align-items: center;">
                                 ${controlsHTML}
@@ -1071,7 +1177,6 @@
                 `;
             });
 
-            // Se siamo in modalità lettura e viene ricaricata una lista, disabilita subito i nuovi input creati
             if (document.body.classList.contains('view-mode')) {
                 applyViewModeState(true);
             }
@@ -1084,37 +1189,24 @@
             else if (listName === 'classFeatures') { document.getElementById('classFeatureName').value = item.name; document.getElementById('classFeatureDesc').value = item.desc; }
             else if (listName === 'multiClassFeatures') { document.getElementById('multiFeatureName').value = item.name; document.getElementById('multiFeatureDesc').value = item.desc; }
             else if (listName === 'protections') { 
-                document.getElementById('protName').value = item.name; 
-                document.getElementById('protAC').value = item.acBonus; 
-                document.getElementById('protDesc').value = item.desc; 
-                document.getElementById('protMagic').checked = !!item.magic; 
+                document.getElementById('protName').value = item.name; document.getElementById('protAC').value = item.acBonus; document.getElementById('protDesc').value = item.desc; document.getElementById('protMagic').checked = !!item.magic; 
             }
             else if (listName === 'weapons') { 
-                document.getElementById('weaponName').value = item.name; 
-                document.getElementById('weaponDesc').value = item.desc; 
-                document.getElementById('weaponDamage').value = item.damage || "";
+                document.getElementById('weaponName').value = item.name; document.getElementById('weaponDesc').value = item.desc; document.getElementById('weaponDamage').value = item.damage || "";
             }
             else if (listName === 'equipment') { 
-                document.getElementById('equipName').value = item.name; 
-                document.getElementById('equipDesc').value = item.desc; 
-                document.getElementById('equipMagic').checked = !!item.magic;
+                document.getElementById('equipName').value = item.name; document.getElementById('equipDesc').value = item.desc; document.getElementById('equipMagic').checked = !!item.magic;
             }
             else if (listName === 'feats') { document.getElementById('featName').value = item.name; document.getElementById('featDesc').value = item.desc; }
             else if (listName === 'languages') { document.getElementById('langName').value = item.name; document.getElementById('langDesc').value = item.desc; }
             else if (listName === 'spells') { 
-                document.getElementById('spellName').value = item.name; 
-                document.getElementById('spellDesc').value = item.desc; 
-                document.getElementById('spellLevel').value = item.level !== undefined ? item.level : ""; 
-                document.getElementById('spellSchool').value = item.school || ""; 
+                document.getElementById('spellName').value = item.name; document.getElementById('spellDesc').value = item.desc; document.getElementById('spellLevel').value = item.level !== undefined ? item.level : ""; document.getElementById('spellSchool').value = item.school || ""; 
             }
             else if (listName === 'wealthLog') {
-                document.getElementById('wealthAmount').value = Math.abs(item.amount);
-                document.getElementById('wealthType').value = item.type;
-                document.getElementById('wealthReason').value = item.reason;
+                document.getElementById('wealthAmount').value = Math.abs(item.amount); document.getElementById('wealthType').value = item.type; document.getElementById('wealthReason').value = item.reason;
             }
             else if (listName === 'slotProgressions') {
-                document.getElementById('slotClassSel').value = item.className;
-                document.getElementById('slotLevelSel').value = item.level;
+                document.getElementById('slotClassSel').value = item.className; document.getElementById('slotLevelSel').value = item.level;
             }
 
             removeCustomItem(listName, index);
@@ -1126,13 +1218,9 @@
 
         function removeCustomItem(listName, index) {
             charLists[listName].splice(index, 1);
-            if (listName === "slotProgressions") {
-                renderSlotProgressions();
-            } else if (listName === "wealthLog") {
-                renderWealthLog(); updateWealthTotals();
-            } else {
-                renderCustomList(listName);
-            }
+            if (listName === "slotProgressions") renderSlotProgressions();
+            else if (listName === "wealthLog") { renderWealthLog(); updateWealthTotals(); } 
+            else renderCustomList(listName);
             if(listName === 'protections') updateSheet();
         }
 
@@ -1142,7 +1230,7 @@
             if (isNaN(amount) || amount === 0) return;
             const type = document.getElementById('wealthType').value;
             const reasonInput = document.getElementById('wealthReason');
-            const reason = reasonInput.value || "Generico";
+            const reason = reasonInput.value || "Generic";
             
             charLists.wealthLog.unshift({ amount, type, reason }); 
             amountInput.value = ''; reasonInput.value = '';
@@ -1166,8 +1254,8 @@
                     <div class="list-item" style="display:flex; justify-content:space-between; align-items:center;">
                         <span><strong style="color:${color}">${sign}${entry.amount} ${entry.type.toUpperCase()}</strong> - ${entry.reason}</span>
                         <div>
-                            <button style="padding: 2px 6px; margin-right: 4px;" class="edit-only" title="Modifica" onclick="editCustomItem('wealthLog', ${index})">E</button>
-                            <button style="padding: 2px 6px;" class="edit-only" title="Elimina" onclick="removeCustomItem('wealthLog', ${index})">X</button>
+                            <button style="padding: 2px 6px; margin-right: 4px;" class="edit-only" title="Edit" onclick="editCustomItem('wealthLog', ${index})">E</button>
+                            <button style="padding: 2px 6px;" class="edit-only" title="Del" onclick="removeCustomItem('wealthLog', ${index})">X</button>
                         </div>
                     </div>`;
             });
@@ -1176,7 +1264,7 @@
         function stampaScheda() {
             const safeVal = (id) => document.getElementById(id) ? document.getElementById(id).value : "";
             
-            const nome = safeVal("charName") || "Personaggio Sconosciuto";
+            const nome = safeVal("charName") || "Unknown";
             const razza = safeVal("charRace") || "-";
             const classe = safeVal("charClassPrimary") || "-";
             
@@ -1184,18 +1272,18 @@
             const lvl2 = parseInt(safeVal("multiClassLevel")) || 0;
             const lvl3 = parseInt(safeVal("multiClass3Level")) || 0;
             
-            let classeInfo = classe + (lvl1 > 0 ? ` (Liv. ${lvl1})` : "");
+            let classeInfo = classe + (lvl1 > 0 ? ` (Lvl. ${lvl1})` : "");
             const multiClass = safeVal("multiClassName");
             const multiClass3 = safeVal("multiClass3Name");
             
-            if (multiClass && lvl2 > 0) classeInfo += ` / ${multiClass} (Liv. ${lvl2})`;
-            if (multiClass3 && lvl3 > 0) classeInfo += ` / ${multiClass3} (Liv. ${lvl3})`;
+            if (multiClass && lvl2 > 0) classeInfo += ` / ${multiClass} (Lvl. ${lvl2})`;
+            if (multiClass3 && lvl3 > 0) classeInfo += ` / ${multiClass3} (Lvl. ${lvl3})`;
             
             const totalLevel = document.getElementById("totalLevelDisplay") ? document.getElementById("totalLevelDisplay").textContent : 1;
 
             let printWin = window.open('', '_blank');
             let content = `
-                <html><head><title>Sintesi Personaggio - ${nome}</title>
+                <html><head><title>Summary - ${nome}</title>
                 <style>
                     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.4; padding: 20px; max-width: 1200px; margin: auto; color: #111; }
                     h1 { border-bottom: 2px solid #000; text-transform: uppercase; text-align: center; column-span: all; font-size: 2em; margin-bottom: 5px; }
@@ -1210,12 +1298,12 @@
             `;
             
             content += `<h1>${nome}</h1>`;
-            content += `<div class="header-info"><strong>Razza:</strong> ${razza} | <strong>Classe:</strong> ${classeInfo} | <strong>Livello Totale:</strong> ${totalLevel}</div>`;
+            content += `<div class="header-info"><strong>Race:</strong> ${razza} | <strong>Class:</strong> ${classeInfo} | <strong>Level:</strong> ${totalLevel}</div>`;
             
             content += `<div class="columns">`;
-            content += `<p style="font-size:1.1em; text-align:center;"><strong>CA Totale:</strong> ${document.getElementById("totalAC") ? document.getElementById("totalAC").textContent : 10} &nbsp;&nbsp;&bull;&nbsp;&nbsp; <strong>PF Massimi:</strong> ${safeVal("hpMax")}</p>`;
+            content += `<p style="font-size:1.1em; text-align:center;"><strong>AC:</strong> ${document.getElementById("totalAC") ? document.getElementById("totalAC").textContent : 10} &nbsp;&nbsp;&bull;&nbsp;&nbsp; <strong>HP:</strong> ${safeVal("hpMax")}</p>`;
             
-            content += `<h2>Caratteristiche</h2>`;
+            content += `<h2>Stats</h2>`;
             stats.forEach(stat => {
                 const val = safeVal(`base_${stat}`);
                 const mod = document.getElementById(`mod_${stat}`) ? document.getElementById(`mod_${stat}`).textContent : "";
@@ -1227,32 +1315,31 @@
                 let html = `<h2>${title}</h2>`;
                 list.forEach(item => {
                     let extra = "";
-                    if(list === charLists.protections && item.acBonus !== undefined) extra += ` (CA: ${item.acBonus > 0 ? '+'+item.acBonus : item.acBonus})`;
-                    if(list === charLists.protections && item.magic) extra += ` [Magico]`;
+                    if(list === charLists.protections && item.acBonus !== undefined) extra += ` (AC: ${item.acBonus > 0 ? '+'+item.acBonus : item.acBonus})`;
+                    if(list === charLists.protections && item.magic) extra += ` [M]`;
                     if(list === charLists.weapons && item.damage) extra += ` [${item.damage}]`;
-                    if(list === charLists.equipment && item.magic) extra += ` [Magico]`;
+                    if(list === charLists.equipment && item.magic) extra += ` [M]`;
 
                     if(isSpell) {
-                        if (item.level !== undefined && item.level !== "") extra += ` [Liv: ${item.level}]`;
+                        if (item.level !== undefined && item.level !== "") extra += ` [Lvl: ${item.level}]`;
                         if (item.school) extra += ` [${item.school}]`;
-                        extra += item.prepared ? " [Studiato]" : "";
-                        extra += item.cast ? " [Lanciato]" : "";
+                        extra += item.prepared ? " [Prep]" : "";
                     }
                     html += `<div class="item"><span class="item-title">- ${item.name}</span>${extra}`;
-                    if(item.desc) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block;">${item.desc}</span>`;
+                    if(item.desc) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; white-space: pre-wrap;">${item.desc}</span>`;
                     html += `</div>`;
                 });
                 return html;
             };
 
-            content += formatList("Tratti Razziali", charLists.raceTraits);
-            content += formatList("Privilegi Classe Principale", charLists.classFeatures);
-            content += formatList("Privilegi Classi Aggiuntive", charLists.multiClassFeatures);
-            content += formatList("Protezioni", charLists.protections);
-            content += formatList("Armi", charLists.weapons);
-            content += formatList("Equipaggiamento Generico", charLists.equipment);
-            content += formatList("Talenti", charLists.feats);
-            content += formatList("Incantesimi", charLists.spells, true);
+            content += formatList("Traits", charLists.raceTraits);
+            content += formatList("Features", charLists.classFeatures);
+            content += formatList("Multi Features", charLists.multiClassFeatures);
+            content += formatList("Armor", charLists.protections);
+            content += formatList("Weapons", charLists.weapons);
+            content += formatList("Equipment", charLists.equipment);
+            content += formatList("Feats", charLists.feats);
+            content += formatList("Spells", charLists.spells, true);
 
             content += `</div></body></html>`;
             printWin.document.write(content);
@@ -1271,6 +1358,7 @@
 
             const charData = {
                 version: APP_VERSION,
+                language: currentLang, // Saved language preference
                 name: safeVal("charName"),
                 charRace: safeVal("charRace"),
                 charClassPrimary: safeVal("charClassPrimary"),
@@ -1295,18 +1383,7 @@
                 notes: safeVal("notesArea"),
                 stats: {}, saves: {}, skills: {},
                 
-                weapons: charLists.weapons, 
-                equipment: charLists.equipment, 
-                feats: charLists.feats, 
-                spells: charLists.spells, 
-                wealthLog: charLists.wealthLog,
-                raceTraits: charLists.raceTraits,
-                classFeatures: charLists.classFeatures,
-                multiClassFeatures: charLists.multiClassFeatures,
-                languages: charLists.languages,
-                protections: charLists.protections,
-                slotProgressions: charLists.slotProgressions,
-                hiddenPanels: charLists.hiddenPanels,
+                weapons: charLists.weapons, equipment: charLists.equipment, feats: charLists.feats, spells: charLists.spells, wealthLog: charLists.wealthLog, raceTraits: charLists.raceTraits, classFeatures: charLists.classFeatures, multiClassFeatures: charLists.multiClassFeatures, languages: charLists.languages, protections: charLists.protections, slotProgressions: charLists.slotProgressions, hiddenPanels: charLists.hiddenPanels,
                 
                 layout: Array.from(document.getElementById("mainContainer").children).map(el => el.id),
                 panelSizes: panelSizes
@@ -1322,7 +1399,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = `${charData.name || "Personaggio"}_v${APP_VERSION}.json`;
+            a.download = `${charData.name || "Character"}_v${APP_VERSION}.json`;
             a.click();
             URL.revokeObjectURL(url);
         }
@@ -1335,25 +1412,15 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     
+                    // Switch to saved language immediately if present
+                    if (data.language && i18n[data.language]) {
+                        setLanguage(data.language);
+                    }
+
                     const setVal = (id, val) => { if(document.getElementById(id)) document.getElementById(id).value = val; };
                     const setCheck = (id, val) => { if(document.getElementById(id)) document.getElementById(id).checked = !!val; };
 
-                    setVal("charName", data.name || "");
-                    setVal("charRace", data.charRace || "");
-                    setVal("charClassPrimary", data.charClassPrimary || "");
-                    setVal("charClassNotes", data.charClassNotes || "");
-                    setVal("multiClassName", data.multiClassName || "");
-                    setVal("multiClassLevel", data.multiClassLevel || 0);
-                    setVal("multiClass3Name", data.multiClass3Name || "");
-                    setVal("multiClass3Level", data.multiClass3Level || 0);
-                    setVal("charLevel", data.level || 1);
-                    setVal("charBackground", data.background || "");
-                    setVal("charHeight", data.height || "");
-                    setVal("charWeight", data.weight || "");
-                    setVal("charSpeed", data.speed || "9m");
-                    setVal("hpMax", data.hpMax || "");
-                    setVal("hpCurrent", data.hpCurrent || "");
-                    setVal("hitDice", data.hitDice || "");
+                    setVal("charName", data.name || ""); setVal("charRace", data.charRace || ""); setVal("charClassPrimary", data.charClassPrimary || ""); setVal("charClassNotes", data.charClassNotes || ""); setVal("multiClassName", data.multiClassName || ""); setVal("multiClassLevel", data.multiClassLevel || 0); setVal("multiClass3Name", data.multiClass3Name || ""); setVal("multiClass3Level", data.multiClass3Level || 0); setVal("charLevel", data.level || 1); setVal("charBackground", data.background || ""); setVal("charHeight", data.height || ""); setVal("charWeight", data.weight || ""); setVal("charSpeed", data.speed || "9m"); setVal("hpMax", data.hpMax || ""); setVal("hpCurrent", data.hpCurrent || ""); setVal("hitDice", data.hitDice || "");
                     
                     setVal("baseACInput", data.baseACInput || 10);
                     if(data.addDexToAC !== undefined) setCheck("addDexToAC", data.addDexToAC);
@@ -1362,40 +1429,16 @@
                     
                     if (data.stats) stats.forEach(stat => setVal(`base_${stat}`, data.stats[stat] || 10));
                     if (data.saves) stats.forEach(stat => setCheck(`save_${stat}`, data.saves[stat]));
-                    if (data.skills) skills.forEach(skill => { 
-                        if(data.skills[skill.id] !== undefined) { 
-                            setCheck(`skill_${skill.id}`, typeof data.skills[skill.id] === 'object' ? data.skills[skill.id].prof : data.skills[skill.id]); 
-                        } 
-                    });
+                    if (data.skills) skills.forEach(skill => { if(data.skills[skill.id] !== undefined) setCheck(`skill_${skill.id}`, typeof data.skills[skill.id] === 'object' ? data.skills[skill.id].prof : data.skills[skill.id]); });
 
                     const migrateList = (arr) => arr ? arr.map(item => typeof item === 'string' ? {name: item, desc: ''} : item) : [];
-                    charLists.weapons = migrateList(data.weapons); 
-                    charLists.equipment = migrateList(data.equipment); 
-                    charLists.feats = migrateList(data.feats); 
-                    
-                    let legacySpells = [];
-                    if(data.arcaneSpells) legacySpells = legacySpells.concat(migrateList(data.arcaneSpells));
-                    if(data.divineSpells) legacySpells = legacySpells.concat(migrateList(data.divineSpells));
-                    charLists.spells = data.spells ? migrateList(data.spells) : legacySpells; 
-
-                    charLists.raceTraits = migrateList(data.raceTraits);
-                    charLists.classFeatures = migrateList(data.classFeatures);
-                    charLists.multiClassFeatures = migrateList(data.multiClassFeatures);
-                    charLists.languages = migrateList(data.languages);
-                    charLists.protections = data.protections || [];
-                    charLists.wealthLog = data.wealthLog || [];
-                    charLists.slotProgressions = data.slotProgressions || [];
+                    charLists.weapons = migrateList(data.weapons); charLists.equipment = migrateList(data.equipment); charLists.feats = migrateList(data.feats); charLists.spells = data.spells ? migrateList(data.spells) : (data.arcaneSpells ? migrateList(data.arcaneSpells).concat(migrateList(data.divineSpells)) : []); charLists.raceTraits = migrateList(data.raceTraits); charLists.classFeatures = migrateList(data.classFeatures); charLists.multiClassFeatures = migrateList(data.multiClassFeatures); charLists.languages = migrateList(data.languages); charLists.protections = data.protections || []; charLists.wealthLog = data.wealthLog || []; charLists.slotProgressions = data.slotProgressions || [];
                     
                     charLists.hiddenPanels = data.hiddenPanels || [];
-                    charLists.hiddenPanels.forEach(p => {
-                        const el = document.getElementById(p.id);
-                        if (el) el.style.display = 'none';
-                    });
+                    charLists.hiddenPanels.forEach(p => { const el = document.getElementById(p.id); if (el) el.style.display = 'none'; });
                     
                     ["weapons","equipment","feats","spells","raceTraits","classFeatures","multiClassFeatures","languages","protections"].forEach(renderCustomList);
-                    renderWealthLog(); updateWealthTotals();
-                    renderSlotProgressions();
-                    renderHiddenPanels();
+                    renderWealthLog(); updateWealthTotals(); renderSlotProgressions(); renderHiddenPanels();
 
                     if (data.layout) {
                         const container = document.getElementById('mainContainer');
@@ -1409,12 +1452,8 @@
                     }
 
                     updateSheet();
-                    
-                    // Ri-applica lo stato view-mode dopo il caricamento se necessario
-                    if (document.body.classList.contains('view-mode')) {
-                        applyViewModeState(true);
-                    }
-                } catch (err) { alert("Il file non è un salvataggio valido."); console.error(err); }
+                    if (document.body.classList.contains('view-mode')) applyViewModeState(true);
+                } catch (err) { alert("Invalid save file."); console.error(err); }
             };
             reader.readAsText(file);
         }
