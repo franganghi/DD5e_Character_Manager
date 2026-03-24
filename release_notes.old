@@ -1,0 +1,37 @@
+Precedenti release notes
+
+
+v1.19
+Implementazione del sistema di versioning visibile.
+Miglioramenti:
+Aggiunto pulsante e finestra modale per il Changelog integrata nell'interfaccia.
+Fix:
+Aggiornamento formale del numero di versione dimenticato nella build precedente.
+v1.18
+Ottimizzazione User Experience (UX) verticale.
+Miglioramenti:
+Le liste interne ai box e le text-area si espandono dinamicamente per occupare tutta l'altezza disponibile del box, eliminando spazi vuoti antiestetici durante il resize.
+v1.17
+Integrazione interfaccia e stampa.
+Miglioramenti:
+L'intestazione è ora un box standard rinominato "Personaggio", integrato nella griglia fluida.
+Il tasto "Nascondi" è diventato un'elegante icona a forma di occhio (👁️) affiancata al titolo.
+Sintesi di stampa re-impaginata a 3 colonne per sfruttare meglio il formato A4.
+v1.16
+Evoluzione del Multiclasse e dell'Equipaggiamento.
+Miglioramenti:
+Possibilità di aggiungere una 3ª classe nel pannello Multiclasse.
+Il Livello Totale e il Bonus Competenza sono calcolati sommando le 3 carriere.
+Aggiunto campo "Danno" per le Armi e spunta "Oggetto Magico" per l'Equipaggiamento.
+v1.15
+Restyling Header e Layout Combattimento.
+Miglioramenti:
+Il menu superiore è diventato "Sticky" (rimane visibile durante lo scorrimento).
+Pulsanti header rinominati e resi più immediati.
+Giustificazione dinamica destra/sinistra nel box Combattimento per migliorare la leggibilità.
+v1.14 / v1.13
+Rifacimento Motore Layout ed Editing globale.
+Miglioramenti:
+Passaggio da CSS Grid a Flexbox elastico per evitare i "buchi neri" nel layout.
+Aggiunti campi "Livello" e "Scuola" negli incantesimi.
+Implementato tasto "E" (Edit) su ogni entry per modificarne i parametri istantaneamente.
