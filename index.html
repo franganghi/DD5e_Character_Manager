@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&D 5e Character Manager - v1.28</title>
+    <title>D&D 5e Character Manager - v1.29</title>
     <style>
         /* Base Variables */
         :root {
@@ -49,7 +49,7 @@
             flex-wrap: wrap;
             gap: 20px;
             width: 100%;
-            max-width: 1800px;
+            /* Rimosso max-width: 1800px; per abbracciare tutto lo schermo */
             margin: 0 auto;
             align-items: flex-start;
         }
@@ -72,9 +72,7 @@
             resize: both; 
             overflow: auto; 
             min-height: 200px;
-        }
-        
-        .panel:not(.header-panel) {
+            
             display: flex;
             flex-direction: column;
         }
@@ -87,14 +85,6 @@
 
         @media (min-width: 768px) {
             .span-2 { width: 820px; }
-        }
-
-        .header-panel { 
-            flex: 1 1 100% !important; 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 15px; 
-            align-items: center; 
         }
 
         h1, h2, h3 { color: var(--accent-color); margin-top: 0; }
@@ -217,7 +207,7 @@
 <body>
 
     <div class="menu-bar">
-        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span class="version-tag">v1.28</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
+        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span class="version-tag">v1.29</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
         
         <div style="margin-left: 20px; display: flex; gap: 5px;">
             <button class="lang-btn active" onclick="setLanguage('en')" id="btn-lang-en">EN</button>
@@ -243,37 +233,44 @@
             <span class="close-modal" onclick="closeChangelog()">&times;</span>
             <h2 style="margin-top: 0;" data-i18n="changelogTitle">Changelog</h2>
 
-            <div class="log-version">v1.28 - Attuale</div>
+            <div class="log-version">v1.29 - Attuale</div>
+            <span class="log-note">Liberazione dei vincoli spaziali.</span>
+            <div class="log-section log-miglioramenti">Miglioramenti:</div>
+            <ul class="log-ul">
+                <li><strong>Larghezza Dinamica Totale:</strong> Rimosso il limite strutturale di `max-width: 1800px`. L'interfaccia ora scala fluidamente occupando il 100% dello spazio disponibile di qualsiasi schermo, risultando spettacolare sui monitor ultrawide.</li>
+                <li><strong>Box Personaggio Libero:</strong> Rimosso il blocco del CSS che costringeva l'intestazione ("Personaggio") a comportarsi in modo statico e prendere l'intera riga orizzontale. Ora si comporta come gli altri pannelli, permettendone il totale ridimensionamento e affiancamento.</li>
+            </ul>
+
+            <div class="log-version">v1.28</div>
             <span class="log-note">Sistema Modificatori Esteso.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li><strong>Modificatori Armi:</strong> Aggiunti campi per specificare i bonus al TPC (Tiro per Colpire) e ai Danni di ogni arma.</li>
-                <li><strong>Modificatori Generici:</strong> Implementato un sistema di potenziamento (Statistiche, TPC, Danno) applicabile a Equipaggiamento, Tratti Razziali, Privilegi di Classe e Multiclasse tramite comodi menu a tendina.</li>
-                <li><strong>Sommario Equipaggiamento:</strong> Il box Equipaggiamento ora genera in cima un elenco sintetico e dinamico con la somma di tutti i modificatori apportati dagli oggetti in inventario.</li>
+                <li>Aggiunti campi per specificare i bonus al TPC e ai Danni nelle armi.</li>
+                <li>Sistema di potenziamento universale (Statistiche, TPC, Danno) applicabile a Equipaggiamento e Tratti tramite menu a tendina.</li>
+                <li>Il box Equipaggiamento genera in cima un elenco sintetico con la somma di tutti i modificatori apportati dagli oggetti.</li>
             </ul>
 
             <div class="log-version">v1.27</div>
             <span class="log-note">Sistema Pesi, Proprietà Armi e Design.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li><strong>Sistema Carico:</strong> Aggiunto campo "Peso" (kg) in Armi, Armature ed Equipaggiamento. Calcolo in tempo reale del carico totale nel box Personaggio.</li>
-                <li><strong>Proprietà Armi:</strong> Aggiunto campo per tag come (Accurata, Pesante, Versatile).</li>
-                <li><strong>Design UI:</strong> Uniformato il pulsante "Apri". Timestamp spostato in basso nell'entry per pulizia visiva.</li>
+                <li>Aggiunto campo "Peso" in Armi, Armature ed Equipaggiamento. Calcolo in tempo reale del carico totale nel box Personaggio.</li>
+                <li>Aggiunto campo "Proprietà" per le armi. Uniformato il pulsante "Apri" e spostato in basso il timestamp.</li>
             </ul>
 
             <div class="log-version">v1.26</div>
             <span class="log-note">Tracciamento temporale e Higher Level Slots.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li>LIFO (Last In, First Out): Nuove entry aggiunte in cima alla lista.</li>
-                <li>Timestamp dinamico per inserimenti/modifiche. Aggiunto campo <code>higherLevelSlot</code> incantesimi.</li>
+                <li>LIFO (Last In, First Out): Nuove entry aggiunte in cima alla lista con Timestamp di modifica automatico.</li>
+                <li>Aggiunto campo <code>higherLevelSlot</code> incantesimi, popolato da Database.</li>
             </ul>
 
             <div class="log-version">v1.23 - v1.25</div>
             <span class="log-note">Avanzamento Dettaglio Incantesimi.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li>Mappatura classi incantatore, range, durata e cantrip upgrade dal DB JSON.</li>
+                <li>Mappatura classi incantatore, range, durata e cantrip upgrade dal DB JSON multilingua.</li>
             </ul>
             
             <div style="text-align: center; margin-top: 30px; font-size: 0.8em; color: #666;">
@@ -284,7 +281,7 @@
 
     <div class="container" id="mainContainer">
         
-        <div class="panel span-2 header-panel" id="panel-header">
+        <div class="panel span-2" id="panel-header">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
             <h2 class="panel-title" style="width: 100%;"><span data-i18n="pCharacter">Character</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-header', 'Personaggio')" title="Hide">👁️</button></h2>
             <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center; width: 100%;">
@@ -657,7 +654,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "1.28";
+        const APP_VERSION = "1.29";
         
         // --- MULTILINGUAL DICTIONARY (i18n) ---
         const i18n = {
@@ -1184,8 +1181,10 @@
                 let slotsHtml = slots.map(s => `<td>${s > 0 ? s : '-'}</td>`).join('');
                 let nameFormat = prog.className.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
+                let timeStr = prog.timestamp ? `<div style="font-size: 0.7em; color: #666; font-weight: normal; margin-top:2px;">${prog.timestamp}</div>` : '';
+
                 html += `<tr>
-                    <td><strong>${nameFormat}</strong><br><span style="font-size: 0.7em; color: #666; font-weight: normal;">${prog.timestamp || ''}</span></td>
+                    <td><strong>${nameFormat}</strong>${timeStr}</td>
                     <td>${prog.level}</td>
                     ${slotsHtml}
                     <td class="edit-only">
