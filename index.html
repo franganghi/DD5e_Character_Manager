@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&D 5e Character Manager - v1.29</title>
+    <title>D&D 5e Character Manager - v1.30</title>
     <style>
         /* Base Variables */
         :root {
@@ -49,7 +49,7 @@
             flex-wrap: wrap;
             gap: 20px;
             width: 100%;
-            /* Rimosso max-width: 1800px; per abbracciare tutto lo schermo */
+            max-width: 1800px;
             margin: 0 auto;
             align-items: flex-start;
         }
@@ -72,7 +72,9 @@
             resize: both; 
             overflow: auto; 
             min-height: 200px;
-            
+        }
+        
+        .panel:not(.header-panel) {
             display: flex;
             flex-direction: column;
         }
@@ -87,23 +89,31 @@
             .span-2 { width: 820px; }
         }
 
+        /* Nuova Griglia Personaggio */
+        .char-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        .char-grid .stat-block {
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+            margin-bottom: 0;
+        }
+
+        .char-grid label { font-weight: bold; color: #aaa; }
+        .char-grid input { text-align: right; width: 60%; }
+
         h1, h2, h3 { color: var(--accent-color); margin-top: 0; }
         
         .version-tag { font-size: 0.5em; color: gray; vertical-align: middle; margin-left: 10px; }
         
         /* Changelog Button */
         .changelog-btn {
-            background: #000;
-            color: gray;
-            font-size: 0.5em;
-            border: 1px solid #555;
-            border-radius: 4px;
-            margin-left: 10px;
-            cursor: pointer;
-            vertical-align: middle;
-            padding: 2px 6px;
-            font-family: inherit;
-            transition: all 0.2s;
+            background: #000; color: gray; font-size: 0.5em; border: 1px solid #555; border-radius: 4px; margin-left: 10px; cursor: pointer; vertical-align: middle; padding: 2px 6px; font-family: inherit; transition: all 0.2s;
         }
         .changelog-btn:hover { background: #222; color: #fff; border-color: var(--accent-color); }
 
@@ -207,7 +217,7 @@
 <body>
 
     <div class="menu-bar">
-        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span class="version-tag">v1.29</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
+        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span class="version-tag">v1.30</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
         
         <div style="margin-left: 20px; display: flex; gap: 5px;">
             <button class="lang-btn active" onclick="setLanguage('en')" id="btn-lang-en">EN</button>
@@ -233,12 +243,25 @@
             <span class="close-modal" onclick="closeChangelog()">&times;</span>
             <h2 style="margin-top: 0;" data-i18n="changelogTitle">Changelog</h2>
 
-            <div class="log-version">v1.29 - Attuale</div>
+            <div class="log-version">v1.30 - Attuale</div>
+            <span class="log-note">Restyling Header, Sintesi Multilingua e UI Combattimento.</span>
+            <div class="log-section log-miglioramenti">Miglioramenti:</div>
+            <ul class="log-ul">
+                <li><strong>Box Personaggio:</strong> Rimosso il campo Background inutile. Il layout dell'intestazione è stato formattato a griglia: etichette a sinistra, valori giustificati a destra per un look elegante e coerente.</li>
+                <li><strong>Box Combattimento:</strong> Modificato l'ordine per mostrare per primi Iniziativa, Percezione Passiva e Velocità. Quest'ultima ha ora lo stesso formato evidenziato della CA Totale.</li>
+                <li><strong>Sintesi Perfetta:</strong> Le etichette nel foglio di Sintesi ora rispondono fedelmente al selettore della lingua.</li>
+            </ul>
+            <div class="log-section log-fix">Fix:</div>
+            <ul class="log-ul">
+                <li>Risolto il problema che lasciava le etichette vuote all'apertura del file locale prima di completare il caricamento. Il motore i18n ora si avvia istantaneamente (DOMContentLoaded).</li>
+            </ul>
+
+            <div class="log-version">v1.29</div>
             <span class="log-note">Liberazione dei vincoli spaziali.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li><strong>Larghezza Dinamica Totale:</strong> Rimosso il limite strutturale di `max-width: 1800px`. L'interfaccia ora scala fluidamente occupando il 100% dello spazio disponibile di qualsiasi schermo, risultando spettacolare sui monitor ultrawide.</li>
-                <li><strong>Box Personaggio Libero:</strong> Rimosso il blocco del CSS che costringeva l'intestazione ("Personaggio") a comportarsi in modo statico e prendere l'intera riga orizzontale. Ora si comporta come gli altri pannelli, permettendone il totale ridimensionamento e affiancamento.</li>
+                <li>Rimosso il limite strutturale di `max-width`. L'interfaccia ora scala occupando il 100% dello spazio.</li>
+                <li>Il Box Personaggio si comporta come gli altri pannelli (ridimensionabile, affiancabile).</li>
             </ul>
 
             <div class="log-version">v1.28</div>
@@ -246,31 +269,16 @@
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
                 <li>Aggiunti campi per specificare i bonus al TPC e ai Danni nelle armi.</li>
-                <li>Sistema di potenziamento universale (Statistiche, TPC, Danno) applicabile a Equipaggiamento e Tratti tramite menu a tendina.</li>
-                <li>Il box Equipaggiamento genera in cima un elenco sintetico con la somma di tutti i modificatori apportati dagli oggetti.</li>
+                <li>Sistema di potenziamento universale (Statistiche, TPC, Danno) applicabile tramite menu a tendina.</li>
             </ul>
 
-            <div class="log-version">v1.27</div>
-            <span class="log-note">Sistema Pesi, Proprietà Armi e Design.</span>
+            <div class="log-version">v1.26 - v1.27</div>
+            <span class="log-note">Tracciamento, Pesi e Modificatori.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li>Aggiunto campo "Peso" in Armi, Armature ed Equipaggiamento. Calcolo in tempo reale del carico totale nel box Personaggio.</li>
-                <li>Aggiunto campo "Proprietà" per le armi. Uniformato il pulsante "Apri" e spostato in basso il timestamp.</li>
-            </ul>
-
-            <div class="log-version">v1.26</div>
-            <span class="log-note">Tracciamento temporale e Higher Level Slots.</span>
-            <div class="log-section log-miglioramenti">Miglioramenti:</div>
-            <ul class="log-ul">
-                <li>LIFO (Last In, First Out): Nuove entry aggiunte in cima alla lista con Timestamp di modifica automatico.</li>
+                <li>LIFO (Last In, First Out) e Timestamp dinamico per inserimenti/modifiche.</li>
+                <li>Sistema Carico (kg) per inventario con somma automatica.</li>
                 <li>Aggiunto campo <code>higherLevelSlot</code> incantesimi, popolato da Database.</li>
-            </ul>
-
-            <div class="log-version">v1.23 - v1.25</div>
-            <span class="log-note">Avanzamento Dettaglio Incantesimi.</span>
-            <div class="log-section log-miglioramenti">Miglioramenti:</div>
-            <ul class="log-ul">
-                <li>Mappatura classi incantatore, range, durata e cantrip upgrade dal DB JSON multilingua.</li>
             </ul>
             
             <div style="text-align: center; margin-top: 30px; font-size: 0.8em; color: #666;">
@@ -281,26 +289,52 @@
 
     <div class="container" id="mainContainer">
         
-        <div class="panel span-2" id="panel-header">
+        <div class="panel span-2 header-panel" id="panel-header">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
             <h2 class="panel-title" style="width: 100%;"><span data-i18n="pCharacter">Character</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-header', 'Personaggio')" title="Hide">👁️</button></h2>
-            <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center; width: 100%;">
-                <div><label data-i18n="lblCharName">Name:</label> <input type="text" id="charName" oninput="updateHeaderName()"></div>
-                <div><label data-i18n="lblCharRace">Race:</label> <input type="text" id="charRace"></div>
-                <div><label data-i18n="lblCharClass">Main Class:</label> <input type="text" id="charClassPrimary"></div>
-                <div><label data-i18n="lblCharLvl">Class Level:</label> <input type="number" id="charLevel" value="1" min="1" max="20" oninput="updateSheet()" style="width: 60px;"></div>
-                <div><label data-i18n="lblTotLvl">Total Level:</label> <span id="totalLevelDisplay" style="font-weight:bold; font-size: 1.2em;">1</span></div>
-                
-                <div style="background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 4px; border: 1px solid var(--border-color);">
-                    <label data-i18n="lblWeightCarried">Weight Carried:</label> 
-                    <span id="totalWeightDisplay" style="font-weight:bold; color: var(--accent-color);">0</span> / 
-                    <input type="number" id="maxWeight" value="150" style="width: 60px;"> <span data-i18n="lblKg">kg</span>
+            
+            <div class="char-grid">
+                <div class="stat-block">
+                    <label data-i18n="lblCharName">Name:</label> 
+                    <input type="text" id="charName" oninput="updateHeaderName()">
+                </div>
+                <div class="stat-block">
+                    <label data-i18n="lblCharRace">Race:</label> 
+                    <input type="text" id="charRace">
+                </div>
+                <div class="stat-block">
+                    <label data-i18n="lblCharClass">Main Class:</label> 
+                    <input type="text" id="charClassPrimary">
+                </div>
+                <div class="stat-block">
+                    <label data-i18n="lblCharLvl">Class Level:</label> 
+                    <input type="number" id="charLevel" value="1" min="1" max="20" oninput="updateSheet()">
+                </div>
+                <div class="stat-block">
+                    <label data-i18n="lblHeight">Height:</label> 
+                    <input type="text" id="charHeight">
+                </div>
+                <div class="stat-block">
+                    <label data-i18n="lblWeight">Weight:</label> 
+                    <input type="text" id="charWeight">
                 </div>
 
-                <div><label data-i18n="lblBackground">Background:</label> <input type="text" id="charBackground"></div>
-                <div><label data-i18n="lblHeight">Height:</label> <input type="text" id="charHeight" style="width: 80px;"></div>
-                <div><label data-i18n="lblWeight">Weight:</label> <input type="text" id="charWeight" style="width: 80px;"></div>
-                <div style="width: 100%; margin-top: 5px;"><label data-i18n="lblProfBonus">Proficiency Bonus:</label> <span id="profBonus" style="font-weight:bold; color:var(--accent-color); font-size: 1.2em;">+2</span></div>
+                <div class="stat-block" style="border-bottom: none; align-items: center;">
+                    <label data-i18n="lblTotLvl" style="color: var(--text-color);">Total Level:</label> 
+                    <span id="totalLevelDisplay" class="stat-mod-highlight" style="font-size: 1.2em; min-width: 30px;">1</span>
+                </div>
+                <div class="stat-block" style="border-bottom: none; align-items: center;">
+                    <label data-i18n="lblProfBonus" style="color: var(--text-color);">Proficiency Bonus:</label> 
+                    <span id="profBonus" class="stat-mod-highlight" style="font-size: 1.2em; min-width: 30px;">+2</span>
+                </div>
+                <div class="stat-block" style="border-bottom: none; align-items: center;">
+                    <label data-i18n="lblWeightCarried" style="color: var(--text-color);">Weight Carried:</label> 
+                    <div style="display: flex; align-items: center; justify-content: flex-end; width: 60%; font-weight: bold; background: #2a2a2a; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--accent-color);">
+                        <span id="totalWeightDisplay" style="color: var(--accent-color);">0</span> &nbsp;/&nbsp; 
+                        <input type="number" id="maxWeight" value="150" style="width: 50px; text-align: right; background: transparent; border: none; font-weight: bold; color: var(--text-color); padding: 0;"> 
+                        <span style="font-size: 0.8em; color: #888; margin-left: 2px;" data-i18n="lblKg">kg</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -327,18 +361,26 @@
             <h2 class="panel-title"><span data-i18n="pCombat">Combat & AC</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-combat', 'Combattimento')">👁️</button></h2>
             
             <div class="stat-block" style="justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                <label style="font-weight: bold; font-size: 1.1em;" data-i18n="lblInitiative">Initiative:</label> 
+                <span id="initiativeModifier" class="stat-mod-highlight">0</span>
+            </div>
+            
+            <div class="stat-block" style="justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                <label style="font-weight: bold; font-size: 1.1em;" data-i18n="lblPassPerc">Passive Perception:</label> 
+                <span id="passivePerception" class="stat-mod-highlight">10</span>
+            </div>
+
+            <div class="stat-block" style="justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                <label style="font-weight: bold; font-size: 1.1em;" data-i18n="lblSpeed">Speed:</label> 
+                <input type="text" id="charSpeed" value="30ft" class="stat-mod-highlight" style="width: 80px;">
+            </div>
+
+            <div class="stat-block" style="justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
                 <label style="font-weight: bold; font-size: 1.1em;" data-i18n="lblTotalAc">Total AC:</label> 
                 <span id="totalAC" class="stat-mod-highlight">10</span>
             </div>
-            <div class="stat-block" style="justify-content: space-between;">
-                <label style="font-weight: bold;" data-i18n="lblInitiative">Initiative:</label> 
-                <span id="initiativeModifier" style="font-size: 1.2em; font-weight: bold;">0</span>
-            </div>
-            <div class="stat-block" style="justify-content: space-between;">
-                <label style="font-weight: bold;" data-i18n="lblSpeed">Speed:</label> 
-                <input type="text" id="charSpeed" value="30ft" style="width: 80px; text-align: center;">
-            </div>
-            <div class="stat-block" style="justify-content: space-between;">
+            
+            <div class="stat-block" style="justify-content: space-between; margin-top: 15px;">
                 <label style="font-weight: bold;" data-i18n="lblMaxHp">Max HP:</label> 
                 <input type="number" id="hpMax" style="width: 80px; text-align: center;">
             </div>
@@ -349,10 +391,6 @@
             <div class="stat-block" style="justify-content: space-between;">
                 <label style="font-weight: bold;" data-i18n="lblHitDice">Hit Dice:</label> 
                 <input type="text" id="hitDice" placeholder="e.g. 1d8" style="width: 80px; text-align: center;">
-            </div>
-            <div class="stat-block" style="justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 15px;">
-                <label style="font-weight: bold;" data-i18n="lblPassPerc">Passive Perception:</label> 
-                <span id="passivePerception" style="font-size: 1.2em; font-weight: bold; color: var(--accent-color);">10</span>
             </div>
             
             <h3 style="margin-top:15px; font-size:1.1em;" class="edit-only" data-i18n="lblBaseAcCalc">Base AC Calc</h3>
@@ -654,13 +692,13 @@
     </div>
 
     <script>
-        const APP_VERSION = "1.29";
+        const APP_VERSION = "1.30";
         
         // --- MULTILINGUAL DICTIONARY (i18n) ---
         const i18n = {
             en: {
                 appTitle: "D&D 5e Character Manager", readMode: "Read Mode", editMode: "Edit Mode", summary: "Summary", save: "Save", open: "Open", changelogTitle: "Changelog",
-                pCharacter: "Character", lblCharName: "Name:", lblCharRace: "Race:", lblCharClass: "Main Class:", lblCharLvl: "Class Level:", lblTotLvl: "Total Level:", lblBackground: "Background:", lblHeight: "Height:", lblWeight: "Weight:", lblProfBonus: "Proficiency Bonus:",
+                pCharacter: "Character", lblCharName: "Name:", lblCharRace: "Race:", lblCharClass: "Main Class:", lblCharLvl: "Class Level:", lblTotLvl: "Total Level:", lblHeight: "Height:", lblWeight: "Weight:", lblProfBonus: "Proficiency Bonus:",
                 lblWeightCarried: "Weight Carried:", lblKg: "kg",
                 pStats: "Ability Scores", pSaves: "Saving Throws", pSkills: "Skills",
                 pCombat: "Combat & AC", lblTotalAc: "Total AC:", lblInitiative: "Initiative:", lblSpeed: "Speed:", lblMaxHp: "Max HP:", lblCurHp: "Current HP:", lblHitDice: "Hit Dice:", lblPassPerc: "Passive Perception:", lblBaseAcCalc: "Base AC Calc", lblBaseAc: "Base AC:", lblAddDex: "Add DEX",
@@ -676,11 +714,12 @@
                 pNotes: "Notes & Backstory", lblHiddenPanels: "Hidden Panels",
                 optNone: "-- Target --", optStr: "STR", optDex: "DEX", optCon: "CON", optInt: "INT", optWis: "WIS", optCha: "CHA", optAtk: "Attack", optDmg: "Damage",
                 phTraitName: "Trait Name", phFeatName: "Feature Name", phDesc: "Description (max 200 char)", phOtherNotes: "Other notes (max 200 char)", phProp: "Properties (max 200 char)", phWeaponProps: "Properties (Finesse, Light, Heavy...)", phDetails: "Details (optional)", phWeight: "kg", phAtkBonus: "Atk", phDmgBonus: "Dmg",
-                phSpellName: "Spell Name", phSchool: "School", phRange: "Range", phDuration: "Duration", phClasses: "Classes (e.g. Wizard)", phDescEff: "Description & Effects", phCantrip: "Cantrip Upgrade (if any)", phHigherLevel: "At Higher Levels"
+                phSpellName: "Spell Name", phSchool: "School", phRange: "Range", phDuration: "Duration", phClasses: "Classes (e.g. Wizard)", phDescEff: "Description & Effects", phCantrip: "Cantrip Upgrade (if any)", phHigherLevel: "At Higher Levels",
+                printStats: "Stats", printTraits: "Traits", printFeatures: "Features", printMulti: "Multi Features", printArmor: "Armor", printWeapons: "Weapons", printEquip: "Equipment", printFeats: "Feats", printSpells: "Spells"
             },
             it: {
                 appTitle: "Gestione Personaggio D&D 5e", readMode: "Lettura", editMode: "Modifica", summary: "Sintesi", save: "Salva", open: "Apri", changelogTitle: "Registro Aggiornamenti",
-                pCharacter: "Personaggio", lblCharName: "Nome:", lblCharRace: "Razza:", lblCharClass: "Classe Princ.:", lblCharLvl: "Livello Classe:", lblTotLvl: "Livello Totale:", lblBackground: "Background:", lblHeight: "Statura:", lblWeight: "Peso base:", lblProfBonus: "Bonus Comp.:",
+                pCharacter: "Personaggio", lblCharName: "Nome:", lblCharRace: "Razza:", lblCharClass: "Classe Princ.:", lblCharLvl: "Livello Classe:", lblTotLvl: "Livello Totale:", lblHeight: "Statura:", lblWeight: "Peso base:", lblProfBonus: "Bonus Comp.:",
                 lblWeightCarried: "Carico Trasportato:", lblKg: "kg",
                 pStats: "Caratteristiche", pSaves: "Tiri Salvezza", pSkills: "Abilità",
                 pCombat: "Combattimento e CA", lblTotalAc: "CA Totale:", lblInitiative: "Iniziativa:", lblSpeed: "Velocità:", lblMaxHp: "PF Massimi:", lblCurHp: "PF Attuali:", lblHitDice: "Dadi Vita:", lblPassPerc: "Saggezza (Perc. Passiva):", lblBaseAcCalc: "Calcolo CA Base", lblBaseAc: "CA Base:", lblAddDex: "Aggiungi Mod. DES",
@@ -696,11 +735,12 @@
                 pNotes: "Note Generali e Storia", lblHiddenPanels: "Pannelli Nascosti",
                 optNone: "-- Bersaglio --", optStr: "FOR", optDex: "DES", optCon: "COS", optInt: "INT", optWis: "SAG", optCha: "CAR", optAtk: "TPC", optDmg: "Danno",
                 phTraitName: "Nome Tratto", phFeatName: "Nome Privilegio", phDesc: "Descrizione (max 200 car.)", phOtherNotes: "Altre note (max 200 car.)", phProp: "Proprietà (max 200 car.)", phWeaponProps: "Proprietà (Accurata, Leggera...)", phDetails: "Dettagli (opzionale)", phWeight: "kg", phAtkBonus: "TPC", phDmgBonus: "Danno",
-                phSpellName: "Nome Incantesimo", phSchool: "Scuola", phRange: "Raggio", phDuration: "Durata", phClasses: "Classi (es. Mago)", phDescEff: "Descrizione e Effetti", phCantrip: "Miglioramento Trucchetto", phHigherLevel: "Lanciato a Livelli Superiori"
+                phSpellName: "Nome Incantesimo", phSchool: "Scuola", phRange: "Raggio", phDuration: "Durata", phClasses: "Classi (es. Mago)", phDescEff: "Descrizione e Effetti", phCantrip: "Miglioramento Trucchetto", phHigherLevel: "Lanciato a Livelli Superiori",
+                printStats: "Statistiche", printTraits: "Tratti", printFeatures: "Privilegi", printMulti: "Priv. Multiclasse", printArmor: "Armature", printWeapons: "Armi", printEquip: "Equipaggiamento", printFeats: "Talenti", printSpells: "Incantesimi"
             },
             fr: {
                 appTitle: "Gestion de Personnage D&D 5e", readMode: "Lecture", editMode: "Modifier", summary: "Résumé", save: "Enregistrer", open: "Ouvrir", changelogTitle: "Journal des modifications",
-                pCharacter: "Personnage", lblCharName: "Nom:", lblCharRace: "Race:", lblCharClass: "Classe Prin.:", lblCharLvl: "Niveau de Classe:", lblTotLvl: "Niveau Total:", lblBackground: "Historique:", lblHeight: "Taille:", lblWeight: "Poids:", lblProfBonus: "Bonus de Maîtrise:",
+                pCharacter: "Personnage", lblCharName: "Nom:", lblCharRace: "Race:", lblCharClass: "Classe Prin.:", lblCharLvl: "Niveau de Classe:", lblTotLvl: "Niveau Total:", lblHeight: "Taille:", lblWeight: "Poids:", lblProfBonus: "Bonus de Maîtrise:",
                 lblWeightCarried: "Poids Porté:", lblKg: "kg",
                 pStats: "Caractéristiques", pSaves: "Jets de Sauvegarde", pSkills: "Compétences",
                 pCombat: "Combat et CA", lblTotalAc: "CA Totale:", lblInitiative: "Initiative:", lblSpeed: "Vitesse:", lblMaxHp: "PV Max:", lblCurHp: "PV Actuels:", lblHitDice: "Dés de Vie:", lblPassPerc: "Perception Passive:", lblBaseAcCalc: "Calcul CA Base", lblBaseAc: "CA Base:", lblAddDex: "Ajouter DEX",
@@ -716,11 +756,12 @@
                 pNotes: "Notes et Histoire", lblHiddenPanels: "Panneaux Masqués",
                 optNone: "-- Cible --", optStr: "FOR", optDex: "DEX", optCon: "CON", optInt: "INT", optWis: "SAG", optCha: "CHA", optAtk: "Attaque", optDmg: "Dégâts",
                 phTraitName: "Nom du Trait", phFeatName: "Nom de la Capacité", phDesc: "Description (max 200 car.)", phOtherNotes: "Autres notes (max 200 car.)", phProp: "Propriétés (max 200 car.)", phWeaponProps: "Propriétés (Finesse, Lourd...)", phDetails: "Détails (optionnel)", phWeight: "kg", phAtkBonus: "Att", phDmgBonus: "Dég",
-                phSpellName: "Nom du Sort", phSchool: "École", phRange: "Portée", phDuration: "Durée", phClasses: "Classes (ex. Magicien)", phDescEff: "Description et Effets", phCantrip: "Amélioration Mineur", phHigherLevel: "Aux Niveaux Supérieurs"
+                phSpellName: "Nom du Sort", phSchool: "École", phRange: "Portée", phDuration: "Durée", phClasses: "Classes (ex. Magicien)", phDescEff: "Description et Effets", phCantrip: "Amélioration Mineur", phHigherLevel: "Aux Niveaux Supérieurs",
+                printStats: "Statistiques", printTraits: "Traits", printFeatures: "Capacités", printMulti: "Capacités Multiclasses", printArmor: "Armures", printWeapons: "Armes", printEquip: "Équipement", printFeats: "Dons", printSpells: "Sorts"
             },
             de: {
                 appTitle: "D&D 5e Charakter-Manager", readMode: "Lese-Modus", editMode: "Bearbeiten", summary: "Zusammenfassung", save: "Speichern", open: "Öffnen", changelogTitle: "Änderungsprotokoll",
-                pCharacter: "Charakter", lblCharName: "Name:", lblCharRace: "Volk:", lblCharClass: "Hauptklasse:", lblCharLvl: "Klassenstufe:", lblTotLvl: "Gesamtstufe:", lblBackground: "Hintergrund:", lblHeight: "Größe:", lblWeight: "Gewicht:", lblProfBonus: "Übungsbonus:",
+                pCharacter: "Charakter", lblCharName: "Name:", lblCharRace: "Volk:", lblCharClass: "Hauptklasse:", lblCharLvl: "Klassenstufe:", lblTotLvl: "Gesamtstufe:", lblHeight: "Größe:", lblWeight: "Gewicht:", lblProfBonus: "Übungsbonus:",
                 lblWeightCarried: "Getragenes Gewicht:", lblKg: "kg",
                 pStats: "Attribute", pSaves: "Rettungswürfe", pSkills: "Fertigkeiten",
                 pCombat: "Kampf & RK", lblTotalAc: "Gesamt-RK:", lblInitiative: "Initiative:", lblSpeed: "Bewegung:", lblMaxHp: "Max. TP:", lblCurHp: "Aktuelle TP:", lblHitDice: "Trefferwürfel:", lblPassPerc: "Passive Wahrnehmung:", lblBaseAcCalc: "RK-Basis", lblBaseAc: "Basis-RK:", lblAddDex: "GES hinzufügen",
@@ -736,11 +777,12 @@
                 pNotes: "Notizen & Hintergrund", lblHiddenPanels: "Versteckte Panels",
                 optNone: "-- Ziel --", optStr: "STR", optDex: "GES", optCon: "KON", optInt: "INT", optWis: "WEI", optCha: "CHA", optAtk: "Angriff", optDmg: "Schaden",
                 phTraitName: "Merkmalname", phFeatName: "Klassenmerkmalname", phDesc: "Beschreibung (max. 200)", phOtherNotes: "Weitere Notizen (max 200)", phProp: "Eigenschaften (max. 200)", phWeaponProps: "Eigenschaften (Leicht, Schwer...)", phDetails: "Details (optional)", phWeight: "kg", phAtkBonus: "Angr", phDmgBonus: "Schad",
-                phSpellName: "Zaubername", phSchool: "Schule", phRange: "Reichweite", phDuration: "Dauer", phClasses: "Klassen (z.B. Magier)", phDescEff: "Beschreibung & Effekte", phCantrip: "Zaubertrick-Verbesserung", phHigherLevel: "Auf höheren Stufen"
+                phSpellName: "Zaubername", phSchool: "Schule", phRange: "Reichweite", phDuration: "Dauer", phClasses: "Klassen (z.B. Magier)", phDescEff: "Beschreibung & Effekte", phCantrip: "Zaubertrick-Verbesserung", phHigherLevel: "Auf höheren Stufen",
+                printStats: "Attribute", printTraits: "Merkmale", printFeatures: "Klassenmerkmale", printMulti: "Zusätzliche Merkmale", printArmor: "Rüstung", printWeapons: "Waffen", printEquip: "Ausrüstung", printFeats: "Talente", printSpells: "Zauber"
             },
             es: {
                 appTitle: "Gestor de Personaje D&D 5e", readMode: "Lectura", editMode: "Editar", summary: "Resumen", save: "Guardar", open: "Abrir", changelogTitle: "Registro de Cambios",
-                pCharacter: "Personaje", lblCharName: "Nombre:", lblCharRace: "Raza:", lblCharClass: "Clase Prin.:", lblCharLvl: "Nivel de Clase:", lblTotLvl: "Nivel Total:", lblBackground: "Trasfondo:", lblHeight: "Altura:", lblWeight: "Peso:", lblProfBonus: "Bono Comp.:",
+                pCharacter: "Personaje", lblCharName: "Nombre:", lblCharRace: "Raza:", lblCharClass: "Clase Prin.:", lblCharLvl: "Nivel de Clase:", lblTotLvl: "Nivel Total:", lblHeight: "Altura:", lblWeight: "Peso:", lblProfBonus: "Bono Comp.:",
                 lblWeightCarried: "Peso Llevado:", lblKg: "kg",
                 pStats: "Características", pSaves: "Tiradas de Salvación", pSkills: "Habilidades",
                 pCombat: "Combate y CA", lblTotalAc: "CA Total:", lblInitiative: "Iniciativa:", lblSpeed: "Velocidad:", lblMaxHp: "PG Máximos:", lblCurHp: "PG Actuales:", lblHitDice: "Dados de Golpe:", lblPassPerc: "Percepción Pasiva:", lblBaseAcCalc: "Cálculo CA Base", lblBaseAc: "CA Base:", lblAddDex: "Añadir DES",
@@ -756,7 +798,8 @@
                 pNotes: "Notas y Trasfondo", lblHiddenPanels: "Paneles Ocultos",
                 optNone: "-- Objetivo --", optStr: "FUE", optDex: "DES", optCon: "CON", optInt: "INT", optWis: "SAB", optCha: "CAR", optAtk: "Ataque", optDmg: "Daño",
                 phTraitName: "Nombre del Rasgo", phFeatName: "Nombre del Rasgo", phDesc: "Descripción (máx 200 car.)", phOtherNotes: "Otras notas (máx 200)", phProp: "Propiedades (máx 200 car.)", phWeaponProps: "Propiedades (Sutil, Pesada...)", phDetails: "Detalles (opcional)", phWeight: "kg", phAtkBonus: "Ataq", phDmgBonus: "Daño",
-                phSpellName: "Nombre del Conjuro", phSchool: "Escuela", phRange: "Alcance", phDuration: "Duración", phClasses: "Clases (ej. Mago)", phDescEff: "Descripción y Efectos", phCantrip: "Mejora de Truco", phHigherLevel: "A Niveles Superiores"
+                phSpellName: "Nombre del Conjuro", phSchool: "Escuela", phRange: "Alcance", phDuration: "Duración", phClasses: "Clases (ej. Mago)", phDescEff: "Descripción y Efectos", phCantrip: "Mejora de Truco", phHigherLevel: "A Niveles Superiores",
+                printStats: "Características", printTraits: "Rasgos", printFeatures: "Rasgos de Clase", printMulti: "Rasgos Adicionales", printArmor: "Armadura", printWeapons: "Armas", printEquip: "Equipamiento", printFeats: "Dotes", printSpells: "Conjuros"
             }
         };
 
@@ -887,7 +930,7 @@
         }
 
         // --- Application Init ---
-        function init() {
+        document.addEventListener("DOMContentLoaded", function() {
             setLanguage('en'); 
             renderBaseStats();
             initDragAndDrop();
@@ -903,7 +946,7 @@
                     modal.style.display = "none";
                 }
             }
-        }
+        });
 
         function openChangelog() { document.getElementById('changelogModal').style.display = 'block'; }
         function closeChangelog() { document.getElementById('changelogModal').style.display = 'none'; }
@@ -1097,7 +1140,6 @@
             updateTotalWeight();
         }
 
-        // --- NEW Weight System ---
         function updateTotalWeight() {
             let totalWeight = 0;
             ['weapons', 'equipment', 'protections'].forEach(list => {
@@ -1113,7 +1155,6 @@
             }
         }
         
-        // --- NEW Equipment Modifier Summary ---
         function updateEquipModSummary() {
             const summary = {};
             charLists.equipment.forEach(item => {
@@ -1394,7 +1435,6 @@
                     if (item.magic) titleExtras += ` <span style="color:#00bcd4; font-size:0.8em;">[M]</span>`;
                 }
 
-                // Generics Modifiers for Traits, Feats, Equip
                 if (item.modVal && item.modTarget) {
                     const transTargetKey = 'opt' + item.modTarget.charAt(0).toUpperCase() + item.modTarget.slice(1);
                     const transTarget = i18n[currentLang][transTargetKey] || item.modTarget;
@@ -1403,6 +1443,7 @@
                 }
 
                 let descHtml = "";
+                
                 if (item.timestamp) {
                     descHtml += `<div style="font-size:0.65em; color:#555; margin-top:2px;">${item.timestamp}</div>`;
                 }
@@ -1568,9 +1609,11 @@
             const totWeight = document.getElementById("totalWeightDisplay") ? document.getElementById("totalWeightDisplay").textContent : 0;
             const maxWeight = safeVal("maxWeight") || 150;
 
+            const t = i18n[currentLang]; // Translation reference
+
             let printWin = window.open('', '_blank');
             let content = `
-                <html><head><title>Summary - ${nome}</title>
+                <html><head><title>${t.summary || 'Summary'} - ${nome}</title>
                 <style>
                     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.4; padding: 20px; max-width: 1200px; margin: auto; color: #111; }
                     h1 { border-bottom: 2px solid #000; text-transform: uppercase; text-align: center; column-span: all; font-size: 2em; margin-bottom: 5px; }
@@ -1585,16 +1628,16 @@
             `;
             
             content += `<h1>${nome}</h1>`;
-            content += `<div class="header-info"><strong>Race:</strong> ${razza} | <strong>Class:</strong> ${classeInfo} | <strong>Level:</strong> ${totalLevel}</div>`;
+            content += `<div class="header-info"><strong>${t.lblCharRace.replace(':','')}</strong> ${razza} | <strong>${t.lblCharClass.replace(':','')}</strong> ${classeInfo} | <strong>${t.lblTotLvl.replace(':','')}</strong> ${totalLevel}</div>`;
             
             content += `<div class="columns">`;
-            content += `<p style="font-size:1.1em; text-align:center;"><strong>AC:</strong> ${document.getElementById("totalAC") ? document.getElementById("totalAC").textContent : 10} &nbsp;&nbsp;&bull;&nbsp;&nbsp; <strong>HP:</strong> ${safeVal("hpMax")} &nbsp;&nbsp;&bull;&nbsp;&nbsp; <strong>Weight:</strong> ${totWeight} / ${maxWeight} kg</p>`;
+            content += `<p style="font-size:1.1em; text-align:center;"><strong>${t.lblTotalAc.replace(':','')}</strong> ${document.getElementById("totalAC") ? document.getElementById("totalAC").textContent : 10} &nbsp;&nbsp;&bull;&nbsp;&nbsp; <strong>${t.lblMaxHp.replace(':','')}</strong> ${safeVal("hpMax")} &nbsp;&nbsp;&bull;&nbsp;&nbsp; <strong>${t.lblWeightCarried.replace(':','')}</strong> ${totWeight} / ${maxWeight} kg</p>`;
             
-            content += `<h2>Stats</h2>`;
+            content += `<h2>${t.printStats || 'Stats'}</h2>`;
             stats.forEach(stat => {
                 const val = safeVal(`base_${stat}`);
                 const mod = document.getElementById(`mod_${stat}`) ? document.getElementById(`mod_${stat}`).textContent : "";
-                content += `<div class="row"><span>${statNames[stat]}:</span> <strong>${val} (${mod})</strong></div>`;
+                content += `<div class="row"><span>${statNamesIt[stat] || stat}:</span> <strong>${val} (${mod})</strong></div>`;
             });
 
             const formatList = (title, list, isSpell = false) => {
@@ -1615,7 +1658,7 @@
                     
                     if(item.modVal && item.modTarget) {
                         const transTargetKey = 'opt' + item.modTarget.charAt(0).toUpperCase() + item.modTarget.slice(1);
-                        const transTarget = i18n[currentLang][transTargetKey] || item.modTarget;
+                        const transTarget = t[transTargetKey] || item.modTarget;
                         const sign = item.modVal > 0 ? "+" : "";
                         extra += ` [${transTarget}: ${sign}${item.modVal}]`;
                     }
@@ -1630,24 +1673,24 @@
                     html += `<div class="item"><span class="item-title">- ${item.name}</span>${extra}`;
                     
                     if(list === charLists.weapons && item.props) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>Prop: ${item.props}</i></span>`;
-                    if(isSpell && item.classes) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>${i18n[currentLang].lblClassesSpells || "Classes:"} ${item.classes}</i></span>`;
+                    if(isSpell && item.classes) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>${t.lblClassesSpells || "Classes:"} ${item.classes}</i></span>`;
                     
                     if(item.desc) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; white-space: pre-wrap;">${item.desc}</span>`;
                     if(isSpell && item.cantripUpgrade) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; color: #555;"><strong>Upgrade:</strong> ${item.cantripUpgrade}</span>`;
-                    if(isSpell && item.higherLevelSlot) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block;"><strong>Higher Levels:</strong> ${item.higherLevelSlot}</span>`;
+                    if(isSpell && item.higherLevelSlot) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block;"><strong>${t.lblHigherLvl || "Higher Levels:"}</strong> ${item.higherLevelSlot}</span>`;
                     html += `</div>`;
                 });
                 return html;
             };
 
-            content += formatList("Traits", charLists.raceTraits);
-            content += formatList("Features", charLists.classFeatures);
-            content += formatList("Multi Features", charLists.multiClassFeatures);
-            content += formatList("Armor", charLists.protections);
-            content += formatList("Weapons", charLists.weapons);
-            content += formatList("Equipment", charLists.equipment);
-            content += formatList("Feats", charLists.feats);
-            content += formatList("Spells", charLists.spells, true);
+            content += formatList(t.printTraits || "Traits", charLists.raceTraits);
+            content += formatList(t.printFeatures || "Features", charLists.classFeatures);
+            content += formatList(t.printMulti || "Multi Features", charLists.multiClassFeatures);
+            content += formatList(t.printArmor || "Armor", charLists.protections);
+            content += formatList(t.printWeapons || "Weapons", charLists.weapons);
+            content += formatList(t.printEquip || "Equipment", charLists.equipment);
+            content += formatList(t.printFeats || "Feats", charLists.feats);
+            content += formatList(t.printSpells || "Spells", charLists.spells, true);
 
             content += `</div></body></html>`;
             printWin.document.write(content);
@@ -1728,7 +1771,7 @@
                     const setVal = (id, val) => { if(document.getElementById(id)) document.getElementById(id).value = val; };
                     const setCheck = (id, val) => { if(document.getElementById(id)) document.getElementById(id).checked = !!val; };
 
-                    setVal("charName", data.name || ""); setVal("charRace", data.charRace || ""); setVal("charClassPrimary", data.charClassPrimary || ""); setVal("charClassNotes", data.charClassNotes || ""); setVal("multiClassName", data.multiClassName || ""); setVal("multiClassLevel", data.multiClassLevel || 0); setVal("multiClass3Name", data.multiClass3Name || ""); setVal("multiClass3Level", data.multiClass3Level || 0); setVal("charLevel", data.level || 1); setVal("charBackground", data.background || ""); setVal("charHeight", data.height || ""); setVal("charWeight", data.weight || ""); setVal("charSpeed", data.speed || "9m"); setVal("hpMax", data.hpMax || ""); setVal("hpCurrent", data.hpCurrent || ""); setVal("hitDice", data.hitDice || "");
+                    setVal("charName", data.name || ""); setVal("charRace", data.charRace || ""); setVal("charClassPrimary", data.charClassPrimary || ""); setVal("charClassNotes", data.charClassNotes || ""); setVal("multiClassName", data.multiClassName || ""); setVal("multiClassLevel", data.multiClassLevel || 0); setVal("multiClass3Name", data.multiClass3Name || ""); setVal("multiClass3Level", data.multiClass3Level || 0); setVal("charLevel", data.level || 1); setVal("charBackground", data.background || ""); setVal("charHeight", data.height || ""); setVal("charWeight", data.weight || ""); setVal("charSpeed", data.speed || "30ft"); setVal("hpMax", data.hpMax || ""); setVal("hpCurrent", data.hpCurrent || ""); setVal("hitDice", data.hitDice || "");
                     setVal("maxWeight", data.maxWeight || 150);
 
                     setVal("baseACInput", data.baseACInput || 10);
@@ -1792,8 +1835,6 @@
             };
             reader.readAsText(file);
         }
-
-        window.onload = init;
     </script>
 </body>
 </html>
