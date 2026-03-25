@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&D 5e Character Manager - v1.30</title>
+    <title>D&D 5e Character Manager - v1.31</title>
     <style>
         /* Base Variables */
         :root {
@@ -49,7 +49,6 @@
             flex-wrap: wrap;
             gap: 20px;
             width: 100%;
-            max-width: 1800px;
             margin: 0 auto;
             align-items: flex-start;
         }
@@ -72,9 +71,7 @@
             resize: both; 
             overflow: auto; 
             min-height: 200px;
-        }
-        
-        .panel:not(.header-panel) {
+            
             display: flex;
             flex-direction: column;
         }
@@ -89,7 +86,7 @@
             .span-2 { width: 820px; }
         }
 
-        /* Nuova Griglia Personaggio */
+        /* Griglia Personaggio */
         .char-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -193,7 +190,7 @@
 
         /* Changelog Modal */
         .modal {
-            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
         }
         .modal-content {
             background-color: var(--panel-bg); margin: 5% auto; padding: 20px; border: 1px solid var(--accent-color); width: 80%; max-width: 800px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
@@ -208,7 +205,6 @@
         .log-ul { margin-top: 5px; padding-left: 20px; font-size: 0.95em;}
         .log-ul li { margin-bottom: 4px; }
 
-        /* Dynamic Responsive */
         @media (max-width: 768px) {
             .panel { flex: 1 1 100% !important; width: 100% !important; height: auto !important; resize: none; }
         }
@@ -217,7 +213,7 @@
 <body>
 
     <div class="menu-bar">
-        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span class="version-tag">v1.30</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
+        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span class="version-tag">v1.31</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
         
         <div style="margin-left: 20px; display: flex; gap: 5px;">
             <button class="lang-btn active" onclick="setLanguage('en')" id="btn-lang-en">EN</button>
@@ -228,7 +224,8 @@
         </div>
 
         <div style="margin-left: auto; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <span id="headerCharNameDisplay" style="color: var(--accent-color); font-weight: bold; font-size: 1.2em; margin-right: 15px;"></span>
+            <span id="headerCharNameDisplay" style="color: var(--accent-color); font-weight: bold; font-size: 1.2em;"></span>
+            <span id="fileInfoDisplay" style="font-size: 0.85em; color: #888; font-family: monospace; border-left: 1px solid #444; padding-left: 10px; margin-right: 10px;" data-i18n="lblUnsaved">[Unsaved]</span>
             
             <button id="toggleModeBtn" onclick="toggleViewMode()" style="background: #ff9800; color: #fff;" data-i18n="readMode">Read Mode</button>
             <button onclick="stampaScheda()" style="background: #2196F3; color: white;" data-i18n="summary">Summary</button>
@@ -243,44 +240,36 @@
             <span class="close-modal" onclick="closeChangelog()">&times;</span>
             <h2 style="margin-top: 0;" data-i18n="changelogTitle">Changelog</h2>
 
-            <div class="log-version">v1.30 - Attuale</div>
-            <span class="log-note">Restyling Header, Sintesi Multilingua e UI Combattimento.</span>
+            <div class="log-version">v1.31 - Attuale</div>
+            <span class="log-note">Tracciamento File, Fix i18n Avvio.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li><strong>Box Personaggio:</strong> Rimosso il campo Background inutile. Il layout dell'intestazione è stato formattato a griglia: etichette a sinistra, valori giustificati a destra per un look elegante e coerente.</li>
-                <li><strong>Box Combattimento:</strong> Modificato l'ordine per mostrare per primi Iniziativa, Percezione Passiva e Velocità. Quest'ultima ha ora lo stesso formato evidenziato della CA Totale.</li>
-                <li><strong>Sintesi Perfetta:</strong> Le etichette nel foglio di Sintesi ora rispondono fedelmente al selettore della lingua.</li>
+                <li><strong>Info File:</strong> La barra di intestazione superiore ora traccia e visualizza costantemente il nome dell'ultimo file JSON caricato o salvato, insieme al timestamp dell'ultimo salvataggio.</li>
+                <li><strong>Log Dati:</strong> La data dell'ultimo salvataggio (<code>lastSaveDate</code>) e il nome del file vengono permanentemente registrati all'interno del JSON.</li>
             </ul>
             <div class="log-section log-fix">Fix:</div>
             <ul class="log-ul">
-                <li>Risolto il problema che lasciava le etichette vuote all'apertura del file locale prima di completare il caricamento. Il motore i18n ora si avvia istantaneamente (DOMContentLoaded).</li>
+                <li>Risolto definitivamente il problema dell'etichetta temporanea "appTitle" visualizzata durante i primi millisecondi di avvio dell'app. I testi inglesi di default sono fusi nel DOM.</li>
             </ul>
 
-            <div class="log-version">v1.29</div>
-            <span class="log-note">Liberazione dei vincoli spaziali.</span>
+            <div class="log-version">v1.30</div>
+            <span class="log-note">Restyling Header, Sintesi Multilingua e UI Combattimento.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li>Rimosso il limite strutturale di `max-width`. L'interfaccia ora scala occupando il 100% dello spazio.</li>
-                <li>Il Box Personaggio si comporta come gli altri pannelli (ridimensionabile, affiancabile).</li>
+                <li><strong>Box Personaggio:</strong> Rimosso il campo Background. Layout a griglia elegante.</li>
+                <li><strong>Box Combattimento:</strong> Riordinate le statistiche dando priorità a Iniziativa, Percezione e Velocità (in stile highlight).</li>
+                <li>Sintesi di stampa integrata nativamente con il dizionario multilingua.</li>
             </ul>
 
-            <div class="log-version">v1.28</div>
-            <span class="log-note">Sistema Modificatori Esteso.</span>
+            <div class="log-version">v1.27 - v1.29</div>
+            <span class="log-note">Sistema Modificatori, Pesi, Liberazione Layout.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li>Aggiunti campi per specificare i bonus al TPC e ai Danni nelle armi.</li>
-                <li>Sistema di potenziamento universale (Statistiche, TPC, Danno) applicabile tramite menu a tendina.</li>
+                <li>Rimosso `max-width` strutturale. Layout full-screen fluido 100%.</li>
+                <li>Sistema di calcolo "Carico Trasportato" automatico (kg).</li>
+                <li>Modificatori integrati per Statistiche, TPC e Danni negli equipaggiamenti con riepilogo a schermo.</li>
             </ul>
 
-            <div class="log-version">v1.26 - v1.27</div>
-            <span class="log-note">Tracciamento, Pesi e Modificatori.</span>
-            <div class="log-section log-miglioramenti">Miglioramenti:</div>
-            <ul class="log-ul">
-                <li>LIFO (Last In, First Out) e Timestamp dinamico per inserimenti/modifiche.</li>
-                <li>Sistema Carico (kg) per inventario con somma automatica.</li>
-                <li>Aggiunto campo <code>higherLevelSlot</code> incantesimi, popolato da Database.</li>
-            </ul>
-            
             <div style="text-align: center; margin-top: 30px; font-size: 0.8em; color: #666;">
                 Developed with dedication by Ambrogio for the President of the World.
             </div>
@@ -289,7 +278,7 @@
 
     <div class="container" id="mainContainer">
         
-        <div class="panel span-2 header-panel" id="panel-header">
+        <div class="panel span-2" id="panel-header">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
             <h2 class="panel-title" style="width: 100%;"><span data-i18n="pCharacter">Character</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-header', 'Personaggio')" title="Hide">👁️</button></h2>
             
@@ -692,8 +681,11 @@
     </div>
 
     <script>
-        const APP_VERSION = "1.30";
+        const APP_VERSION = "1.31";
         
+        let currentFileName = "";
+        let currentSaveDate = "";
+
         // --- MULTILINGUAL DICTIONARY (i18n) ---
         const i18n = {
             en: {
@@ -715,7 +707,8 @@
                 optNone: "-- Target --", optStr: "STR", optDex: "DEX", optCon: "CON", optInt: "INT", optWis: "WIS", optCha: "CHA", optAtk: "Attack", optDmg: "Damage",
                 phTraitName: "Trait Name", phFeatName: "Feature Name", phDesc: "Description (max 200 char)", phOtherNotes: "Other notes (max 200 char)", phProp: "Properties (max 200 char)", phWeaponProps: "Properties (Finesse, Light, Heavy...)", phDetails: "Details (optional)", phWeight: "kg", phAtkBonus: "Atk", phDmgBonus: "Dmg",
                 phSpellName: "Spell Name", phSchool: "School", phRange: "Range", phDuration: "Duration", phClasses: "Classes (e.g. Wizard)", phDescEff: "Description & Effects", phCantrip: "Cantrip Upgrade (if any)", phHigherLevel: "At Higher Levels",
-                printStats: "Stats", printTraits: "Traits", printFeatures: "Features", printMulti: "Multi Features", printArmor: "Armor", printWeapons: "Weapons", printEquip: "Equipment", printFeats: "Feats", printSpells: "Spells"
+                printStats: "Stats", printTraits: "Traits", printFeatures: "Features", printMulti: "Multi Features", printArmor: "Armor", printWeapons: "Weapons", printEquip: "Equipment", printFeats: "Feats", printSpells: "Spells",
+                lblFile: "File", lblSaved: "Saved", lblUnsaved: "Unsaved", lblNoSave: "Never"
             },
             it: {
                 appTitle: "Gestione Personaggio D&D 5e", readMode: "Lettura", editMode: "Modifica", summary: "Sintesi", save: "Salva", open: "Apri", changelogTitle: "Registro Aggiornamenti",
@@ -736,7 +729,8 @@
                 optNone: "-- Bersaglio --", optStr: "FOR", optDex: "DES", optCon: "COS", optInt: "INT", optWis: "SAG", optCha: "CAR", optAtk: "TPC", optDmg: "Danno",
                 phTraitName: "Nome Tratto", phFeatName: "Nome Privilegio", phDesc: "Descrizione (max 200 car.)", phOtherNotes: "Altre note (max 200 car.)", phProp: "Proprietà (max 200 car.)", phWeaponProps: "Proprietà (Accurata, Leggera...)", phDetails: "Dettagli (opzionale)", phWeight: "kg", phAtkBonus: "TPC", phDmgBonus: "Danno",
                 phSpellName: "Nome Incantesimo", phSchool: "Scuola", phRange: "Raggio", phDuration: "Durata", phClasses: "Classi (es. Mago)", phDescEff: "Descrizione e Effetti", phCantrip: "Miglioramento Trucchetto", phHigherLevel: "Lanciato a Livelli Superiori",
-                printStats: "Statistiche", printTraits: "Tratti", printFeatures: "Privilegi", printMulti: "Priv. Multiclasse", printArmor: "Armature", printWeapons: "Armi", printEquip: "Equipaggiamento", printFeats: "Talenti", printSpells: "Incantesimi"
+                printStats: "Statistiche", printTraits: "Tratti", printFeatures: "Privilegi", printMulti: "Priv. Multiclasse", printArmor: "Armature", printWeapons: "Armi", printEquip: "Equipaggiamento", printFeats: "Talenti", printSpells: "Incantesimi",
+                lblFile: "File", lblSaved: "Salvato", lblUnsaved: "Non salvato", lblNoSave: "Mai"
             },
             fr: {
                 appTitle: "Gestion de Personnage D&D 5e", readMode: "Lecture", editMode: "Modifier", summary: "Résumé", save: "Enregistrer", open: "Ouvrir", changelogTitle: "Journal des modifications",
@@ -757,7 +751,8 @@
                 optNone: "-- Cible --", optStr: "FOR", optDex: "DEX", optCon: "CON", optInt: "INT", optWis: "SAG", optCha: "CHA", optAtk: "Attaque", optDmg: "Dégâts",
                 phTraitName: "Nom du Trait", phFeatName: "Nom de la Capacité", phDesc: "Description (max 200 car.)", phOtherNotes: "Autres notes (max 200 car.)", phProp: "Propriétés (max 200 car.)", phWeaponProps: "Propriétés (Finesse, Lourd...)", phDetails: "Détails (optionnel)", phWeight: "kg", phAtkBonus: "Att", phDmgBonus: "Dég",
                 phSpellName: "Nom du Sort", phSchool: "École", phRange: "Portée", phDuration: "Durée", phClasses: "Classes (ex. Magicien)", phDescEff: "Description et Effets", phCantrip: "Amélioration Mineur", phHigherLevel: "Aux Niveaux Supérieurs",
-                printStats: "Statistiques", printTraits: "Traits", printFeatures: "Capacités", printMulti: "Capacités Multiclasses", printArmor: "Armures", printWeapons: "Armes", printEquip: "Équipement", printFeats: "Dons", printSpells: "Sorts"
+                printStats: "Statistiques", printTraits: "Traits", printFeatures: "Capacités", printMulti: "Capacités Multiclasses", printArmor: "Armures", printWeapons: "Armes", printEquip: "Équipement", printFeats: "Dons", printSpells: "Sorts",
+                lblFile: "Fichier", lblSaved: "Enregistré", lblUnsaved: "Non enregistré", lblNoSave: "Jamais"
             },
             de: {
                 appTitle: "D&D 5e Charakter-Manager", readMode: "Lese-Modus", editMode: "Bearbeiten", summary: "Zusammenfassung", save: "Speichern", open: "Öffnen", changelogTitle: "Änderungsprotokoll",
@@ -778,7 +773,8 @@
                 optNone: "-- Ziel --", optStr: "STR", optDex: "GES", optCon: "KON", optInt: "INT", optWis: "WEI", optCha: "CHA", optAtk: "Angriff", optDmg: "Schaden",
                 phTraitName: "Merkmalname", phFeatName: "Klassenmerkmalname", phDesc: "Beschreibung (max. 200)", phOtherNotes: "Weitere Notizen (max 200)", phProp: "Eigenschaften (max. 200)", phWeaponProps: "Eigenschaften (Leicht, Schwer...)", phDetails: "Details (optional)", phWeight: "kg", phAtkBonus: "Angr", phDmgBonus: "Schad",
                 phSpellName: "Zaubername", phSchool: "Schule", phRange: "Reichweite", phDuration: "Dauer", phClasses: "Klassen (z.B. Magier)", phDescEff: "Beschreibung & Effekte", phCantrip: "Zaubertrick-Verbesserung", phHigherLevel: "Auf höheren Stufen",
-                printStats: "Attribute", printTraits: "Merkmale", printFeatures: "Klassenmerkmale", printMulti: "Zusätzliche Merkmale", printArmor: "Rüstung", printWeapons: "Waffen", printEquip: "Ausrüstung", printFeats: "Talente", printSpells: "Zauber"
+                printStats: "Attribute", printTraits: "Merkmale", printFeatures: "Klassenmerkmale", printMulti: "Zusätzliche Merkmale", printArmor: "Rüstung", printWeapons: "Waffen", printEquip: "Ausrüstung", printFeats: "Talente", printSpells: "Zauber",
+                lblFile: "Datei", lblSaved: "Gespeichert", lblUnsaved: "Ungespeichert", lblNoSave: "Nie"
             },
             es: {
                 appTitle: "Gestor de Personaje D&D 5e", readMode: "Lectura", editMode: "Editar", summary: "Resumen", save: "Guardar", open: "Abrir", changelogTitle: "Registro de Cambios",
@@ -799,7 +795,8 @@
                 optNone: "-- Objetivo --", optStr: "FUE", optDex: "DES", optCon: "CON", optInt: "INT", optWis: "SAB", optCha: "CAR", optAtk: "Ataque", optDmg: "Daño",
                 phTraitName: "Nombre del Rasgo", phFeatName: "Nombre del Rasgo", phDesc: "Descripción (máx 200 car.)", phOtherNotes: "Otras notas (máx 200)", phProp: "Propiedades (máx 200 car.)", phWeaponProps: "Propiedades (Sutil, Pesada...)", phDetails: "Detalles (opcional)", phWeight: "kg", phAtkBonus: "Ataq", phDmgBonus: "Daño",
                 phSpellName: "Nombre del Conjuro", phSchool: "Escuela", phRange: "Alcance", phDuration: "Duración", phClasses: "Clases (ej. Mago)", phDescEff: "Descripción y Efectos", phCantrip: "Mejora de Truco", phHigherLevel: "A Niveles Superiores",
-                printStats: "Características", printTraits: "Rasgos", printFeatures: "Rasgos de Clase", printMulti: "Rasgos Adicionales", printArmor: "Armadura", printWeapons: "Armas", printEquip: "Equipamiento", printFeats: "Dotes", printSpells: "Conjuros"
+                printStats: "Características", printTraits: "Rasgos", printFeatures: "Rasgos de Clase", printMulti: "Rasgos Adicionales", printArmor: "Armadura", printWeapons: "Armas", printEquip: "Equipamiento", printFeats: "Dotes", printSpells: "Conjuros",
+                lblFile: "Archivo", lblSaved: "Guardado", lblUnsaved: "No guardado", lblNoSave: "Nunca"
             }
         };
 
@@ -829,6 +826,7 @@
             renderHiddenPanels();
             updateSheet();
             updateEquipModSummary();
+            updateFileInfo();
             loadSpellsDB(); 
         }
 
@@ -928,6 +926,21 @@
                 headerDisplay.textContent = nameField.value ? `- ${nameField.value} -` : "";
             }
         }
+        
+        // --- File Info Display ---
+        function updateFileInfo() {
+            const display = document.getElementById("fileInfoDisplay");
+            if (!display) return;
+            
+            if (currentFileName) {
+                const lblF = i18n[currentLang].lblFile || "File";
+                const lblS = i18n[currentLang].lblSaved || "Saved";
+                const safeDate = currentSaveDate || (i18n[currentLang].lblNoSave || "Never");
+                display.textContent = `[📁 ${currentFileName} | 💾 ${safeDate}]`;
+            } else {
+                display.textContent = `[${i18n[currentLang].lblUnsaved || "Unsaved"}]`;
+            }
+        }
 
         // --- Application Init ---
         document.addEventListener("DOMContentLoaded", function() {
@@ -939,6 +952,7 @@
             renderSlotProgressions();
             renderHiddenPanels();
             updateHeaderName();
+            updateFileInfo();
             
             window.onclick = function(event) {
                 const modal = document.getElementById('changelogModal');
@@ -1140,6 +1154,7 @@
             updateTotalWeight();
         }
 
+        // --- NEW Weight System ---
         function updateTotalWeight() {
             let totalWeight = 0;
             ['weapons', 'equipment', 'protections'].forEach(list => {
@@ -1155,6 +1170,7 @@
             }
         }
         
+        // --- NEW Equipment Modifier Summary ---
         function updateEquipModSummary() {
             const summary = {};
             charLists.equipment.forEach(item => {
@@ -1435,6 +1451,7 @@
                     if (item.magic) titleExtras += ` <span style="color:#00bcd4; font-size:0.8em;">[M]</span>`;
                 }
 
+                // Generics Modifiers for Traits, Feats, Equip
                 if (item.modVal && item.modTarget) {
                     const transTargetKey = 'opt' + item.modTarget.charAt(0).toUpperCase() + item.modTarget.slice(1);
                     const transTarget = i18n[currentLang][transTargetKey] || item.modTarget;
@@ -1609,7 +1626,7 @@
             const totWeight = document.getElementById("totalWeightDisplay") ? document.getElementById("totalWeightDisplay").textContent : 0;
             const maxWeight = safeVal("maxWeight") || 150;
 
-            const t = i18n[currentLang]; // Translation reference
+            const t = i18n[currentLang]; 
 
             let printWin = window.open('', '_blank');
             let content = `
@@ -1673,7 +1690,7 @@
                     html += `<div class="item"><span class="item-title">- ${item.name}</span>${extra}`;
                     
                     if(list === charLists.weapons && item.props) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>Prop: ${item.props}</i></span>`;
-                    if(isSpell && item.classes) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>${t.lblClassesSpells || "Classes:"} ${item.classes}</i></span>`;
+                    if(isSpell && item.classes) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>${i18n[currentLang].lblClassesSpells || "Classes:"} ${item.classes}</i></span>`;
                     
                     if(item.desc) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; white-space: pre-wrap;">${item.desc}</span>`;
                     if(isSpell && item.cantripUpgrade) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; color: #555;"><strong>Upgrade:</strong> ${item.cantripUpgrade}</span>`;
@@ -1707,9 +1724,15 @@
                 if(p.style.width || p.style.height) panelSizes[p.id] = { width: p.style.width, height: p.style.height };
             });
 
+            // Updating Save Date & Filename
+            currentSaveDate = new Date().toLocaleString();
+            currentFileName = `${safeVal("charName") || "Character"}_v${APP_VERSION}.json`;
+
             const charData = {
                 version: APP_VERSION,
                 language: currentLang,
+                lastSaveDate: currentSaveDate,
+                fileName: currentFileName,
                 name: safeVal("charName"),
                 charRace: safeVal("charRace"),
                 charClassPrimary: safeVal("charClassPrimary"),
@@ -1751,14 +1774,19 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = `${charData.name || "Character"}_v${APP_VERSION}.json`;
+            a.download = currentFileName;
             a.click();
             URL.revokeObjectURL(url);
+            
+            updateFileInfo();
         }
 
         function caricaJSON(event) {
             const file = event.target.files[0];
             if (!file) return;
+            
+            currentFileName = file.name;
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
@@ -1767,6 +1795,8 @@
                     if (data.language && i18n[data.language]) {
                         setLanguage(data.language);
                     }
+
+                    currentSaveDate = data.lastSaveDate || i18n[currentLang].lblNoSave || "Mai";
 
                     const setVal = (id, val) => { if(document.getElementById(id)) document.getElementById(id).value = val; };
                     const setCheck = (id, val) => { if(document.getElementById(id)) document.getElementById(id).checked = !!val; };
@@ -1829,6 +1859,7 @@
 
                     updateSheet();
                     updateHeaderName();
+                    updateFileInfo();
                     
                     if (document.body.classList.contains('view-mode')) applyViewModeState(true);
                 } catch (err) { alert("Invalid save file."); console.error(err); }
