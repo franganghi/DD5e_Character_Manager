@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&D 5e Character Manager - v1.31</title>
+    <title>D&D 5e Character Manager - v1.32</title>
     <style>
         /* Base Variables */
         :root {
@@ -213,7 +213,7 @@
 <body>
 
     <div class="menu-bar">
-        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span class="version-tag">v1.31</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
+        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span class="version-tag">v1.32</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
         
         <div style="margin-left: 20px; display: flex; gap: 5px;">
             <button class="lang-btn active" onclick="setLanguage('en')" id="btn-lang-en">EN</button>
@@ -240,25 +240,26 @@
             <span class="close-modal" onclick="closeChangelog()">&times;</span>
             <h2 style="margin-top: 0;" data-i18n="changelogTitle">Changelog</h2>
 
-            <div class="log-version">v1.31 - Attuale</div>
+            <div class="log-version">v1.32 - Attuale</div>
+            <span class="log-note">Automazione Database Armi.</span>
+            <div class="log-section log-miglioramenti">Miglioramenti:</div>
+            <ul class="log-ul">
+                <li><strong>Integrazione DB Armi:</strong> Aggiunto menu a tendina nel box Armi per caricare i dati direttamente dalla cartella <code>jsons/</code>.</li>
+                <li>Compilazione automatica di Nome, Danno, Peso, Proprietà e Descrizione estraendoli da <code>weapons.json</code> (o versioni tradotte).</li>
+            </ul>
+
+            <div class="log-version">v1.31</div>
             <span class="log-note">Tracciamento File, Fix i18n Avvio.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li><strong>Info File:</strong> La barra di intestazione superiore ora traccia e visualizza costantemente il nome dell'ultimo file JSON caricato o salvato, insieme al timestamp dell'ultimo salvataggio.</li>
-                <li><strong>Log Dati:</strong> La data dell'ultimo salvataggio (<code>lastSaveDate</code>) e il nome del file vengono permanentemente registrati all'interno del JSON.</li>
-            </ul>
-            <div class="log-section log-fix">Fix:</div>
-            <ul class="log-ul">
-                <li>Risolto definitivamente il problema dell'etichetta temporanea "appTitle" visualizzata durante i primi millisecondi di avvio dell'app. I testi inglesi di default sono fusi nel DOM.</li>
+                <li>La barra di intestazione superiore ora traccia e visualizza costantemente il nome dell'ultimo file JSON caricato o salvato, insieme al timestamp dell'ultimo salvataggio.</li>
             </ul>
 
             <div class="log-version">v1.30</div>
             <span class="log-note">Restyling Header, Sintesi Multilingua e UI Combattimento.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li><strong>Box Personaggio:</strong> Rimosso il campo Background. Layout a griglia elegante.</li>
-                <li><strong>Box Combattimento:</strong> Riordinate le statistiche dando priorità a Iniziativa, Percezione e Velocità (in stile highlight).</li>
-                <li>Sintesi di stampa integrata nativamente con il dizionario multilingua.</li>
+                <li>Box Personaggio: Layout a griglia elegante. Box Combattimento: Riordinate le statistiche.</li>
             </ul>
 
             <div class="log-version">v1.27 - v1.29</div>
@@ -504,6 +505,13 @@
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
             <h2 class="panel-title"><span data-i18n="pWeapons">Weapons</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-weapons', 'Armi')">👁️</button></h2>
             <div class="input-group edit-only">
+                
+                <div style="display:flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; padding: 5px; border: 1px solid var(--accent-color); border-radius: 4px;">
+                    <label style="width: 100%; color: var(--accent-color); font-size: 0.85em;" data-i18n="lblWeapDbLoad">Load from Database:</label>
+                    <select id="weaponDbSelect" onchange="onWeaponSelect()" style="flex-grow: 1;">
+                        </select>
+                </div>
+
                 <div style="display: flex; flex-wrap: wrap; gap: 5px;">
                     <input type="text" id="weaponName" placeholder="Weapon Name" style="flex-grow: 1;">
                     <input type="number" id="weaponAtkBonus" placeholder="Atk" data-i18n-ph="phAtkBonus" style="width: 70px;">
@@ -681,7 +689,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "1.31";
+        const APP_VERSION = "1.32";
         
         let currentFileName = "";
         let currentSaveDate = "";
@@ -703,6 +711,7 @@
                 pWiz: "Wizard Preparation", lblWizLvl: "Wizard Level:", lblWizInt: "INT Mod:", lblWizPrep: "Prepared Spells:", lblWizNote: "(Auto-calc: Wizard Level + INT Modifier. Min 1 if level > 0)",
                 pSlots: "Spell Slots", btnAddCareer: "Add Career",
                 pSpells: "Spells", lblDbLoad: "Load from Database:", optSelectSpell: "-- Select a Spell --", btnAddSpell: "Add Spell", lblClassesSpells: "Classes:", lblHigherLvl: "Higher Levels:",
+                lblWeapDbLoad: "Load from Database:", optSelectWeap: "-- Select a Weapon --",
                 pNotes: "Notes & Backstory", lblHiddenPanels: "Hidden Panels",
                 optNone: "-- Target --", optStr: "STR", optDex: "DEX", optCon: "CON", optInt: "INT", optWis: "WIS", optCha: "CHA", optAtk: "Attack", optDmg: "Damage",
                 phTraitName: "Trait Name", phFeatName: "Feature Name", phDesc: "Description (max 200 char)", phOtherNotes: "Other notes (max 200 char)", phProp: "Properties (max 200 char)", phWeaponProps: "Properties (Finesse, Light, Heavy...)", phDetails: "Details (optional)", phWeight: "kg", phAtkBonus: "Atk", phDmgBonus: "Dmg",
@@ -725,6 +734,7 @@
                 pWiz: "Preparazione Incantesimi (Mago)", lblWizLvl: "Livello da Mago:", lblWizInt: "Modificatore INT:", lblWizPrep: "Totale Preparabili:", lblWizNote: "(Calcolo: Livello Mago + Mod. INT. Minimo 1)",
                 pSlots: "Slot Incantesimi", btnAddCareer: "Aggiungi Carriera",
                 pSpells: "Tutti gli Incantesimi", lblDbLoad: "Carica dal Database:", optSelectSpell: "-- Seleziona Incantesimo --", btnAddSpell: "Aggiungi Incantesimo", lblClassesSpells: "Classi:", lblHigherLvl: "Ai Livelli Superiori:",
+                lblWeapDbLoad: "Carica dal Database:", optSelectWeap: "-- Seleziona Arma --",
                 pNotes: "Note Generali e Storia", lblHiddenPanels: "Pannelli Nascosti",
                 optNone: "-- Bersaglio --", optStr: "FOR", optDex: "DES", optCon: "COS", optInt: "INT", optWis: "SAG", optCha: "CAR", optAtk: "TPC", optDmg: "Danno",
                 phTraitName: "Nome Tratto", phFeatName: "Nome Privilegio", phDesc: "Descrizione (max 200 car.)", phOtherNotes: "Altre note (max 200 car.)", phProp: "Proprietà (max 200 car.)", phWeaponProps: "Proprietà (Accurata, Leggera...)", phDetails: "Dettagli (opzionale)", phWeight: "kg", phAtkBonus: "TPC", phDmgBonus: "Danno",
@@ -747,6 +757,7 @@
                 pWiz: "Préparation (Magicien)", lblWizLvl: "Niveau Magicien:", lblWizInt: "Mod. INT:", lblWizPrep: "Sorts Préparés:", lblWizNote: "(Calcul: Niv + INT. Minimum 1)",
                 pSlots: "Emplacements de Sorts", btnAddCareer: "Ajouter Carrière",
                 pSpells: "Sorts", lblDbLoad: "Charger depuis la base de données:", optSelectSpell: "-- Sélectionner un Sort --", btnAddSpell: "Ajouter Sort", lblClassesSpells: "Classes:", lblHigherLvl: "Niveaux Supérieurs:",
+                lblWeapDbLoad: "Charger depuis la base de données:", optSelectWeap: "-- Sélectionner une Arme --",
                 pNotes: "Notes et Histoire", lblHiddenPanels: "Panneaux Masqués",
                 optNone: "-- Cible --", optStr: "FOR", optDex: "DEX", optCon: "CON", optInt: "INT", optWis: "SAG", optCha: "CHA", optAtk: "Attaque", optDmg: "Dégâts",
                 phTraitName: "Nom du Trait", phFeatName: "Nom de la Capacité", phDesc: "Description (max 200 car.)", phOtherNotes: "Autres notes (max 200 car.)", phProp: "Propriétés (max 200 car.)", phWeaponProps: "Propriétés (Finesse, Lourd...)", phDetails: "Détails (optionnel)", phWeight: "kg", phAtkBonus: "Att", phDmgBonus: "Dég",
@@ -769,6 +780,7 @@
                 pWiz: "Magier-Vorbereitung", lblWizLvl: "Magierstufe:", lblWizInt: "INT-Mod:", lblWizPrep: "Vorbereitete Zauber:", lblWizNote: "(Auto: Stufe + INT. Minimum 1)",
                 pSlots: "Zauberplätze", btnAddCareer: "Karriere hinzufügen",
                 pSpells: "Zauber", lblDbLoad: "Aus Datenbank laden:", optSelectSpell: "-- Zauber auswählen --", btnAddSpell: "Zauber hinzufügen", lblClassesSpells: "Klassen:", lblHigherLvl: "Auf höheren Stufen:",
+                lblWeapDbLoad: "Aus Datenbank laden:", optSelectWeap: "-- Waffe auswählen --",
                 pNotes: "Notizen & Hintergrund", lblHiddenPanels: "Versteckte Panels",
                 optNone: "-- Ziel --", optStr: "STR", optDex: "GES", optCon: "KON", optInt: "INT", optWis: "WEI", optCha: "CHA", optAtk: "Angriff", optDmg: "Schaden",
                 phTraitName: "Merkmalname", phFeatName: "Klassenmerkmalname", phDesc: "Beschreibung (max. 200)", phOtherNotes: "Weitere Notizen (max 200)", phProp: "Eigenschaften (max. 200)", phWeaponProps: "Eigenschaften (Leicht, Schwer...)", phDetails: "Details (optional)", phWeight: "kg", phAtkBonus: "Angr", phDmgBonus: "Schad",
@@ -791,6 +803,7 @@
                 pWiz: "Preparación de Mago", lblWizLvl: "Nivel de Mago:", lblWizInt: "Mod INT:", lblWizPrep: "Conjuros Preparados:", lblWizNote: "(Auto: Nivel + INT. Mínimo 1)",
                 pSlots: "Espacios de Conjuros", btnAddCareer: "Añadir Carrera",
                 pSpells: "Conjuros", lblDbLoad: "Cargar desde la base de datos:", optSelectSpell: "-- Seleccionar un Conjuro --", btnAddSpell: "Añadir Conjuro", lblClassesSpells: "Clases:", lblHigherLvl: "A Niveles Superiores:",
+                lblWeapDbLoad: "Cargar desde la base de datos:", optSelectWeap: "-- Seleccionar una Arma --",
                 pNotes: "Notas y Trasfondo", lblHiddenPanels: "Paneles Ocultos",
                 optNone: "-- Objetivo --", optStr: "FUE", optDex: "DES", optCon: "CON", optInt: "INT", optWis: "SAB", optCha: "CAR", optAtk: "Ataque", optDmg: "Daño",
                 phTraitName: "Nombre del Rasgo", phFeatName: "Nombre del Rasgo", phDesc: "Descripción (máx 200 car.)", phOtherNotes: "Otras notas (máx 200)", phProp: "Propiedades (máx 200 car.)", phWeaponProps: "Propiedades (Sutil, Pesada...)", phDetails: "Detalles (opcional)", phWeight: "kg", phAtkBonus: "Ataq", phDmgBonus: "Daño",
@@ -828,6 +841,7 @@
             updateEquipModSummary();
             updateFileInfo();
             loadSpellsDB(); 
+            loadWeaponsDB();
         }
 
         // Base Data
@@ -858,8 +872,9 @@
             languages: [], protections: [], slotProgressions: [], hiddenPanels: []
         };
 
-        // --- Spells DB Logic ---
+        // --- Data Bases (JSON) ---
         let spellDatabase = [];
+        let weaponDatabase = [];
 
         async function loadSpellsDB() {
             const sel = document.getElementById("spellDbSelect");
@@ -867,7 +882,7 @@
             sel.innerHTML = `<option value="" data-i18n="optSelectSpell">${i18n[currentLang].optSelectSpell || "-- Select a Spell --"}</option>`;
             
             try {
-                const response = await fetch(`spells_${currentLang}.json`);
+                const response = await fetch(`jsons/spells_${currentLang}.json`);
                 if (response.ok) {
                     spellDatabase = await response.json();
                     spellDatabase.sort((a,b) => a.name.localeCompare(b.name));
@@ -880,8 +895,34 @@
                     });
                 }
             } catch (e) {
-                console.log(`Error loading spells_${currentLang}.json. Remember to use a local web server to bypass CORS issues.`, e);
+                console.log(`Error loading jsons/spells_${currentLang}.json. Remember to use a local web server to bypass CORS issues.`, e);
                 spellDatabase = [];
+            }
+        }
+
+        async function loadWeaponsDB() {
+            const sel = document.getElementById("weaponDbSelect");
+            if(!sel) return;
+            sel.innerHTML = `<option value="" data-i18n="optSelectWeap">${i18n[currentLang].optSelectWeap || "-- Select a Weapon --"}</option>`;
+            
+            try {
+                let response = await fetch(`jsons/weapons_${currentLang}.json`);
+                if (!response.ok) response = await fetch(`jsons/weapons.json`); // Fallback
+
+                if (response.ok) {
+                    weaponDatabase = await response.json();
+                    weaponDatabase.sort((a,b) => a.name.localeCompare(b.name));
+                    
+                    weaponDatabase.forEach((weap, index) => {
+                        let opt = document.createElement('option');
+                        opt.value = index;
+                        opt.textContent = weap.name;
+                        sel.appendChild(opt);
+                    });
+                }
+            } catch (e) {
+                console.log(`Error loading weapons DB. Remember to use a local web server.`, e);
+                weaponDatabase = [];
             }
         }
 
@@ -916,6 +957,26 @@
             if (spell.ritual) meta += " [R]";
             
             document.getElementById("spellDesc").value = (meta ? meta + "\n" : "") + fullDesc;
+        }
+
+        function onWeaponSelect() {
+            const sel = document.getElementById("weaponDbSelect");
+            if (sel.value === "") return;
+            
+            const weap = weaponDatabase[sel.value];
+            document.getElementById("weaponName").value = weap.name || "";
+            document.getElementById("weaponDamage").value = weap.damage || "";
+            document.getElementById("weaponWeight").value = weap.weight || "";
+            
+            let propsStr = "";
+            if (Array.isArray(weap.properties)) propsStr = weap.properties.join(', ');
+            else if (weap.properties) propsStr = weap.properties;
+            document.getElementById("weaponProps").value = propsStr;
+            
+            document.getElementById("weaponDesc").value = weap.description || "";
+            
+            document.getElementById("weaponAtkBonus").value = "";
+            document.getElementById("weaponDmgBonus").value = "";
         }
 
         // --- Header Dynamic Name ---
@@ -1349,6 +1410,9 @@
             document.getElementById('weaponAtkBonus').value = '';
             document.getElementById('weaponDmgBonus').value = '';
             
+            const dbSel = document.getElementById("weaponDbSelect");
+            if (dbSel) dbSel.value = "";
+
             renderCustomList('weapons');
         }
 
@@ -1690,7 +1754,7 @@
                     html += `<div class="item"><span class="item-title">- ${item.name}</span>${extra}`;
                     
                     if(list === charLists.weapons && item.props) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>Prop: ${item.props}</i></span>`;
-                    if(isSpell && item.classes) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>${i18n[currentLang].lblClassesSpells || "Classes:"} ${item.classes}</i></span>`;
+                    if(isSpell && item.classes) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>${t.lblClassesSpells || "Classes:"} ${item.classes}</i></span>`;
                     
                     if(item.desc) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; white-space: pre-wrap;">${item.desc}</span>`;
                     if(isSpell && item.cantripUpgrade) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; color: #555;"><strong>Upgrade:</strong> ${item.cantripUpgrade}</span>`;
