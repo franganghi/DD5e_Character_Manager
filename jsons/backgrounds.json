@@ -1,0 +1,477 @@
+[
+    {
+        "index": "acolyte",
+        "name": "Acolyte",
+        "starting_proficiencies": [
+            {
+                "index": "skill-insight",
+                "name": "Skill: Insight",
+                "url": {
+                    "target_file": "proficiencies.json",
+                    "target_entry": "skill-insight"
+                }
+            },
+            {
+                "index": "skill-religion",
+                "name": "Skill: Religion",
+                "url": {
+                    "target_file": "proficiencies.json",
+                    "target_entry": "skill-religion"
+                }
+            }
+        ],
+        "language_options": {
+            "choose": 2,
+            "type": "languages",
+            "from": [
+                {
+                    "index": "common",
+                    "name": "Common",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "common"
+                    }
+                },
+                {
+                    "index": "dwarvish",
+                    "name": "Dwarvish",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "dwarvish"
+                    }
+                },
+                {
+                    "index": "elvish",
+                    "name": "Elvish",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "elvish"
+                    }
+                },
+                {
+                    "index": "giant",
+                    "name": "Giant",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "giant"
+                    }
+                },
+                {
+                    "index": "gnomish",
+                    "name": "Gnomish",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "gnomish"
+                    }
+                },
+                {
+                    "index": "goblin",
+                    "name": "Goblin",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "goblin"
+                    }
+                },
+                {
+                    "index": "halfling",
+                    "name": "Halfling",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "halfling"
+                    }
+                },
+                {
+                    "index": "orc",
+                    "name": "Orc",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "orc"
+                    }
+                },
+                {
+                    "index": "abyssal",
+                    "name": "Abyssal",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "abyssal"
+                    }
+                },
+                {
+                    "index": "celestial",
+                    "name": "Celestial",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "celestial"
+                    }
+                },
+                {
+                    "index": "draconic",
+                    "name": "Draconic",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "draconic"
+                    }
+                },
+                {
+                    "index": "deep-speech",
+                    "name": "Deep Speech",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "deep-speech"
+                    }
+                },
+                {
+                    "index": "infernal",
+                    "name": "Infernal",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "infernal"
+                    }
+                },
+                {
+                    "index": "primordial",
+                    "name": "Primordial",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "primordial"
+                    }
+                },
+                {
+                    "index": "sylvan",
+                    "name": "Sylvan",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "sylvan"
+                    }
+                },
+                {
+                    "index": "undercommon",
+                    "name": "Undercommon",
+                    "url": {
+                        "target_file": "languages.json",
+                        "target_entry": "undercommon"
+                    }
+                }
+            ]
+        },
+        "starting_equipment": [
+            {
+                "equipment": {
+                    "index": "clothes-common",
+                    "name": "Clothes, common",
+                    "url": {
+                        "target_file": "equipment.json",
+                        "target_entry": "clothes-common"
+                    }
+                },
+                "quantity": 1
+            },
+            {
+                "equipment": {
+                    "index": "pouch",
+                    "name": "Pouch",
+                    "url": {
+                        "target_file": "equipment.json",
+                        "target_entry": "pouch"
+                    }
+                },
+                "quantity": 1
+            }
+        ],
+        "starting_equipment_options": [
+            {
+                "choose": 1,
+                "type": "equipment",
+                "from": [
+                    {
+                        "equipment_category": {
+                            "index": "holy-symbols",
+                            "name": "Holy Symbols",
+                            "url": {
+                                "target_file": "equipment-categories.json",
+                                "target_entry": "holy-symbols"
+                            }
+                        }
+                    }
+                ]
+            }
+        ],
+        "feature": {
+            "name": "Shelter of the Faithful",
+            "desc": [
+                "As an acolyte, you command the respect of those who share your faith, and you can perform the religious ceremonies of your deity. You and your adventuring companions can expect to receive free healing and care at a temple, shrine, or other established presence of your faith, though you must provide any material components needed for spells. Those who share your religion will support you (but only you) at a modest lifestyle.",
+                "You might also have ties to a specific temple dedicated to your chosen deity or pantheon, and you have a residence there. This could be the temple where you used to serve, if you remain on good terms with it, or a temple where you have found a new home. While near your temple, you can call upon the priests for assistance, provided the assistance you ask for is not hazardous and you remain in good standing with your temple."
+            ]
+        },
+        "personality_traits": {
+            "choose": 2,
+            "type": "personality_traits",
+            "from": [
+                "I idolize a particular hero of my faith, and constantly refer to that person's deeds and example.",
+                "I can find common ground between the fiercest enemies, empathizing with them and always working toward peace.",
+                "I see omens in every event and action. The gods try to speak to us, we just need to listen.",
+                "Nothing can shake my optimistic attitude.",
+                "I quote (or misquote) sacred texts and proverbs in almost every situation.",
+                "I am tolerant (or intolerant) of other faiths and respect (or condemn) the worship of other gods.",
+                "I've enjoyed fine food, drink, and high society among my temple's elite. Rough living grates on me.",
+                "I've spent so long in the temple that I have little practical experience dealing with people in the outside world."
+            ]
+        },
+        "ideals": {
+            "choose": 1,
+            "type": "ideals",
+            "from": [
+                {
+                    "desc": "Tradition. The ancient traditions of worship and sacrifice must be preserved and upheld.",
+                    "alignments": [
+                        {
+                            "index": "lawful-good",
+                            "name": "Lawful Good",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "lawful-good"
+                            }
+                        },
+                        {
+                            "index": "lawful-neutral",
+                            "name": "Lawful Neutral",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "lawful-neutral"
+                            }
+                        },
+                        {
+                            "index": "lawful-evil",
+                            "name": "Lawful Evil",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "lawful-evil"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "desc": "Charity. I always try to help those in need, no matter what the personal cost.",
+                    "alignments": [
+                        {
+                            "index": "lawful-good",
+                            "name": "Lawful Good",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "lawful-good"
+                            }
+                        },
+                        {
+                            "index": "neutral-good",
+                            "name": "Neutral Good",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "neutral-good"
+                            }
+                        },
+                        {
+                            "index": "chaotic-good",
+                            "name": "Chaotic Good",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "chaotic-good"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "desc": "Change. We must help bring about the changes the gods are constantly working in the world.",
+                    "alignments": [
+                        {
+                            "index": "chaotic-good",
+                            "name": "Chaotic Good",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "chaotic-good"
+                            }
+                        },
+                        {
+                            "index": "chaotic-neutral",
+                            "name": "Chaotic Neutral",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "chaotic-neutral"
+                            }
+                        },
+                        {
+                            "index": "chaotic-evil",
+                            "name": "Chaotic Evil",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "chaotic-evil"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "desc": "Power. I hope to one day rise to the top of my faith's religious hierarchy.",
+                    "alignments": [
+                        {
+                            "index": "lawful-good",
+                            "name": "Lawful Good",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "lawful-good"
+                            }
+                        },
+                        {
+                            "index": "lawful-neutral",
+                            "name": "Lawful Neutral",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "lawful-neutral"
+                            }
+                        },
+                        {
+                            "index": "lawful-evil",
+                            "name": "Lawful Evil",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "lawful-evil"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "desc": "Faith. I trust that my deity will guide my actions. I have faith that if I work hard, things will go well.",
+                    "alignments": [
+                        {
+                            "index": "lawful-good",
+                            "name": "Lawful Good",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "lawful-good"
+                            }
+                        },
+                        {
+                            "index": "lawful-neutral",
+                            "name": "Lawful Neutral",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "lawful-neutral"
+                            }
+                        },
+                        {
+                            "index": "lawful-evil",
+                            "name": "Lawful Evil",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "lawful-evil"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "desc": "Aspiration. I seek to prove myself worthy of my god's favor by matching my actions against his or her teachings.",
+                    "alignments": [
+                        {
+                            "index": "lawful-good",
+                            "name": "Lawful Good",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "lawful-good"
+                            }
+                        },
+                        {
+                            "index": "neutral-good",
+                            "name": "Neutral Good",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "neutral-good"
+                            }
+                        },
+                        {
+                            "index": "chaotic-good",
+                            "name": "Chaotic Good",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "chaotic-good"
+                            }
+                        },
+                        {
+                            "index": "lawful-neutral",
+                            "name": "Lawful Neutral",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "lawful-neutral"
+                            }
+                        },
+                        {
+                            "index": "neutral",
+                            "name": "Neutral",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "neutral"
+                            }
+                        },
+                        {
+                            "index": "chaotic-neutral",
+                            "name": "Chaotic Neutral",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "chaotic-neutral"
+                            }
+                        },
+                        {
+                            "index": "lawful-evil",
+                            "name": "Lawful Evil",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "lawful-evil"
+                            }
+                        },
+                        {
+                            "index": "neutral-evil",
+                            "name": "Neutral Evil",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "neutral-evil"
+                            }
+                        },
+                        {
+                            "index": "chaotic-evil",
+                            "name": "Chaotic Evil",
+                            "url": {
+                                "target_file": "alignments.json",
+                                "target_entry": "chaotic-evil"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "bonds": {
+            "choose": 1,
+            "type": "bonds",
+            "from": [
+                "I would die to recover an ancient relic of my faith that was lost long ago.",
+                "I will someday get revenge on the corrupt temple hierarchy who branded me a heretic.",
+                "I owe my life to the priest who took me in when my parents died.",
+                "Everything I do is for the common people.",
+                "I will do anything to protect the temple where I served.",
+                "I seek to preserve a sacred text that my enemies consider heretical and seek to destroy."
+            ]
+        },
+        "flaws": {
+            "choose": 1,
+            "type": "flaws",
+            "from": [
+                "I judge others harshly, and myself even more severely.",
+                "I put too much trust in those who wield power within my temple's hierarchy.",
+                "My piety sometimes leads me to blindly trust those that profess faith in my god.",
+                "I am inflexible in my thinking.",
+                "I am suspicious of strangers and expect the worst of them.",
+                "Once I pick a goal, I become obsessed with it to the detriment of everything else in my life."
+            ]
+        },
+        "url": {
+            "target_file": "backgrounds.json",
+            "target_entry": "acolyte"
+        }
+    }
+]
