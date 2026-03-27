@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&D 5e Character Manager - v1.32</title>
+    <title>D&D 5e Character Manager - v1.33</title>
     <style>
         /* Base Variables */
         :root {
@@ -213,7 +213,7 @@
 <body>
 
     <div class="menu-bar">
-        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span class="version-tag">v1.32</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
+        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span class="version-tag">v1.33</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
         
         <div style="margin-left: 20px; display: flex; gap: 5px;">
             <button class="lang-btn active" onclick="setLanguage('en')" id="btn-lang-en">EN</button>
@@ -240,35 +240,38 @@
             <span class="close-modal" onclick="closeChangelog()">&times;</span>
             <h2 style="margin-top: 0;" data-i18n="changelogTitle">Changelog</h2>
 
-            <div class="log-version">v1.32 - Attuale</div>
+            <div class="log-version">v1.33 - Attuale</div>
+            <span class="log-note">Parser Armi Avanzato.</span>
+            <div class="log-section log-miglioramenti">Miglioramenti:</div>
+            <ul class="log-ul">
+                <li><strong>Logica Json Annidato:</strong> Il caricamento delle armi da <code>weapons_xx.json</code> ora gestisce gli oggetti annidati dello standard 5e (es. <code>damage.damage_dice</code> e <code>damage.damage_type.name</code>).</li>
+                <li><strong>Nuovo campo Gittata:</strong> Aggiunto input specifico per il Raggio (Range) nel modulo delle Armi.</li>
+                <li><strong>Auto-compilazione Dettagliata:</strong> Costo, Categoria arma e Danni a due mani (Two-Handed) vengono estratti automaticamente dal file e inseriti nel campo Descrizione. Le Proprietà vengono scompattate dall'array e formattate.</li>
+            </ul>
+
+            <div class="log-version">v1.32</div>
             <span class="log-note">Automazione Database Armi.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li><strong>Integrazione DB Armi:</strong> Aggiunto menu a tendina nel box Armi per caricare i dati direttamente dalla cartella <code>jsons/</code>.</li>
-                <li>Compilazione automatica di Nome, Danno, Peso, Proprietà e Descrizione estraendoli da <code>weapons.json</code> (o versioni tradotte).</li>
+                <li>Integrazione menu a tendina nel box Armi per caricare i dati direttamente dalla cartella <code>jsons/</code>.</li>
             </ul>
 
             <div class="log-version">v1.31</div>
             <span class="log-note">Tracciamento File, Fix i18n Avvio.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li>La barra di intestazione superiore ora traccia e visualizza costantemente il nome dell'ultimo file JSON caricato o salvato, insieme al timestamp dell'ultimo salvataggio.</li>
+                <li>Visualizzazione del nome file e della data di salvataggio nella barra superiore.</li>
+                <li>Risolto il problema dell'etichetta temporanea "appTitle".</li>
             </ul>
 
-            <div class="log-version">v1.30</div>
-            <span class="log-note">Restyling Header, Sintesi Multilingua e UI Combattimento.</span>
-            <div class="log-section log-miglioramenti">Miglioramenti:</div>
-            <ul class="log-ul">
-                <li>Box Personaggio: Layout a griglia elegante. Box Combattimento: Riordinate le statistiche.</li>
-            </ul>
-
-            <div class="log-version">v1.27 - v1.29</div>
+            <div class="log-version">v1.27 - v1.30</div>
             <span class="log-note">Sistema Modificatori, Pesi, Liberazione Layout.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li>Rimosso `max-width` strutturale. Layout full-screen fluido 100%.</li>
-                <li>Sistema di calcolo "Carico Trasportato" automatico (kg).</li>
-                <li>Modificatori integrati per Statistiche, TPC e Danni negli equipaggiamenti con riepilogo a schermo.</li>
+                <li>Layout a griglia per Box Personaggio. Riordino Box Combattimento.</li>
+                <li>Rimosso `max-width` strutturale. Layout full-screen.</li>
+                <li>Sistema di calcolo "Carico Trasportato" automatico (kg) con penalità dinamiche.</li>
+                <li>Modificatori integrati per Statistiche, TPC e Danni negli equipaggiamenti.</li>
             </ul>
 
             <div style="text-align: center; margin-top: 30px; font-size: 0.8em; color: #666;">
@@ -517,6 +520,7 @@
                     <input type="number" id="weaponAtkBonus" placeholder="Atk" data-i18n-ph="phAtkBonus" style="width: 70px;">
                     <input type="number" id="weaponDmgBonus" placeholder="Dmg" data-i18n-ph="phDmgBonus" style="width: 70px;">
                     <input type="text" id="weaponDamage" placeholder="Damage (e.g. 1d8)" style="width: 120px;">
+                    <input type="text" id="weaponRange" placeholder="Range" data-i18n-ph="phRange" style="width: 80px;">
                     <input type="number" id="weaponWeight" placeholder="kg" data-i18n-ph="phWeight" step="0.1" style="width: 70px;">
                 </div>
                 <input type="text" id="weaponProps" maxlength="200" placeholder="Properties (Finesse, Light...)" data-i18n-ph="phWeaponProps" style="flex-grow: 1;">
@@ -689,7 +693,7 @@
     </div>
 
     <script>
-        const APP_VERSION = "1.32";
+        const APP_VERSION = "1.33";
         
         let currentFileName = "";
         let currentSaveDate = "";
@@ -907,7 +911,7 @@
             
             try {
                 let response = await fetch(`jsons/weapons_${currentLang}.json`);
-                if (!response.ok) response = await fetch(`jsons/weapons.json`); // Fallback
+                if (!response.ok) response = await fetch(`jsons/weapons.json`); 
 
                 if (response.ok) {
                     weaponDatabase = await response.json();
@@ -965,15 +969,58 @@
             
             const weap = weaponDatabase[sel.value];
             document.getElementById("weaponName").value = weap.name || "";
-            document.getElementById("weaponDamage").value = weap.damage || "";
-            document.getElementById("weaponWeight").value = weap.weight || "";
             
+            // Parse nested damage object
+            let dmgStr = "";
+            if (weap.damage && weap.damage.damage_dice) {
+                dmgStr = weap.damage.damage_dice;
+                if (weap.damage.damage_type && weap.damage.damage_type.name) {
+                    dmgStr += " " + weap.damage.damage_type.name;
+                }
+            }
+            document.getElementById("weaponDamage").value = dmgStr;
+            
+            // Parse Range
+            let rangeStr = "";
+            if (weap.range) {
+                rangeStr = weap.range.normal;
+                if (weap.range.long && weap.range.long !== "None") rangeStr += `/${weap.range.long}`;
+            }
+            document.getElementById("weaponRange").value = rangeStr;
+            
+            document.getElementById("weaponWeight").value = weap.weight !== undefined ? weap.weight : "";
+            
+            // Parse nested properties array
             let propsStr = "";
-            if (Array.isArray(weap.properties)) propsStr = weap.properties.join(', ');
-            else if (weap.properties) propsStr = weap.properties;
+            if (Array.isArray(weap.properties)) {
+                propsStr = weap.properties.map(p => p.name || p.index).join(', ');
+            } else if (weap.properties) {
+                propsStr = weap.properties;
+            }
             document.getElementById("weaponProps").value = propsStr;
             
-            document.getElementById("weaponDesc").value = weap.description || "";
+            // Build rich description from remaining JSON attributes
+            let descParts = [];
+            if (weap.category_range) descParts.push(`Cat: ${weap.category_range}`);
+            else if (weap.weapon_category) descParts.push(`Cat: ${weap.weapon_category}`);
+            
+            if (weap.two_handed_damage && weap.two_handed_damage.damage_dice) {
+                let thDmg = weap.two_handed_damage.damage_dice;
+                if (weap.two_handed_damage.damage_type && weap.two_handed_damage.damage_type.name) {
+                    thDmg += " " + weap.two_handed_damage.damage_type.name;
+                }
+                descParts.push(`2-Handed: ${thDmg}`);
+            }
+            
+            if (weap.cost && weap.cost.quantity !== undefined) {
+                descParts.push(`Cost: ${weap.cost.quantity} ${weap.cost.unit}`);
+            }
+            
+            let finalDesc = descParts.join(" | ");
+            if (weap.desc) finalDesc += (finalDesc ? "\n" : "") + weap.desc;
+            if (weap.description) finalDesc += (finalDesc ? "\n" : "") + weap.description;
+            
+            document.getElementById("weaponDesc").value = finalDesc.trim();
             
             document.getElementById("weaponAtkBonus").value = "";
             document.getElementById("weaponDmgBonus").value = "";
@@ -1215,7 +1262,6 @@
             updateTotalWeight();
         }
 
-        // --- NEW Weight System ---
         function updateTotalWeight() {
             let totalWeight = 0;
             ['weapons', 'equipment', 'protections'].forEach(list => {
@@ -1231,7 +1277,6 @@
             }
         }
         
-        // --- NEW Equipment Modifier Summary ---
         function updateEquipModSummary() {
             const summary = {};
             charLists.equipment.forEach(item => {
@@ -1394,17 +1439,19 @@
             const name = document.getElementById('weaponName').value.trim();
             const desc = document.getElementById('weaponDesc').value.trim();
             const damage = document.getElementById('weaponDamage').value.trim();
+            const range = document.getElementById('weaponRange').value.trim();
             const weight = document.getElementById('weaponWeight').value.trim();
             const props = document.getElementById('weaponProps').value.trim();
             const atkBonus = document.getElementById('weaponAtkBonus').value.trim();
             const dmgBonus = document.getElementById('weaponDmgBonus').value.trim();
 
             if(!name) return;
-            charLists.weapons.unshift({ name, desc, damage, props, weight, atkBonus, dmgBonus, timestamp: new Date().toLocaleString() });
+            charLists.weapons.unshift({ name, desc, damage, range, props, weight, atkBonus, dmgBonus, timestamp: new Date().toLocaleString() });
             
             document.getElementById('weaponName').value = '';
             document.getElementById('weaponDesc').value = '';
             document.getElementById('weaponDamage').value = '';
+            document.getElementById('weaponRange').value = '';
             document.getElementById('weaponWeight').value = '';
             document.getElementById('weaponProps').value = '';
             document.getElementById('weaponAtkBonus').value = '';
@@ -1509,13 +1556,13 @@
                         titleExtras += ` <span style="font-size:0.85em; color:#f44336;">[Dmg: ${dmgSign}${item.dmgBonus}]</span>`;
                     }
                     if (item.damage) titleExtras += ` <span style="font-size:0.85em; color:#f44336;">[${item.damage}]</span>`;
+                    if (item.range) titleExtras += ` <span style="font-size:0.85em; color:#aaa;">[Rng: ${item.range}]</span>`;
                     if(item.weight) titleExtras += ` <span style="font-size:0.85em; color:#aaa;">[${item.weight} kg]</span>`;
                 } else if (listName === "equipment") {
                     if(item.weight) titleExtras += ` <span style="font-size:0.85em; color:#aaa;">[${item.weight} kg]</span>`;
                     if (item.magic) titleExtras += ` <span style="color:#00bcd4; font-size:0.8em;">[M]</span>`;
                 }
 
-                // Generics Modifiers for Traits, Feats, Equip
                 if (item.modVal && item.modTarget) {
                     const transTargetKey = 'opt' + item.modTarget.charAt(0).toUpperCase() + item.modTarget.slice(1);
                     const transTarget = i18n[currentLang][transTargetKey] || item.modTarget;
@@ -1589,7 +1636,7 @@
                 document.getElementById('protName').value = item.name; document.getElementById('protAC').value = item.acBonus; document.getElementById('protDesc').value = item.desc; document.getElementById('protWeight').value = item.weight || ""; document.getElementById('protMagic').checked = !!item.magic; 
             }
             else if (listName === 'weapons') { 
-                document.getElementById('weaponName').value = item.name; document.getElementById('weaponDesc').value = item.desc; document.getElementById('weaponDamage').value = item.damage || ""; document.getElementById('weaponWeight').value = item.weight || ""; document.getElementById('weaponProps').value = item.props || ""; document.getElementById('weaponAtkBonus').value = item.atkBonus || ""; document.getElementById('weaponDmgBonus').value = item.dmgBonus || "";
+                document.getElementById('weaponName').value = item.name; document.getElementById('weaponDesc').value = item.desc; document.getElementById('weaponDamage').value = item.damage || ""; document.getElementById('weaponRange').value = item.range || ""; document.getElementById('weaponWeight').value = item.weight || ""; document.getElementById('weaponProps').value = item.props || ""; document.getElementById('weaponAtkBonus').value = item.atkBonus || ""; document.getElementById('weaponDmgBonus').value = item.dmgBonus || "";
             }
             else if (listName === 'equipment') { 
                 document.getElementById('equipName').value = item.name; document.getElementById('equipDesc').value = item.desc; document.getElementById('equipWeight').value = item.weight || ""; document.getElementById('equipMagic').checked = !!item.magic;
@@ -1733,6 +1780,7 @@
                         if(item.atkBonus) extra += ` [Atk: ${item.atkBonus > 0 ? '+'+item.atkBonus : item.atkBonus}]`;
                         if(item.dmgBonus) extra += ` [Dmg: ${item.dmgBonus > 0 ? '+'+item.dmgBonus : item.dmgBonus}]`;
                         if(item.damage) extra += ` [${item.damage}]`;
+                        if (item.range) extra += ` [Rng: ${item.range}]`;
                     }
                     if(list === charLists.equipment && item.magic) extra += ` [M]`;
                     if(item.weight) extra += ` [${item.weight} kg]`;
