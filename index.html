@@ -1,220 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&D 5e Character Manager - v1.33</title>
-    <style>
-        /* Base Variables */
-        :root {
-            --bg-color: #121212;
-            --panel-bg: #1e1e1e;
-            --text-color: #e0e0e0;
-            --accent-color: #bb86fc;
-            --border-color: #333;
-            --positive-color: #4caf50;
-            --negative-color: #f44336;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 15px;
-            box-sizing: border-box;
-            padding-bottom: 100px;
-        }
-
-        /* View Mode Management */
-        body.view-mode .edit-only { display: none !important; }
-        body.view-mode .list-item button { display: none !important; }
-        body.view-mode .drag-handle { display: none !important; }
-        
-        /* View Mode aesthetic tweaks for inputs */
-        body.view-mode input[readonly], 
-        body.view-mode textarea[readonly] {
-            border-color: transparent !important;
-            background-color: transparent !important;
-        }
-        body.view-mode input[type="checkbox"]:disabled, 
-        body.view-mode select:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        /* Dynamic Elastic Flexbox Layout */
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            width: 100%;
-            margin: 0 auto;
-            align-items: flex-start;
-        }
-
-        /* Inner Flexbox Panel */
-        .panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 15px;
-            position: relative;
-            transition: box-shadow 0.2s; 
-            box-sizing: border-box;
-            
-            flex: 1 1 auto; 
-            width: 400px; 
-            min-width: 300px;
-            max-width: 100%;
-            
-            resize: both; 
-            overflow: auto; 
-            min-height: 200px;
-            
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .panel:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-
-        .panel > h2, .panel > .input-group, .panel > .stat-block, .panel > .wealth-totals, .panel > .panel-title, .panel > p, .panel > div:not(.list-container) {
-            flex-shrink: 0;
-        }
-
-        @media (min-width: 768px) {
-            .span-2 { width: 820px; }
-        }
-
-        /* Griglia Personaggio */
-        .char-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-            width: 100%;
-        }
-
-        .char-grid .stat-block {
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 5px;
-            margin-bottom: 0;
-        }
-
-        .char-grid label { font-weight: bold; color: #aaa; }
-        .char-grid input { text-align: right; width: 60%; }
-
-        h1, h2, h3 { color: var(--accent-color); margin-top: 0; }
-        
-        .version-tag { font-size: 0.5em; color: gray; vertical-align: middle; margin-left: 10px; }
-        
-        /* Changelog Button */
-        .changelog-btn {
-            background: #000; color: gray; font-size: 0.5em; border: 1px solid #555; border-radius: 4px; margin-left: 10px; cursor: pointer; vertical-align: middle; padding: 2px 6px; font-family: inherit; transition: all 0.2s;
-        }
-        .changelog-btn:hover { background: #222; color: #fff; border-color: var(--accent-color); }
-
-        /* Language Buttons */
-        .lang-btn {
-            background: #333; color: #ccc; border: 1px solid #555; padding: 4px 8px; font-size: 0.8em; border-radius: 4px; cursor: pointer; transition: all 0.2s;
-        }
-        .lang-btn:hover { background: #555; }
-        .lang-btn.active { background: var(--accent-color); color: #000; font-weight: bold; border-color: var(--accent-color); }
-
-        .panel-title {
-            display: flex; align-items: center; gap: 10px; margin-top: 0; margin-bottom: 15px; font-size: 1.5em;
-        }
-
-        .drag-handle {
-            position: absolute; top: 15px; right: 15px; cursor: grab; font-size: 1.5em; color: #555; user-select: none; z-index: 10;
-        }
-        .drag-handle:active { cursor: grabbing; }
-        .drop-zone { border: 2px dashed var(--accent-color) !important; }
-
-        .hide-btn {
-            background: transparent; border: none; color: var(--text-color); cursor: pointer; font-size: 0.8em; padding: 0; opacity: 0.6; transition: opacity 0.2s, transform 0.2s;
-        }
-        .hide-btn:hover { opacity: 1; transform: scale(1.1); }
-        
-        input, select, textarea {
-            background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); padding: 6px; border-radius: 4px; box-sizing: border-box; max-width: 100%; transition: background-color 0.2s, border-color 0.2s;
-        }
-
-        button, .btn-style {
-            background: var(--accent-color); color: #000; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: opacity 0.2s; display: inline-block; text-align: center;
-        }
-        button:hover, .btn-style:hover { opacity: 0.8; }
-
-        .stat-block { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        
-        .stat-mod-highlight { 
-            font-weight: bold; font-size: 1.6em; color: var(--accent-color); background: #2a2a2a; padding: 4px 12px; border-radius: 6px; border: 1px solid var(--accent-color); min-width: 45px; text-align: center; margin-left: auto;
-        }
-        
-        .skill-list { list-style-type: none; padding: 0; margin: 0; flex-grow: 1; overflow-y: auto; }
-        .skill-list li { margin: 6px 0; display: flex; justify-content: space-between; align-items: center;}
-
-        .list-container { 
-            flex-grow: 1; min-height: 50px; overflow-y: auto; border: 1px solid var(--border-color); padding: 5px; margin-top: 10px; border-radius: 4px;
-        }
-        
-        .flex-expand { flex-grow: 1; min-height: 50px; resize: none; }
-
-        .list-item { border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 8px; }
-        .list-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        
-        /* Sticky Menu Bar */
-        .menu-bar { margin-bottom: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; position: sticky; top: 0; z-index: 1000; background: rgba(18, 18, 18, 0.95); backdrop-filter: blur(5px); padding: 10px 15px; margin: -15px -15px 20px -15px; border-bottom: 1px solid var(--border-color);}
-
-        .wealth-totals {
-            display: flex; justify-content: space-around; background: var(--bg-color); padding: 10px; border-radius: 4px; border: 1px solid var(--border-color); margin-bottom: 15px; flex-wrap: wrap; gap: 10px;
-        }
-        .wealth-totals div { text-align: center; flex: 1; }
-        .wealth-totals span { font-size: 1.2em; font-weight: bold; }
-        .mo-color { color: gold; }
-        .mp-color { color: #e5e4e2; }
-
-        .slots-table { width: 100%; text-align: center; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
-        .slots-table th, .slots-table td { border: 1px solid var(--border-color); padding: 5px; }
-        .slots-table th { background: var(--bg-color); color: var(--accent-color); }
-
-        .input-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
-
-        .flex-wrapper { display: flex; flex-wrap: wrap; gap: 20px; flex-grow: 1; min-height: 0; }
-        .flex-col { display: flex; flex-direction: column; flex: 1; min-width: 250px; min-height: 0; }
-
-        /* Hidden Panels Footer */
-        #footer-hidden-panels {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--panel-bg); border-top: 2px solid var(--accent-color); padding: 15px; box-sizing: border-box; z-index: 100; display: none; box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
-        }
-
-        /* Changelog Modal */
-        .modal {
-            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
-        }
-        .modal-content {
-            background-color: var(--panel-bg); margin: 5% auto; padding: 20px; border: 1px solid var(--accent-color); width: 80%; max-width: 800px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-        .close-modal { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
-        .close-modal:hover, .close-modal:focus { color: #fff; text-decoration: none; cursor: pointer; }
-        .log-version { color: var(--accent-color); border-bottom: 1px solid #333; padding-bottom: 5px; margin-top: 25px; font-size: 1.2em; }
-        .log-section { font-weight: bold; margin-top: 10px; font-size: 0.9em; text-transform: uppercase;}
-        .log-miglioramenti { color: var(--positive-color); }
-        .log-fix { color: var(--negative-color); }
-        .log-note { color: #aaa; font-style: italic; font-size: 0.85em; margin-bottom: 5px; display: block;}
-        .log-ul { margin-top: 5px; padding-left: 20px; font-size: 0.95em;}
-        .log-ul li { margin-bottom: 4px; }
-
-        @media (max-width: 768px) {
-            .panel { flex: 1 1 100% !important; width: 100% !important; height: auto !important; resize: none; }
-        }
-    </style>
+    <title>D&D 5e Character Manager - v1.41</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
     <div class="menu-bar">
-        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span class="version-tag">v1.33</span><button class="changelog-btn" onclick="openChangelog()">CHANGELOG</button></h2>
-        
+        <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span
+                class="version-tag">v1.33</span><button class="changelog-btn"
+                onclick="openChangelog()">CHANGELOG</button></h2>
+
         <div style="margin-left: 20px; display: flex; gap: 5px;">
             <button class="lang-btn active" onclick="setLanguage('en')" id="btn-lang-en">EN</button>
             <button class="lang-btn" onclick="setLanguage('it')" id="btn-lang-it">IT</button>
@@ -224,11 +24,16 @@
         </div>
 
         <div style="margin-left: auto; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <span id="headerCharNameDisplay" style="color: var(--accent-color); font-weight: bold; font-size: 1.2em;"></span>
-            <span id="fileInfoDisplay" style="font-size: 0.85em; color: #888; font-family: monospace; border-left: 1px solid #444; padding-left: 10px; margin-right: 10px;" data-i18n="lblUnsaved">[Unsaved]</span>
-            
-            <button id="toggleModeBtn" onclick="toggleViewMode()" style="background: #ff9800; color: #fff;" data-i18n="readMode">Read Mode</button>
-            <button onclick="stampaScheda()" style="background: #2196F3; color: white;" data-i18n="summary">Summary</button>
+            <span id="headerCharNameDisplay"
+                style="color: var(--accent-color); font-weight: bold; font-size: 1.2em;"></span>
+            <span id="fileInfoDisplay"
+                style="font-size: 0.85em; color: #888; font-family: monospace; border-left: 1px solid #444; padding-left: 10px; margin-right: 10px;"
+                data-i18n="lblUnsaved">[Unsaved]</span>
+
+            <button id="toggleModeBtn" onclick="toggleViewMode()" style="background: #ff9800; color: #fff;"
+                data-i18n="readMode">Read Mode</button>
+            <button onclick="stampaScheda()" style="background: #2196F3; color: white;"
+                data-i18n="summary">Summary</button>
             <button onclick="salvaJSON()" data-i18n="save">Save</button>
             <button onclick="document.getElementById('fileInput').click()" data-i18n="open">Open</button>
             <input type="file" id="fileInput" accept=".json" onchange="caricaJSON(event)" style="display: none;">
@@ -244,16 +49,22 @@
             <span class="log-note">Parser Armi Avanzato.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li><strong>Logica Json Annidato:</strong> Il caricamento delle armi da <code>weapons_xx.json</code> ora gestisce gli oggetti annidati dello standard 5e (es. <code>damage.damage_dice</code> e <code>damage.damage_type.name</code>).</li>
-                <li><strong>Nuovo campo Gittata:</strong> Aggiunto input specifico per il Raggio (Range) nel modulo delle Armi.</li>
-                <li><strong>Auto-compilazione Dettagliata:</strong> Costo, Categoria arma e Danni a due mani (Two-Handed) vengono estratti automaticamente dal file e inseriti nel campo Descrizione. Le Proprietà vengono scompattate dall'array e formattate.</li>
+                <li><strong>Logica Json Annidato:</strong> Il caricamento delle armi da <code>weapons_xx.json</code> ora
+                    gestisce gli oggetti annidati dello standard 5e (es. <code>damage.damage_dice</code> e
+                    <code>damage.damage_type.name</code>).</li>
+                <li><strong>Nuovo campo Gittata:</strong> Aggiunto input specifico per il Raggio (Range) nel modulo
+                    delle Armi.</li>
+                <li><strong>Auto-compilazione Dettagliata:</strong> Costo, Categoria arma e Danni a due mani
+                    (Two-Handed) vengono estratti automaticamente dal file e inseriti nel campo Descrizione. Le
+                    Proprietà vengono scompattate dall'array e formattate.</li>
             </ul>
 
             <div class="log-version">v1.32</div>
             <span class="log-note">Automazione Database Armi.</span>
             <div class="log-section log-miglioramenti">Miglioramenti:</div>
             <ul class="log-ul">
-                <li>Integrazione menu a tendina nel box Armi per caricare i dati direttamente dalla cartella <code>jsons/</code>.</li>
+                <li>Integrazione menu a tendina nel box Armi per caricare i dati direttamente dalla cartella
+                    <code>jsons/</code>.</li>
             </ul>
 
             <div class="log-version">v1.31</div>
@@ -281,50 +92,55 @@
     </div>
 
     <div class="container" id="mainContainer">
-        
+
         <div class="panel span-2" id="panel-header">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title" style="width: 100%;"><span data-i18n="pCharacter">Character</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-header', 'Personaggio')" title="Hide">👁️</button></h2>
-            
+            <h2 class="panel-title" style="width: 100%;"><span data-i18n="pCharacter">Character</span> <button
+                    class="hide-btn edit-only" onclick="hidePanel('panel-header', 'Personaggio')"
+                    title="Hide">👁️</button></h2>
+
             <div class="char-grid">
                 <div class="stat-block">
-                    <label data-i18n="lblCharName">Name:</label> 
+                    <label data-i18n="lblCharName">Name:</label>
                     <input type="text" id="charName" oninput="updateHeaderName()">
                 </div>
                 <div class="stat-block">
-                    <label data-i18n="lblCharRace">Race:</label> 
+                    <label data-i18n="lblCharRace">Race:</label>
                     <input type="text" id="charRace">
                 </div>
                 <div class="stat-block">
-                    <label data-i18n="lblCharClass">Main Class:</label> 
+                    <label data-i18n="lblCharClass">Main Class:</label>
                     <input type="text" id="charClassPrimary">
                 </div>
                 <div class="stat-block">
-                    <label data-i18n="lblCharLvl">Class Level:</label> 
+                    <label data-i18n="lblCharLvl">Class Level:</label>
                     <input type="number" id="charLevel" value="1" min="1" max="20" oninput="updateSheet()">
                 </div>
                 <div class="stat-block">
-                    <label data-i18n="lblHeight">Height:</label> 
+                    <label data-i18n="lblHeight">Height:</label>
                     <input type="text" id="charHeight">
                 </div>
                 <div class="stat-block">
-                    <label data-i18n="lblWeight">Weight:</label> 
+                    <label data-i18n="lblWeight">Weight:</label>
                     <input type="text" id="charWeight">
                 </div>
 
                 <div class="stat-block" style="border-bottom: none; align-items: center;">
-                    <label data-i18n="lblTotLvl" style="color: var(--text-color);">Total Level:</label> 
-                    <span id="totalLevelDisplay" class="stat-mod-highlight" style="font-size: 1.2em; min-width: 30px;">1</span>
+                    <label data-i18n="lblTotLvl" style="color: var(--text-color);">Total Level:</label>
+                    <span id="totalLevelDisplay" class="stat-mod-highlight"
+                        style="font-size: 1.2em; min-width: 30px;">1</span>
                 </div>
                 <div class="stat-block" style="border-bottom: none; align-items: center;">
-                    <label data-i18n="lblProfBonus" style="color: var(--text-color);">Proficiency Bonus:</label> 
+                    <label data-i18n="lblProfBonus" style="color: var(--text-color);">Proficiency Bonus:</label>
                     <span id="profBonus" class="stat-mod-highlight" style="font-size: 1.2em; min-width: 30px;">+2</span>
                 </div>
                 <div class="stat-block" style="border-bottom: none; align-items: center;">
-                    <label data-i18n="lblWeightCarried" style="color: var(--text-color);">Weight Carried:</label> 
-                    <div style="display: flex; align-items: center; justify-content: flex-end; width: 60%; font-weight: bold; background: #2a2a2a; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--accent-color);">
-                        <span id="totalWeightDisplay" style="color: var(--accent-color);">0</span> &nbsp;/&nbsp; 
-                        <input type="number" id="maxWeight" value="150" style="width: 50px; text-align: right; background: transparent; border: none; font-weight: bold; color: var(--text-color); padding: 0;"> 
+                    <label data-i18n="lblWeightCarried" style="color: var(--text-color);">Weight Carried:</label>
+                    <div
+                        style="display: flex; align-items: center; justify-content: flex-end; width: 60%; font-weight: bold; background: #2a2a2a; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--accent-color);">
+                        <span id="totalWeightDisplay" style="color: var(--accent-color);">0</span> &nbsp;/&nbsp;
+                        <input type="number" id="maxWeight" value="150"
+                            style="width: 50px; text-align: right; background: transparent; border: none; font-weight: bold; color: var(--text-color); padding: 0;">
                         <span style="font-size: 0.8em; color: #888; margin-left: 2px;" data-i18n="lblKg">kg</span>
                     </div>
                 </div>
@@ -333,76 +149,88 @@
 
         <div class="panel" id="panel-stats">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pStats">Ability Scores</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-stats', 'Caratteristiche')">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pStats">Ability Scores</span> <button class="hide-btn edit-only"
+                    onclick="hidePanel('panel-stats', 'Caratteristiche')">👁️</button></h2>
             <div id="statsContainer"></div>
         </div>
 
         <div class="panel" id="panel-saves">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pSaves">Saving Throws</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-saves', 'Tiri Salvezza')">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pSaves">Saving Throws</span> <button class="hide-btn edit-only"
+                    onclick="hidePanel('panel-saves', 'Tiri Salvezza')">👁️</button></h2>
             <ul class="skill-list" id="savesContainer"></ul>
         </div>
 
         <div class="panel" id="panel-skills">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pSkills">Skills</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-skills', 'Abilità')">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pSkills">Skills</span> <button class="hide-btn edit-only"
+                    onclick="hidePanel('panel-skills', 'Abilità')">👁️</button></h2>
             <ul class="skill-list" id="skillsContainer"></ul>
         </div>
 
         <div class="panel" id="panel-combat">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pCombat">Combat & AC</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-combat', 'Combattimento')">👁️</button></h2>
-            
-            <div class="stat-block" style="justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
-                <label style="font-weight: bold; font-size: 1.1em;" data-i18n="lblInitiative">Initiative:</label> 
+            <h2 class="panel-title"><span data-i18n="pCombat">Combat & AC</span> <button class="hide-btn edit-only"
+                    onclick="hidePanel('panel-combat', 'Combattimento')">👁️</button></h2>
+
+            <div class="stat-block"
+                style="justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                <label style="font-weight: bold; font-size: 1.1em;" data-i18n="lblInitiative">Initiative:</label>
                 <span id="initiativeModifier" class="stat-mod-highlight">0</span>
             </div>
-            
-            <div class="stat-block" style="justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
-                <label style="font-weight: bold; font-size: 1.1em;" data-i18n="lblPassPerc">Passive Perception:</label> 
+
+            <div class="stat-block"
+                style="justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                <label style="font-weight: bold; font-size: 1.1em;" data-i18n="lblPassPerc">Passive Perception:</label>
                 <span id="passivePerception" class="stat-mod-highlight">10</span>
             </div>
 
-            <div class="stat-block" style="justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
-                <label style="font-weight: bold; font-size: 1.1em;" data-i18n="lblSpeed">Speed:</label> 
+            <div class="stat-block"
+                style="justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                <label style="font-weight: bold; font-size: 1.1em;" data-i18n="lblSpeed">Speed:</label>
                 <input type="text" id="charSpeed" value="30ft" class="stat-mod-highlight" style="width: 80px;">
             </div>
 
-            <div class="stat-block" style="justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
-                <label style="font-weight: bold; font-size: 1.1em;" data-i18n="lblTotalAc">Total AC:</label> 
+            <div class="stat-block"
+                style="justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                <label style="font-weight: bold; font-size: 1.1em;" data-i18n="lblTotalAc">Total AC:</label>
                 <span id="totalAC" class="stat-mod-highlight">10</span>
             </div>
-            
+
             <div class="stat-block" style="justify-content: space-between; margin-top: 15px;">
-                <label style="font-weight: bold;" data-i18n="lblMaxHp">Max HP:</label> 
+                <label style="font-weight: bold;" data-i18n="lblMaxHp">Max HP:</label>
                 <input type="number" id="hpMax" style="width: 80px; text-align: center;">
             </div>
             <div class="stat-block" style="justify-content: space-between;">
-                <label style="font-weight: bold;" data-i18n="lblCurHp">Current HP:</label> 
+                <label style="font-weight: bold;" data-i18n="lblCurHp">Current HP:</label>
                 <input type="number" id="hpCurrent" style="width: 80px; text-align: center;">
             </div>
             <div class="stat-block" style="justify-content: space-between;">
-                <label style="font-weight: bold;" data-i18n="lblHitDice">Hit Dice:</label> 
+                <label style="font-weight: bold;" data-i18n="lblHitDice">Hit Dice:</label>
                 <input type="text" id="hitDice" placeholder="e.g. 1d8" style="width: 80px; text-align: center;">
             </div>
-            
+
             <h3 style="margin-top:15px; font-size:1.1em;" class="edit-only" data-i18n="lblBaseAcCalc">Base AC Calc</h3>
             <div class="edit-only" style="display: flex; gap: 10px; align-items: center; margin-bottom: 5px;">
-                <label data-i18n="lblBaseAc">Base AC:</label> <input type="number" id="baseACInput" value="10" style="width: 60px;" oninput="updateSheet()">
-                <label><input type="checkbox" id="addDexToAC" checked onchange="updateSheet()"> <span data-i18n="lblAddDex">Add DEX</span></label>
+                <label data-i18n="lblBaseAc">Base AC:</label> <input type="number" id="baseACInput" value="10"
+                    style="width: 60px;" oninput="updateSheet()">
+                <label><input type="checkbox" id="addDexToAC" checked onchange="updateSheet()"> <span
+                        data-i18n="lblAddDex">Add DEX</span></label>
             </div>
         </div>
 
         <div class="panel span-2" id="panel-features">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pFeatures">Race & Class Features</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-features', 'Tratti')">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pFeatures">Race & Class Features</span> <button
+                    class="hide-btn edit-only" onclick="hidePanel('panel-features', 'Tratti')">👁️</button></h2>
             <div class="flex-wrapper">
                 <div class="flex-col">
                     <h3 style="margin-top:0; font-size: 1.1em;" data-i18n="hRaceTraits">Racial Traits</h3>
                     <div class="input-group edit-only">
                         <input type="text" id="raceTraitName" placeholder="Trait Name" data-i18n-ph="phTraitName">
-                        <textarea id="raceTraitDesc" maxlength="200" placeholder="Description (max 200 char)" data-i18n-ph="phDesc" style="height: 50px;"></textarea>
-                        
+                        <textarea id="raceTraitDesc" maxlength="200" placeholder="Description (max 200 char)"
+                            data-i18n-ph="phDesc" style="height: 50px;"></textarea>
+
                         <div style="display: flex; gap: 5px; align-items: center; margin-top: 5px;">
                             <input type="number" id="raceTraitModVal" placeholder="+X" style="width: 60px;">
                             <select id="raceTraitModTarget" style="flex-grow: 1;">
@@ -418,7 +246,9 @@
                             </select>
                         </div>
 
-                        <button onclick="addCustomFeature('raceTraits', 'raceTraitName', 'raceTraitDesc', 'raceTraitModVal', 'raceTraitModTarget')" data-i18n="btnAddTrait" style="margin-top: 5px;">Add Trait</button>
+                        <button
+                            onclick="addCustomFeature('raceTraits', 'raceTraitName', 'raceTraitDesc', 'raceTraitModVal', 'raceTraitModTarget')"
+                            data-i18n="btnAddTrait" style="margin-top: 5px;">Add Trait</button>
                     </div>
                     <div id="raceTraitsList" class="list-container"></div>
                 </div>
@@ -426,8 +256,9 @@
                     <h3 style="margin-top:0; font-size: 1.1em;" data-i18n="hClassFeats">Class Features</h3>
                     <div class="input-group edit-only">
                         <input type="text" id="classFeatureName" placeholder="Feature Name" data-i18n-ph="phFeatName">
-                        <textarea id="classFeatureDesc" maxlength="200" placeholder="Description (max 200 char)" data-i18n-ph="phDesc" style="height: 50px;"></textarea>
-                        
+                        <textarea id="classFeatureDesc" maxlength="200" placeholder="Description (max 200 char)"
+                            data-i18n-ph="phDesc" style="height: 50px;"></textarea>
+
                         <div style="display: flex; gap: 5px; align-items: center; margin-top: 5px;">
                             <input type="number" id="classFeatureModVal" placeholder="+X" style="width: 60px;">
                             <select id="classFeatureModTarget" style="flex-grow: 1;">
@@ -443,7 +274,9 @@
                             </select>
                         </div>
 
-                        <button onclick="addCustomFeature('classFeatures', 'classFeatureName', 'classFeatureDesc', 'classFeatureModVal', 'classFeatureModTarget')" data-i18n="btnAddFeature" style="margin-top: 5px;">Add Feature</button>
+                        <button
+                            onclick="addCustomFeature('classFeatures', 'classFeatureName', 'classFeatureDesc', 'classFeatureModVal', 'classFeatureModTarget')"
+                            data-i18n="btnAddFeature" style="margin-top: 5px;">Add Feature</button>
                     </div>
                     <div id="classFeaturesList" class="list-container"></div>
                 </div>
@@ -452,20 +285,26 @@
 
         <div class="panel span-2" id="panel-multiclass">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pMulti">Additional Classes (Multiclass)</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-multiclass', 'Multiclasse')">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pMulti">Additional Classes (Multiclass)</span> <button
+                    class="hide-btn edit-only" onclick="hidePanel('panel-multiclass', 'Multiclasse')">👁️</button></h2>
             <div class="edit-only" style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 10px;">
-                <div><label data-i18n="lblClass2">2nd Class:</label> <input type="text" id="multiClassName" placeholder="e.g. Fighter"></div>
-                <div><label data-i18n="lblLevel">Level:</label> <input type="number" id="multiClassLevel" value="0" min="0" max="20" style="width: 60px;" oninput="updateSheet()"></div>
+                <div><label data-i18n="lblClass2">2nd Class:</label> <input type="text" id="multiClassName"
+                        placeholder="e.g. Fighter"></div>
+                <div><label data-i18n="lblLevel">Level:</label> <input type="number" id="multiClassLevel" value="0"
+                        min="0" max="20" style="width: 60px;" oninput="updateSheet()"></div>
             </div>
             <div class="edit-only" style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;">
-                <div><label data-i18n="lblClass3">3rd Class:</label> <input type="text" id="multiClass3Name" placeholder="e.g. Warlock"></div>
-                <div><label data-i18n="lblLevel">Level:</label> <input type="number" id="multiClass3Level" value="0" min="0" max="20" style="width: 60px;" oninput="updateSheet()"></div>
+                <div><label data-i18n="lblClass3">3rd Class:</label> <input type="text" id="multiClass3Name"
+                        placeholder="e.g. Warlock"></div>
+                <div><label data-i18n="lblLevel">Level:</label> <input type="number" id="multiClass3Level" value="0"
+                        min="0" max="20" style="width: 60px;" oninput="updateSheet()"></div>
             </div>
             <h3 style="margin-top:0; font-size: 1.1em;" data-i18n="hMultiFeats">Additional Class Features</h3>
             <div class="input-group edit-only">
                 <input type="text" id="multiFeatureName" placeholder="Feature Name" data-i18n-ph="phFeatName">
-                <textarea id="multiFeatureDesc" maxlength="200" placeholder="Description (max 200 char)" data-i18n-ph="phDesc" style="height: 50px;"></textarea>
-                
+                <textarea id="multiFeatureDesc" maxlength="200" placeholder="Description (max 200 char)"
+                    data-i18n-ph="phDesc" style="height: 50px;"></textarea>
+
                 <div style="display: flex; gap: 5px; align-items: center; margin-top: 5px;">
                     <input type="number" id="multiFeatureModVal" placeholder="+X" style="width: 60px;">
                     <select id="multiFeatureModTarget" style="flex-grow: 1;">
@@ -481,94 +320,105 @@
                     </select>
                 </div>
 
-                <button onclick="addCustomFeature('multiClassFeatures', 'multiFeatureName', 'multiFeatureDesc', 'multiFeatureModVal', 'multiFeatureModTarget')" data-i18n="btnAddMulti" style="margin-top: 5px;">Add Feature</button>
+                <button
+                    onclick="addCustomFeature('multiClassFeatures', 'multiFeatureName', 'multiFeatureDesc', 'multiFeatureModVal', 'multiFeatureModTarget')"
+                    data-i18n="btnAddMulti" style="margin-top: 5px;">Add Feature</button>
             </div>
             <div id="multiFeaturesList" class="list-container"></div>
         </div>
 
-        <div class="panel span-2" id="panel-protections">
+        <div class="panel span-2" id="panel-mystuff">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pProtections">Armor & Protections</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-protections', 'Protezioni')">👁️</button></h2>
-            <div class="input-group edit-only">
-                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                    <input type="text" id="protName" placeholder="Name (e.g. Shield)" style="flex-grow: 1;">
-                    <input type="number" id="protAC" placeholder="AC Bonus (e.g. 2)" style="width: 150px;">
-                    <input type="number" id="protWeight" placeholder="kg" data-i18n-ph="phWeight" step="0.1" style="width: 80px;">
-                </div>
-                <textarea id="protDesc" maxlength="200" placeholder="Description (max 200 char)" data-i18n-ph="phDesc" style="height: 50px;"></textarea>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <label><input type="checkbox" id="protMagic"> <span data-i18n="lblMagicItem">Magic Item</span></label>
-                    <button onclick="addProtection()" data-i18n="btnAddProt">Add Protection</button>
-                </div>
+            <h2 class="panel-title"><span>My Stuff</span> <button class="hide-btn edit-only"
+                    onclick="hidePanel('panel-mystuff', 'My Stuff')">👁️</button></h2>
+            <div id="mystuffSummary"
+                style="margin-bottom: 12px; padding: 8px; border: 1px solid var(--accent-color); border-radius: 6px; background: #1a1a1a;">
+                <div style="font-size: 0.85em; color: var(--accent-color); margin-bottom: 6px; font-weight: bold;">In
+                    Use Summary</div>
+                <div id="mystuffSummaryRows" style="font-size: 0.85em; color: #bbb;"></div>
             </div>
-            <div id="protectionsList" class="list-container"></div>
-        </div>
 
-        <div class="panel span-2" id="panel-weapons">
-            <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pWeapons">Weapons</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-weapons', 'Armi')">👁️</button></h2>
             <div class="input-group edit-only">
-                
-                <div style="display:flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; padding: 5px; border: 1px solid var(--accent-color); border-radius: 4px;">
-                    <label style="width: 100%; color: var(--accent-color); font-size: 0.85em;" data-i18n="lblWeapDbLoad">Load from Database:</label>
-                    <select id="weaponDbSelect" onchange="onWeaponSelect()" style="flex-grow: 1;">
+                <div
+                    style="position: relative; display:flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; padding: 5px; border: 1px solid var(--accent-color); border-radius: 4px;">
+                    <label style="width: 100%; color: var(--accent-color); font-size: 0.85em;">Load from Equipment
+                        Categories:</label>
+                    <input type="text" id="mystuffSearchInput" onkeyup="filterItems('mystuff')"
+                        onfocus="showItemResults('mystuff')"
+                        placeholder="Search by name, category, properties, description..." style="flex-grow: 1;">
+                    <div id="mystuffSearchResults" class="search-results-popup"></div>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                    <input type="text" id="mystuffName" placeholder="Item Name" style="flex-grow: 1;">
+                    <input type="text" id="mystuffCategory" placeholder="Category (e.g. Light Armor)"
+                        style="width: 220px;">
+                    <input type="number" id="mystuffWeight" placeholder="kg" step="0.1" style="width: 80px;">
+                    <input type="number" id="mystuffCostQty" placeholder="Cost Qty" step="0.01" style="width: 100px;">
+                    <input type="text" id="mystuffCostUnit" placeholder="Cost Unit" style="width: 90px;">
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                    <input type="text" id="mystuffDamage" placeholder="Damage (e.g. 1d8 slashing)"
+                        style="width: 220px;">
+                    <input type="text" id="mystuffTwoHandedDamage" placeholder="2-Handed Damage" style="width: 220px;">
+                    <input type="text" id="mystuffRange" placeholder="Range (normal/long)" style="width: 180px;">
+                    <input type="text" id="mystuffThrowRange" placeholder="Throw Range (normal/long)"
+                        style="width: 200px;">
+                    <input type="text" id="mystuffProperties" placeholder="Properties (finesse, light...)"
+                        style="flex-grow: 1;">
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                    <input type="number" id="mystuffArmorClass" placeholder="Armor Class (base)" style="width: 160px;">
+                    <input type="number" id="mystuffAcBonus" placeholder="AC Bonus" style="width: 120px;">
+                    <input type="number" id="mystuffDefenseBonus" placeholder="Defense Bonus" style="width: 140px;">
+                    <input type="number" id="mystuffAttackBonus" placeholder="Attack Bonus" style="width: 140px;">
+                    <input type="number" id="mystuffSaveBonus" placeholder="Save Bonus" style="width: 130px;">
+                    <input type="number" id="mystuffArmorDexMax" placeholder="Armor Max DEX bonus"
+                        style="width: 180px;">
+                    <input type="number" id="mystuffArmorStrMin" placeholder="Armor Min STR" style="width: 140px;">
+                    <label
+                        style="display:flex; align-items:center; gap:6px; padding: 0 8px; border:1px solid var(--border-color); border-radius:4px;">
+                        <input type="checkbox" id="mystuffStealthDisadvantage"> Stealth Disadv.
+                    </label>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                    <input type="text" id="mystuffAdvantage" placeholder="Advantages (comma separated)"
+                        style="flex: 1 1 260px;">
+                    <input type="text" id="mystuffDisadvantage" placeholder="Disadvantages (comma separated)"
+                        style="flex: 1 1 260px;">
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin-top: 5px;">
+                    <div style="display: flex; gap: 5px;">
+                        <input type="number" id="mystuffModVal" placeholder="+X" style="width: 70px;">
+                        <select id="mystuffModTarget" style="width: 180px;">
+                            <option value="" data-i18n="optNone">-- Target --</option>
+                            <option value="Str" data-i18n="optStr">STR</option>
+                            <option value="Dex" data-i18n="optDex">DEX</option>
+                            <option value="Con" data-i18n="optCon">CON</option>
+                            <option value="Int" data-i18n="optInt">INT</option>
+                            <option value="Wis" data-i18n="optWis">WIS</option>
+                            <option value="Cha" data-i18n="optCha">CHA</option>
+                            <option value="Atk" data-i18n="optAtk">Attack</option>
+                            <option value="Dmg" data-i18n="optDmg">Damage</option>
                         </select>
+                    </div>
+                    <button onclick="addMyStuffItem()">Add MyStuff Item</button>
                 </div>
 
-                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
-                    <input type="text" id="weaponName" placeholder="Weapon Name" style="flex-grow: 1;">
-                    <input type="number" id="weaponAtkBonus" placeholder="Atk" data-i18n-ph="phAtkBonus" style="width: 70px;">
-                    <input type="number" id="weaponDmgBonus" placeholder="Dmg" data-i18n-ph="phDmgBonus" style="width: 70px;">
-                    <input type="text" id="weaponDamage" placeholder="Damage (e.g. 1d8)" style="width: 120px;">
-                    <input type="text" id="weaponRange" placeholder="Range" data-i18n-ph="phRange" style="width: 80px;">
-                    <input type="number" id="weaponWeight" placeholder="kg" data-i18n-ph="phWeight" step="0.1" style="width: 70px;">
-                </div>
-                <input type="text" id="weaponProps" maxlength="200" placeholder="Properties (Finesse, Light...)" data-i18n-ph="phWeaponProps" style="flex-grow: 1;">
-                <textarea id="weaponDesc" maxlength="200" placeholder="Other notes (max 200 char)" data-i18n-ph="phOtherNotes" style="height: 50px;"></textarea>
-                <button onclick="addWeaponItem()" data-i18n="btnAddWeap">Add Weapon</button>
+                <textarea id="mystuffDesc" maxlength="1000" placeholder="Description / effects / notes"
+                    style="height: 70px;"></textarea>
             </div>
-            <div id="weaponsList" class="list-container"></div>
-        </div>
-
-        <div class="panel span-2" id="panel-equipment">
-            <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pEquip">Equipment</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-equipment', 'Equipaggiamento')">👁️</button></h2>
-            
-            <div id="equipModSummary" style="margin-bottom: 10px; font-size: 0.85em; color: var(--accent-color); display: flex; gap: 10px; flex-wrap: wrap;"></div>
-
-            <div class="input-group edit-only">
-                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
-                    <input type="text" id="equipName" placeholder="Item Name" style="flex-grow: 1;">
-                    <input type="number" id="equipWeight" placeholder="kg" data-i18n-ph="phWeight" step="0.1" style="width: 80px;">
-                </div>
-                <textarea id="equipDesc" maxlength="200" placeholder="Description (max 200 char)" data-i18n-ph="phDesc" style="height: 50px;"></textarea>
-                
-                <div style="display: flex; gap: 5px; align-items: center; margin-top: 5px;">
-                    <input type="number" id="equipModVal" placeholder="+X" style="width: 60px;">
-                    <select id="equipModTarget" style="flex-grow: 1;">
-                        <option value="" data-i18n="optNone">-- Target --</option>
-                        <option value="Str" data-i18n="optStr">STR</option>
-                        <option value="Dex" data-i18n="optDex">DEX</option>
-                        <option value="Con" data-i18n="optCon">CON</option>
-                        <option value="Int" data-i18n="optInt">INT</option>
-                        <option value="Wis" data-i18n="optWis">WIS</option>
-                        <option value="Cha" data-i18n="optCha">CHA</option>
-                        <option value="Atk" data-i18n="optAtk">Attack</option>
-                        <option value="Dmg" data-i18n="optDmg">Damage</option>
-                    </select>
-                </div>
-
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
-                    <label><input type="checkbox" id="equipMagic"> <span data-i18n="lblMagicItem">Magic Item</span></label>
-                    <button onclick="addEquipmentItem()" data-i18n="btnAddEquip">Add Item</button>
-                </div>
-            </div>
-            <div id="equipmentList" class="list-container"></div>
+            <div id="mystuffList" class="list-container"></div>
         </div>
 
         <div class="panel span-2" id="panel-wealth">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pWealth">Wealth</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-wealth', 'Ricchezze')">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pWealth">Wealth</span> <button class="hide-btn edit-only"
+                    onclick="hidePanel('panel-wealth', 'Ricchezze')">👁️</button></h2>
             <div class="wealth-totals">
                 <div><strong>CP</strong><br><span id="tot_mr">0</span></div>
                 <div><strong>SP</strong><br><span id="tot_ma">0</span></div>
@@ -576,7 +426,7 @@
                 <div><strong>GP</strong><br><span id="tot_mo" class="mo-color">0</span></div>
                 <div><strong>PP</strong><br><span id="tot_mp" class="mp-color">0</span></div>
             </div>
-            
+
             <div class="edit-only" style="display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px;">
                 <input type="number" id="wealthAmount" placeholder="Qty" style="width: 80px;">
                 <select id="wealthType" style="width: 80px;">
@@ -587,47 +437,82 @@
                     <option value="mp">PP</option>
                 </select>
                 <input type="text" id="wealthReason" placeholder="Reason/Description..." style="flex-grow: 1;">
-                <button onclick="addWealth()" title="Use minus for subtracting" data-i18n="btnAddTrans">Add Transaction</button>
+                <button onclick="addWealth()" title="Use minus for subtracting" data-i18n="btnAddTrans">Add
+                    Transaction</button>
             </div>
             <div id="wealthList" class="list-container" style="max-height: 200px;"></div>
         </div>
 
         <div class="panel span-2" id="panel-feats">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pFeats">Feats</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-feats', 'Talenti')">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pFeats">Feats</span> <button class="hide-btn edit-only"
+                    onclick="hidePanel('panel-feats', 'Talenti')">👁️</button></h2>
             <div class="input-group edit-only">
+                <div
+                    style="position: relative; display:flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; padding: 5px; border: 1px solid var(--accent-color); border-radius: 4px;">
+                    <label style="width: 100%; color: var(--accent-color); font-size: 0.85em;"
+                        data-i18n="lblFeatDbLoad">Load from Database:</label>
+                    <input type="text" id="featSearchInput" onkeyup="filterItems('feat')"
+                        onfocus="showItemResults('feat')" data-i18n-ph="phSearchFeat" placeholder="Search for a feat..."
+                        style="flex-grow: 1;">
+                    <div id="featSearchResults" class="search-results-popup"></div>
+                </div>
                 <input type="text" id="featName" placeholder="Feat Name" data-i18n-ph="phFeatName">
-                <textarea id="featDesc" maxlength="200" placeholder="Description (max 200 char)" data-i18n-ph="phDesc" style="height: 50px;"></textarea>
-                <button onclick="addCustomItem('feats', 'featName', 'featDesc')" data-i18n="btnAddFeat">Add Feat</button>
+                <input type="text" id="featRaces" placeholder="Associated Races" data-i18n-ph="phFeatRaces" readonly
+                    style="background-color: #121212; margin-top: 5px;">
+                <textarea id="featDesc" maxlength="200" placeholder="Description (max 200 char)" data-i18n-ph="phDesc"
+                    style="height: 50px; margin-top: 5px;"></textarea>
+                <button onclick="addFeatItem()" data-i18n="btnAddFeat">Add Feat</button>
             </div>
             <div id="featsList" class="list-container"></div>
         </div>
 
         <div class="panel span-2" id="panel-languages">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pLangs">Languages</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-languages', 'Lingue')">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pLangs">Languages</span> <button class="hide-btn edit-only"
+                    onclick="hidePanel('panel-languages', 'Lingue')">👁️</button></h2>
             <div class="input-group edit-only">
+                <div
+                    style="position: relative; display:flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; padding: 5px; border: 1px solid var(--accent-color); border-radius: 4px;">
+                    <label style="width: 100%; color: var(--accent-color); font-size: 0.85em;"
+                        data-i18n="lblLangDbLoad">Load from Database:</label>
+                    <input type="text" id="langSearchInput" onkeyup="filterItems('language')"
+                        onfocus="showItemResults('language')" data-i18n-ph="phSearchLang"
+                        placeholder="Search for a language..." style="flex-grow: 1;">
+                    <div id="languageSearchResults" class="search-results-popup"></div>
+                </div>
                 <input type="text" id="langName" placeholder="Language (e.g. Elvish)">
-                <textarea id="langDesc" maxlength="200" placeholder="Details (optional)" data-i18n-ph="phDetails" style="height: 50px;"></textarea>
-                <button onclick="addCustomItem('languages', 'langName', 'langDesc')" data-i18n="btnAddLang">Add Language</button>
+                <input type="text" id="langType" placeholder="Type" data-i18n-ph="phLangType" readonly
+                    style="background-color: #121212; margin-top: 5px;">
+                <input type="text" id="langSpeakers" placeholder="Typical Speakers" data-i18n-ph="phLangSpeakers"
+                    readonly style="background-color: #121212; margin-top: 5px;">
+                <textarea id="langDesc" maxlength="200" placeholder="Details (optional)" data-i18n-ph="phDetails"
+                    style="height: 50px; margin-top: 5px;"></textarea>
+                <button onclick="addLanguageItem()" data-i18n="btnAddLang">Add Language</button>
             </div>
             <div id="languagesList" class="list-container"></div>
         </div>
 
         <div class="panel span-2" id="panel-wizard">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pWiz">Wizard Preparation</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-wizard', 'Mago')">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pWiz">Wizard Preparation</span> <button class="hide-btn edit-only"
+                    onclick="hidePanel('panel-wizard', 'Mago')">👁️</button></h2>
             <div style="display: flex; align-items: center; gap: 15px;">
-                <div><label data-i18n="lblWizLvl">Wizard Level:</label> <input type="number" id="wizardLevel" value="0" min="0" max="20" style="width: 60px;" oninput="updateSheet()"></div>
-                <div><label data-i18n="lblWizInt">INT Mod:</label> <span id="wizIntMod" style="font-weight: bold; font-size: 1.2em; color: var(--accent-color);">+0</span></div>
-                <div><label data-i18n="lblWizPrep">Prepared Spells:</label> <span id="wizTotalPrep" style="font-weight: bold; font-size: 1.5em; color: var(--positive-color);">0</span></div>
+                <div><label data-i18n="lblWizLvl">Wizard Level:</label> <input type="number" id="wizardLevel" value="0"
+                        min="0" max="20" style="width: 60px;" oninput="updateSheet()"></div>
+                <div><label data-i18n="lblWizInt">INT Mod:</label> <span id="wizIntMod"
+                        style="font-weight: bold; font-size: 1.2em; color: var(--accent-color);">+0</span></div>
+                <div><label data-i18n="lblWizPrep">Prepared Spells:</label> <span id="wizTotalPrep"
+                        style="font-weight: bold; font-size: 1.5em; color: var(--positive-color);">0</span></div>
             </div>
-            <p style="font-size: 0.8em; color: gray; margin-top: 10px;" data-i18n="lblWizNote">(Auto-calc: Wizard Level + INT Modifier. Min 1 if level > 0)</p>
+            <p style="font-size: 0.8em; color: gray; margin-top: 10px;" data-i18n="lblWizNote">(Auto-calc: Wizard Level
+                + INT Modifier. Min 1 if level > 0)</p>
         </div>
 
         <div class="panel span-2" id="panel-spell-slots">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pSlots">Spell Slots</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-spell-slots', 'Slot')">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pSlots">Spell Slots</span> <button class="hide-btn edit-only"
+                    onclick="hidePanel('panel-spell-slots', 'Slot')">👁️</button></h2>
             <div class="input-group edit-only">
                 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                     <select id="slotClassSel" style="flex-grow: 1; min-width: 150px;">
@@ -651,37 +536,108 @@
 
         <div class="panel span-2" id="panel-spells">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pSpells">Spells</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-spells', 'Incantesimi')">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pSpells">Spells</span> <button class="hide-btn edit-only"
+                    onclick="hidePanel('panel-spells', 'Incantesimi')">👁️</button></h2>
             <div class="input-group edit-only">
-                
-                <div style="display:flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; padding: 5px; border: 1px solid var(--accent-color); border-radius: 4px;">
-                    <label style="width: 100%; color: var(--accent-color); font-size: 0.85em;" data-i18n="lblDbLoad">Load from Database:</label>
-                    <select id="spellDbSelect" onchange="onSpellSelect()" style="flex-grow: 1;">
-                        </select>
+
+                <div
+                    style="position: relative; display:flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; padding: 5px; border: 1px solid var(--accent-color); border-radius: 4px;">
+                    <label style="width: 100%; color: var(--accent-color); font-size: 0.85em;"
+                        data-i18n="lblDbLoad">Load from Database:</label>
+                    <input type="text" id="spellSearchInput" onkeyup="filterItems('spell')"
+                        onfocus="showItemResults('spell')" data-i18n-ph="phSearchSpell"
+                        placeholder="Search for a spell..." style="flex-grow: 1;">
+                    <div id="spellSearchResults" class="search-results-popup"></div>
                 </div>
 
                 <div style="display: flex; flex-wrap: wrap; gap: 5px;">
-                    <input type="text" id="spellName" placeholder="Spell Name" data-i18n-ph="phSpellName" style="flex-grow: 1; min-width: 150px;">
+                    <input type="text" id="spellName" placeholder="Spell Name" data-i18n-ph="phSpellName"
+                        style="flex-grow: 1; min-width: 150px;">
                     <input type="number" id="spellLevel" placeholder="Lvl" min="0" max="9" style="width: 60px;">
-                    <input type="text" id="spellSchool" placeholder="School" data-i18n-ph="phSchool" style="width: 100px;">
+                    <input type="text" id="spellSchool" placeholder="School" data-i18n-ph="phSchool"
+                        style="width: 100px;">
                 </div>
                 <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px;">
                     <input type="text" id="spellRange" placeholder="Range" data-i18n-ph="phRange" style="width: 100px;">
-                    <input type="text" id="spellDuration" placeholder="Duration" data-i18n-ph="phDuration" style="width: 100px;">
-                    <input type="text" id="spellClasses" placeholder="Classes" data-i18n-ph="phClasses" style="flex-grow: 1; min-width: 150px;">
+                    <input type="text" id="spellDuration" placeholder="Duration" data-i18n-ph="phDuration"
+                        style="width: 100px;">
+                    <input type="text" id="spellClasses" placeholder="Classes" data-i18n-ph="phClasses"
+                        style="flex-grow: 1; min-width: 150px;">
                 </div>
-                <textarea id="spellDesc" class="flex-expand" placeholder="Description & Effects" data-i18n-ph="phDescEff" style="height: 60px; margin-top: 5px;"></textarea>
-                <textarea id="spellCantrip" class="flex-expand" placeholder="Cantrip Upgrade" data-i18n-ph="phCantrip" style="height: 40px; margin-top: 5px;"></textarea>
-                <textarea id="spellHigherLevel" class="flex-expand" placeholder="At Higher Levels" data-i18n-ph="phHigherLevel" style="height: 40px; margin-top: 5px;"></textarea>
-                
-                <button onclick="addCustomItem('spells', 'spellName', 'spellDesc')" data-i18n="btnAddSpell" style="margin-top: 5px;">Add Spell</button>
+                <textarea id="spellDesc" class="flex-expand" placeholder="Description & Effects"
+                    data-i18n-ph="phDescEff" style="height: 60px; margin-top: 5px;"></textarea>
+                <textarea id="spellCantrip" class="flex-expand" placeholder="Cantrip Upgrade" data-i18n-ph="phCantrip"
+                    style="height: 40px; margin-top: 5px;"></textarea>
+                <textarea id="spellHigherLevel" class="flex-expand" placeholder="At Higher Levels"
+                    data-i18n-ph="phHigherLevel" style="height: 40px; margin-top: 5px;"></textarea>
+
+                <button onclick="addCustomItem('spells', 'spellName', 'spellDesc')" data-i18n="btnAddSpell"
+                    style="margin-top: 5px;">Add Spell</button>
             </div>
             <div id="spellsList" class="list-container" style="max-height: 500px;"></div>
         </div>
 
+        <div class="panel span-2" id="panel-abracadabra">
+            <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
+            <h2 class="panel-title"><span>Abracadabra</span> <button class="hide-btn edit-only"
+                    onclick="hidePanel('panel-abracadabra', 'Abracadabra')">👁️</button></h2>
+            <div id="abracadabraSummary"
+                style="margin-bottom: 12px; padding: 8px; border: 1px solid var(--accent-color); border-radius: 6px; background: #1a1a1a;">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+                    <div style="font-size: 0.85em; color: var(--accent-color); font-weight: bold;">Spell Counters</div>
+                    <div style="font-size:0.8em; color:#aaa;">Cast Total: <span id="abraCastTotal">0</span> <button
+                            class="edit-only" style="padding:2px 6px;" onclick="resetAbracadabraUsed()">R</button> |
+                        Studied Total: <span id="abraStudyTotal">0</span> <button class="edit-only"
+                            style="padding:2px 6px;" onclick="resetAbracadabraStudied()">R</button></div>
+                </div>
+                <div id="abracadabraSummaryRows" style="font-size: 0.85em; color: #bbb; margin-top:6px;"></div>
+            </div>
+
+            <div class="input-group edit-only">
+                <div
+                    style="position: relative; display:flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; padding: 5px; border: 1px solid var(--accent-color); border-radius: 4px;">
+                    <label style="width: 100%; color: var(--accent-color); font-size: 0.85em;">Load from
+                        spells.json:</label>
+                    <input type="text" id="abracadabraSearchInput" onkeyup="filterItems('abracadabra')"
+                        onfocus="showItemResults('abracadabra')"
+                        placeholder="Search spells (name, desc, school, class...)" style="flex-grow: 1;">
+                    <div id="abracadabraSearchResults" class="search-results-popup"></div>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                    <input type="text" id="abracadabraName" placeholder="Spell Name" style="flex: 1 1 260px;">
+                    <input type="number" id="abracadabraLevel" min="0" max="9" placeholder="Level" style="width: 80px;">
+                    <input type="text" id="abracadabraSchool" placeholder="School" style="width: 140px;">
+                    <input type="text" id="abracadabraRange" placeholder="Range" style="width: 140px;">
+                    <input type="text" id="abracadabraCastingTime" placeholder="Casting Time" style="width: 140px;">
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                    <input type="text" id="abracadabraDuration" placeholder="Duration" style="width: 160px;">
+                    <input type="text" id="abracadabraComponents" placeholder="Components" style="width: 220px;">
+                    <input type="text" id="abracadabraMaterial" placeholder="Material" style="flex: 1 1 260px;">
+                    <input type="text" id="abracadabraAttackType" placeholder="Attack Type" style="width: 140px;">
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox"
+                            id="abracadabraRitual"> Ritual</label>
+                    <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox"
+                            id="abracadabraConcentration"> Concentration</label>
+                </div>
+                <textarea id="abracadabraDamage" placeholder="Damage progression (slot/character level)"
+                    style="height: 56px;"></textarea>
+                <textarea id="abracadabraHigherLevel" placeholder="Higher Level" style="height: 56px;"></textarea>
+                <textarea id="abracadabraDesc" placeholder="Description" style="height: 70px;"></textarea>
+                <input type="text" id="abracadabraClasses" placeholder="Classes (comma separated)">
+                <input type="text" id="abracadabraSubclasses" placeholder="Subclasses (comma separated)">
+                <button onclick="addAbracadabraItem()">Add Spell</button>
+            </div>
+            <div id="abracadabraList" class="list-container"></div>
+        </div>
+
         <div class="panel span-2" id="panel-notes">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pNotes">Notes & Backstory</span> <button class="hide-btn edit-only" onclick="hidePanel('panel-notes', 'Note')">👁️</button></h2>
+            <h2 class="panel-title"><span data-i18n="pNotes">Notes & Backstory</span> <button class="hide-btn edit-only"
+                    onclick="hidePanel('panel-notes', 'Note')">👁️</button></h2>
             <textarea id="notesArea" class="flex-expand" style="width: 100%;"></textarea>
         </div>
 
@@ -694,7 +650,7 @@
 
     <script>
         const APP_VERSION = "1.33";
-        
+
         let currentFileName = "";
         let currentSaveDate = "";
 
@@ -717,6 +673,15 @@
                 pSpells: "Spells", lblDbLoad: "Load from Database:", optSelectSpell: "-- Select a Spell --", btnAddSpell: "Add Spell", lblClassesSpells: "Classes:", lblHigherLvl: "Higher Levels:",
                 lblWeapDbLoad: "Load from Database:", optSelectWeap: "-- Select a Weapon --",
                 pNotes: "Notes & Backstory", lblHiddenPanels: "Hidden Panels",
+                lblEquipDbLoad: "Load from Database:",
+                lblFeatDbLoad: "Load from Database:",
+                lblLangDbLoad: "Load from Database:",
+                phSearchLang: "Search for a language...",
+                phSearchFeat: "Search for a feat...",
+                phLangType: "Type", phLangSpeakers: "Typical Speakers",
+                phFeatRaces: "Associated Races/Subraces",
+                phSearchEquip: "Search for an item...",
+                phSearchWeapon: "Search for a weapon...", phSearchSpell: "Search for a spell...",
                 optNone: "-- Target --", optStr: "STR", optDex: "DEX", optCon: "CON", optInt: "INT", optWis: "WIS", optCha: "CHA", optAtk: "Attack", optDmg: "Damage",
                 phTraitName: "Trait Name", phFeatName: "Feature Name", phDesc: "Description (max 200 char)", phOtherNotes: "Other notes (max 200 char)", phProp: "Properties (max 200 char)", phWeaponProps: "Properties (Finesse, Light, Heavy...)", phDetails: "Details (optional)", phWeight: "kg", phAtkBonus: "Atk", phDmgBonus: "Dmg",
                 phSpellName: "Spell Name", phSchool: "School", phRange: "Range", phDuration: "Duration", phClasses: "Classes (e.g. Wizard)", phDescEff: "Description & Effects", phCantrip: "Cantrip Upgrade (if any)", phHigherLevel: "At Higher Levels",
@@ -740,6 +705,15 @@
                 pSpells: "Tutti gli Incantesimi", lblDbLoad: "Carica dal Database:", optSelectSpell: "-- Seleziona Incantesimo --", btnAddSpell: "Aggiungi Incantesimo", lblClassesSpells: "Classi:", lblHigherLvl: "Ai Livelli Superiori:",
                 lblWeapDbLoad: "Carica dal Database:", optSelectWeap: "-- Seleziona Arma --",
                 pNotes: "Note Generali e Storia", lblHiddenPanels: "Pannelli Nascosti",
+                lblEquipDbLoad: "Carica dal Database:",
+                lblFeatDbLoad: "Carica dal Database:",
+                lblLangDbLoad: "Carica dal Database:",
+                phSearchLang: "Cerca una lingua...",
+                phSearchFeat: "Cerca un talento...",
+                phLangType: "Tipo", phLangSpeakers: "Parlanti Tipici",
+                phFeatRaces: "Razze/Sottorazze Associate",
+                phSearchEquip: "Cerca un oggetto...",
+                phSearchWeapon: "Cerca un'arma...", phSearchSpell: "Cerca un incantesimo...",
                 optNone: "-- Bersaglio --", optStr: "FOR", optDex: "DES", optCon: "COS", optInt: "INT", optWis: "SAG", optCha: "CAR", optAtk: "TPC", optDmg: "Danno",
                 phTraitName: "Nome Tratto", phFeatName: "Nome Privilegio", phDesc: "Descrizione (max 200 car.)", phOtherNotes: "Altre note (max 200 car.)", phProp: "Proprietà (max 200 car.)", phWeaponProps: "Proprietà (Accurata, Leggera...)", phDetails: "Dettagli (opzionale)", phWeight: "kg", phAtkBonus: "TPC", phDmgBonus: "Danno",
                 phSpellName: "Nome Incantesimo", phSchool: "Scuola", phRange: "Raggio", phDuration: "Durata", phClasses: "Classi (es. Mago)", phDescEff: "Descrizione e Effetti", phCantrip: "Miglioramento Trucchetto", phHigherLevel: "Lanciato a Livelli Superiori",
@@ -763,6 +737,15 @@
                 pSpells: "Sorts", lblDbLoad: "Charger depuis la base de données:", optSelectSpell: "-- Sélectionner un Sort --", btnAddSpell: "Ajouter Sort", lblClassesSpells: "Classes:", lblHigherLvl: "Niveaux Supérieurs:",
                 lblWeapDbLoad: "Charger depuis la base de données:", optSelectWeap: "-- Sélectionner une Arme --",
                 pNotes: "Notes et Histoire", lblHiddenPanels: "Panneaux Masqués",
+                lblEquipDbLoad: "Charger depuis la base de données:",
+                lblFeatDbLoad: "Charger depuis la base de données:",
+                lblLangDbLoad: "Charger depuis la base de données:",
+                phSearchLang: "Rechercher une langue...",
+                phSearchFeat: "Rechercher un don...",
+                phLangType: "Type", phLangSpeakers: "Locuteurs Typiques",
+                phFeatRaces: "Races/Sous-races associées",
+                phSearchEquip: "Rechercher un objet...",
+                phSearchWeapon: "Rechercher une arme...", phSearchSpell: "Rechercher un sort...",
                 optNone: "-- Cible --", optStr: "FOR", optDex: "DEX", optCon: "CON", optInt: "INT", optWis: "SAG", optCha: "CHA", optAtk: "Attaque", optDmg: "Dégâts",
                 phTraitName: "Nom du Trait", phFeatName: "Nom de la Capacité", phDesc: "Description (max 200 car.)", phOtherNotes: "Autres notes (max 200 car.)", phProp: "Propriétés (max 200 car.)", phWeaponProps: "Propriétés (Finesse, Lourd...)", phDetails: "Détails (optionnel)", phWeight: "kg", phAtkBonus: "Att", phDmgBonus: "Dég",
                 phSpellName: "Nom du Sort", phSchool: "École", phRange: "Portée", phDuration: "Durée", phClasses: "Classes (ex. Magicien)", phDescEff: "Description et Effets", phCantrip: "Amélioration Mineur", phHigherLevel: "Aux Niveaux Supérieurs",
@@ -786,6 +769,15 @@
                 pSpells: "Zauber", lblDbLoad: "Aus Datenbank laden:", optSelectSpell: "-- Zauber auswählen --", btnAddSpell: "Zauber hinzufügen", lblClassesSpells: "Klassen:", lblHigherLvl: "Auf höheren Stufen:",
                 lblWeapDbLoad: "Aus Datenbank laden:", optSelectWeap: "-- Waffe auswählen --",
                 pNotes: "Notizen & Hintergrund", lblHiddenPanels: "Versteckte Panels",
+                lblEquipDbLoad: "Aus Datenbank laden:",
+                lblFeatDbLoad: "Aus Datenbank laden:",
+                lblLangDbLoad: "Aus Datenbank laden:",
+                phSearchLang: "Sprache suchen...",
+                phSearchFeat: "Talent suchen...",
+                phLangType: "Typ", phLangSpeakers: "Typische Sprecher",
+                phFeatRaces: "Zugehörige Völker/Untervölker",
+                phSearchEquip: "Gegenstand suchen...",
+                phSearchWeapon: "Waffe suchen...", phSearchSpell: "Zauber suchen...",
                 optNone: "-- Ziel --", optStr: "STR", optDex: "GES", optCon: "KON", optInt: "INT", optWis: "WEI", optCha: "CHA", optAtk: "Angriff", optDmg: "Schaden",
                 phTraitName: "Merkmalname", phFeatName: "Klassenmerkmalname", phDesc: "Beschreibung (max. 200)", phOtherNotes: "Weitere Notizen (max 200)", phProp: "Eigenschaften (max. 200)", phWeaponProps: "Eigenschaften (Leicht, Schwer...)", phDetails: "Details (optional)", phWeight: "kg", phAtkBonus: "Angr", phDmgBonus: "Schad",
                 phSpellName: "Zaubername", phSchool: "Schule", phRange: "Reichweite", phDuration: "Dauer", phClasses: "Klassen (z.B. Magier)", phDescEff: "Beschreibung & Effekte", phCantrip: "Zaubertrick-Verbesserung", phHigherLevel: "Auf höheren Stufen",
@@ -809,6 +801,15 @@
                 pSpells: "Conjuros", lblDbLoad: "Cargar desde la base de datos:", optSelectSpell: "-- Seleccionar un Conjuro --", btnAddSpell: "Añadir Conjuro", lblClassesSpells: "Clases:", lblHigherLvl: "A Niveles Superiores:",
                 lblWeapDbLoad: "Cargar desde la base de datos:", optSelectWeap: "-- Seleccionar una Arma --",
                 pNotes: "Notas y Trasfondo", lblHiddenPanels: "Paneles Ocultos",
+                lblEquipDbLoad: "Cargar desde la base de datos:",
+                lblFeatDbLoad: "Cargar desde la base de datos:",
+                lblLangDbLoad: "Cargar desde la base de datos:",
+                phSearchLang: "Buscar un idioma...",
+                phSearchFeat: "Buscar un dote...",
+                phLangType: "Tipo", phLangSpeakers: "Hablantes Típicos",
+                phFeatRaces: "Razas/Subrazas Asociadas",
+                phSearchEquip: "Buscar un objeto...",
+                phSearchWeapon: "Buscar un arma...", phSearchSpell: "Buscar un conjuro...",
                 optNone: "-- Objetivo --", optStr: "FUE", optDex: "DES", optCon: "CON", optInt: "INT", optWis: "SAB", optCha: "CAR", optAtk: "Ataque", optDmg: "Daño",
                 phTraitName: "Nombre del Rasgo", phFeatName: "Nombre del Rasgo", phDesc: "Descripción (máx 200 car.)", phOtherNotes: "Otras notas (máx 200)", phProp: "Propiedades (máx 200 car.)", phWeaponProps: "Propiedades (Sutil, Pesada...)", phDetails: "Detalles (opcional)", phWeight: "kg", phAtkBonus: "Ataq", phDmgBonus: "Daño",
                 phSpellName: "Nombre del Conjuro", phSchool: "Escuela", phRange: "Alcance", phDuration: "Duración", phClasses: "Clases (ej. Mago)", phDescEff: "Descripción y Efectos", phCantrip: "Mejora de Truco", phHigherLevel: "A Niveles Superiores",
@@ -817,14 +818,14 @@
             }
         };
 
-        let currentLang = 'en'; 
-        
+        let currentLang = 'en';
+
         function setLanguage(lang) {
             currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             const btn = document.getElementById('btn-lang-' + lang);
-            if(btn) btn.classList.add('active');
-            
+            if (btn) btn.classList.add('active');
+
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (i18n[lang][key]) {
@@ -832,7 +833,7 @@
                     else el.textContent = i18n[lang][key];
                 }
             });
-            
+
             document.querySelectorAll('[data-i18n-ph]').forEach(el => {
                 const key = el.getAttribute('data-i18n-ph');
                 if (i18n[lang][key]) {
@@ -842,17 +843,20 @@
 
             renderHiddenPanels();
             updateSheet();
-            updateEquipModSummary();
+            updateMyStuffSummary();
             updateFileInfo();
-            loadSpellsDB(); 
-            loadWeaponsDB();
+            loadSpellsDB();
+            loadFeatsDB();
+            loadLanguagesDB();
+            loadMyStuffDB();
+            loadAbracadabraDB();
         }
 
         // Base Data
         const stats = ["FOR", "DES", "COS", "INT", "SAG", "CAR"];
-        const statNames = { "FOR": "STR", "DES": "DEX", "COS": "CON", "INT": "INT", "SAG": "WIS", "CAR": "CHA" }; 
+        const statNames = { "FOR": "STR", "DES": "DEX", "COS": "CON", "INT": "INT", "SAG": "WIS", "CAR": "CHA" };
         const statNamesIt = { "FOR": "Forza", "DES": "Destrezza", "COS": "Costituzione", "INT": "Intelligenza", "SAG": "Saggezza", "CAR": "Carisma" };
-        
+
         const skills = [
             { id: "acrobazia", name: "Acrobatics (Acrobazia)", stat: "DES" }, { id: "addestrare", name: "Animal Handl. (Addestrare)", stat: "SAG" },
             { id: "arcano", name: "Arcana (Arcano)", stat: "INT" }, { id: "atletica", name: "Athletics (Atletica)", stat: "FOR" },
@@ -865,38 +869,56 @@
             { id: "sopravvivenza", name: "Survival (Sopravvivenza)", stat: "SAG" }, { id: "storia", name: "History (Storia)", stat: "INT" }
         ];
 
-        const fullCasterSlots = [ [0,0,0,0,0,0,0,0,0], [2,0,0,0,0,0,0,0,0], [3,0,0,0,0,0,0,0,0], [4,2,0,0,0,0,0,0,0], [4,3,0,0,0,0,0,0,0], [4,3,2,0,0,0,0,0,0], [4,3,3,0,0,0,0,0,0], [4,3,3,1,0,0,0,0,0], [4,3,3,2,0,0,0,0,0], [4,3,3,3,1,0,0,0,0], [4,3,3,3,2,0,0,0,0], [4,3,3,3,2,1,0,0,0], [4,3,3,3,2,1,0,0,0], [4,3,3,3,2,1,1,0,0], [4,3,3,3,2,1,1,0,0], [4,3,3,3,2,1,1,1,0], [4,3,3,3,2,1,1,1,0], [4,3,3,3,2,1,1,1,1], [4,3,3,3,3,1,1,1,1], [4,3,3,3,3,2,1,1,1], [4,3,3,3,3,2,2,1,1] ];
-        const halfCasterSlots = [ [0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [2,0,0,0,0,0,0,0,0], [3,0,0,0,0,0,0,0,0], [3,0,0,0,0,0,0,0,0], [4,2,0,0,0,0,0,0,0], [4,2,0,0,0,0,0,0,0], [4,3,0,0,0,0,0,0,0], [4,3,0,0,0,0,0,0,0], [4,3,2,0,0,0,0,0,0], [4,3,2,0,0,0,0,0,0], [4,3,3,0,0,0,0,0,0], [4,3,3,0,0,0,0,0,0], [4,3,3,1,0,0,0,0,0], [4,3,3,1,0,0,0,0,0], [4,3,3,2,0,0,0,0,0], [4,3,3,2,0,0,0,0,0], [4,3,3,3,1,0,0,0,0], [4,3,3,3,1,0,0,0,0], [4,3,3,3,2,0,0,0,0], [4,3,3,3,2,0,0,0,0] ];
-        const thirdCasterSlots = [ [0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [2,0,0,0,0,0,0,0,0], [3,0,0,0,0,0,0,0,0], [3,0,0,0,0,0,0,0,0], [3,0,0,0,0,0,0,0,0], [4,2,0,0,0,0,0,0,0], [4,2,0,0,0,0,0,0,0], [4,2,0,0,0,0,0,0,0], [4,3,0,0,0,0,0,0,0], [4,3,0,0,0,0,0,0,0], [4,3,0,0,0,0,0,0,0], [4,3,2,0,0,0,0,0,0], [4,3,2,0,0,0,0,0,0], [4,3,2,0,0,0,0,0,0], [4,3,3,0,0,0,0,0,0], [4,3,3,0,0,0,0,0,0], [4,3,3,0,0,0,0,0,0], [4,3,3,1,0,0,0,0,0], [4,3,3,1,0,0,0,0,0] ];
-        const warlockSlots = [ [0,0,0,0,0,0,0,0,0], [1,0,0,0,0,0,0,0,0], [2,0,0,0,0,0,0,0,0], [0,2,0,0,0,0,0,0,0], [0,2,0,0,0,0,0,0,0], [0,0,2,0,0,0,0,0,0], [0,0,2,0,0,0,0,0,0], [0,0,0,2,0,0,0,0,0], [0,0,0,2,0,0,0,0,0], [0,0,0,0,2,0,0,0,0], [0,0,0,0,2,0,0,0,0], [0,0,0,0,3,0,0,0,0], [0,0,0,0,3,0,0,0,0], [0,0,0,0,3,0,0,0,0], [0,0,0,0,3,0,0,0,0], [0,0,0,0,3,0,0,0,0], [0,0,0,0,3,0,0,0,0], [0,0,0,0,4,0,0,0,0], [0,0,0,0,4,0,0,0,0], [0,0,0,0,4,0,0,0,0], [0,0,0,0,4,0,0,0,0] ];
+        const fullCasterSlots = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [2, 0, 0, 0, 0, 0, 0, 0, 0], [3, 0, 0, 0, 0, 0, 0, 0, 0], [4, 2, 0, 0, 0, 0, 0, 0, 0], [4, 3, 0, 0, 0, 0, 0, 0, 0], [4, 3, 2, 0, 0, 0, 0, 0, 0], [4, 3, 3, 0, 0, 0, 0, 0, 0], [4, 3, 3, 1, 0, 0, 0, 0, 0], [4, 3, 3, 2, 0, 0, 0, 0, 0], [4, 3, 3, 3, 1, 0, 0, 0, 0], [4, 3, 3, 3, 2, 0, 0, 0, 0], [4, 3, 3, 3, 2, 1, 0, 0, 0], [4, 3, 3, 3, 2, 1, 0, 0, 0], [4, 3, 3, 3, 2, 1, 1, 0, 0], [4, 3, 3, 3, 2, 1, 1, 0, 0], [4, 3, 3, 3, 2, 1, 1, 1, 0], [4, 3, 3, 3, 2, 1, 1, 1, 0], [4, 3, 3, 3, 2, 1, 1, 1, 1], [4, 3, 3, 3, 3, 1, 1, 1, 1], [4, 3, 3, 3, 3, 2, 1, 1, 1], [4, 3, 3, 3, 3, 2, 2, 1, 1]];
+        const halfCasterSlots = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [2, 0, 0, 0, 0, 0, 0, 0, 0], [3, 0, 0, 0, 0, 0, 0, 0, 0], [3, 0, 0, 0, 0, 0, 0, 0, 0], [4, 2, 0, 0, 0, 0, 0, 0, 0], [4, 2, 0, 0, 0, 0, 0, 0, 0], [4, 3, 0, 0, 0, 0, 0, 0, 0], [4, 3, 0, 0, 0, 0, 0, 0, 0], [4, 3, 2, 0, 0, 0, 0, 0, 0], [4, 3, 2, 0, 0, 0, 0, 0, 0], [4, 3, 3, 0, 0, 0, 0, 0, 0], [4, 3, 3, 0, 0, 0, 0, 0, 0], [4, 3, 3, 1, 0, 0, 0, 0, 0], [4, 3, 3, 1, 0, 0, 0, 0, 0], [4, 3, 3, 2, 0, 0, 0, 0, 0], [4, 3, 3, 2, 0, 0, 0, 0, 0], [4, 3, 3, 3, 1, 0, 0, 0, 0], [4, 3, 3, 3, 1, 0, 0, 0, 0], [4, 3, 3, 3, 2, 0, 0, 0, 0], [4, 3, 3, 3, 2, 0, 0, 0, 0]];
+        const thirdCasterSlots = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [2, 0, 0, 0, 0, 0, 0, 0, 0], [3, 0, 0, 0, 0, 0, 0, 0, 0], [3, 0, 0, 0, 0, 0, 0, 0, 0], [3, 0, 0, 0, 0, 0, 0, 0, 0], [4, 2, 0, 0, 0, 0, 0, 0, 0], [4, 2, 0, 0, 0, 0, 0, 0, 0], [4, 2, 0, 0, 0, 0, 0, 0, 0], [4, 3, 0, 0, 0, 0, 0, 0, 0], [4, 3, 0, 0, 0, 0, 0, 0, 0], [4, 3, 0, 0, 0, 0, 0, 0, 0], [4, 3, 2, 0, 0, 0, 0, 0, 0], [4, 3, 2, 0, 0, 0, 0, 0, 0], [4, 3, 2, 0, 0, 0, 0, 0, 0], [4, 3, 3, 0, 0, 0, 0, 0, 0], [4, 3, 3, 0, 0, 0, 0, 0, 0], [4, 3, 3, 0, 0, 0, 0, 0, 0], [4, 3, 3, 1, 0, 0, 0, 0, 0], [4, 3, 3, 1, 0, 0, 0, 0, 0]];
+        const warlockSlots = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0], [2, 0, 0, 0, 0, 0, 0, 0, 0], [0, 2, 0, 0, 0, 0, 0, 0, 0], [0, 2, 0, 0, 0, 0, 0, 0, 0], [0, 0, 2, 0, 0, 0, 0, 0, 0], [0, 0, 2, 0, 0, 0, 0, 0, 0], [0, 0, 0, 2, 0, 0, 0, 0, 0], [0, 0, 0, 2, 0, 0, 0, 0, 0], [0, 0, 0, 0, 2, 0, 0, 0, 0], [0, 0, 0, 0, 2, 0, 0, 0, 0], [0, 0, 0, 0, 3, 0, 0, 0, 0], [0, 0, 0, 0, 3, 0, 0, 0, 0], [0, 0, 0, 0, 3, 0, 0, 0, 0], [0, 0, 0, 0, 3, 0, 0, 0, 0], [0, 0, 0, 0, 3, 0, 0, 0, 0], [0, 0, 0, 0, 3, 0, 0, 0, 0], [0, 0, 0, 0, 4, 0, 0, 0, 0], [0, 0, 0, 0, 4, 0, 0, 0, 0], [0, 0, 0, 0, 4, 0, 0, 0, 0], [0, 0, 0, 0, 4, 0, 0, 0, 0]];
+        // Cantrip progression (0th-level) aligned to SRD class tables.
+        const cantripsKnownByClass = {
+            bardo: [0, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+            chierico: [0, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+            druido: [0, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+            mago: [0, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+            stregone: [0, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
+            warlock: [0, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+            paladino: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            ranger: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            cavaliere_mistico: [0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+            mistificatore_arcano: [0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+        };
+        // Spells known progression (only classes that use "known spells" in SRD tables).
+        const spellsKnownByClass = {
+            bardo: [0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 15, 16, 18, 19, 19, 20, 22, 22, 22],
+            stregone: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15],
+            warlock: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15],
+            ranger: [0, 0, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11],
+            cavaliere_mistico: [0, 0, 0, 3, 4, 4, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11, 11, 11, 12, 13],
+            mistificatore_arcano: [0, 0, 0, 3, 4, 4, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11, 11, 11, 12, 13]
+        };
 
-        const charLists = { 
-            weapons: [], equipment: [], feats: [], spells: [], 
+        const charLists = {
+            feats: [], spells: [],
             wealthLog: [], raceTraits: [], classFeatures: [], multiClassFeatures: [],
-            languages: [], protections: [], slotProgressions: [], hiddenPanels: []
+            languages: [], myStuff: [], abracadabra: [], slotProgressions: [], hiddenPanels: []
         };
 
         // --- Data Bases (JSON) ---
         let spellDatabase = [];
-        let weaponDatabase = [];
+        let featsDatabase = [];
+        let languagesDatabase = [];
+        let myStuffDatabase = [];
+        let abracadabraDatabase = [];
+        let myStuffCategoryOrder = [];
+        let myStuffCategoryOrderMap = {};
 
         async function loadSpellsDB() {
-            const sel = document.getElementById("spellDbSelect");
-            if(!sel) return;
-            sel.innerHTML = `<option value="" data-i18n="optSelectSpell">${i18n[currentLang].optSelectSpell || "-- Select a Spell --"}</option>`;
-            
             try {
                 const response = await fetch(`jsons/spells_${currentLang}.json`);
                 if (response.ok) {
                     spellDatabase = await response.json();
-                    spellDatabase.sort((a,b) => a.name.localeCompare(b.name));
-                    
-                    spellDatabase.forEach((spell, index) => {
-                        let opt = document.createElement('option');
-                        opt.value = index;
-                        opt.textContent = `${spell.name} (Lvl ${spell.level})`;
-                        sel.appendChild(opt);
-                    });
+                    spellDatabase.sort((a, b) => a.name.localeCompare(b.name));
+                } else {
+                    spellDatabase = [];
                 }
             } catch (e) {
                 console.log(`Error loading jsons/spells_${currentLang}.json. Remember to use a local web server to bypass CORS issues.`, e);
@@ -904,37 +926,358 @@
             }
         }
 
-        async function loadWeaponsDB() {
-            const sel = document.getElementById("weaponDbSelect");
-            if(!sel) return;
-            sel.innerHTML = `<option value="" data-i18n="optSelectWeap">${i18n[currentLang].optSelectWeap || "-- Select a Weapon --"}</option>`;
-            
+        async function loadFeatsDB() {
             try {
-                let response = await fetch(`jsons/weapons_${currentLang}.json`);
-                if (!response.ok) response = await fetch(`jsons/weapons.json`); 
-
+                const response = await fetch(`jsons/traits.json`);
                 if (response.ok) {
-                    weaponDatabase = await response.json();
-                    weaponDatabase.sort((a,b) => a.name.localeCompare(b.name));
-                    
-                    weaponDatabase.forEach((weap, index) => {
-                        let opt = document.createElement('option');
-                        opt.value = index;
-                        opt.textContent = weap.name;
-                        sel.appendChild(opt);
-                    });
+                    featsDatabase = await response.json();
+                    featsDatabase.sort((a, b) => a.name.localeCompare(b.name));
+                } else {
+                    featsDatabase = [];
                 }
             } catch (e) {
-                console.log(`Error loading weapons DB. Remember to use a local web server.`, e);
-                weaponDatabase = [];
+                console.log(`Error loading traits.json.`, e);
+                featsDatabase = [];
             }
         }
 
-        function onSpellSelect() {
-            const sel = document.getElementById("spellDbSelect");
-            if (sel.value === "") return;
-            
-            const spell = spellDatabase[sel.value];
+        async function loadLanguagesDB() {
+            try {
+                const response = await fetch(`jsons/languages.json`);
+                if (response.ok) {
+                    languagesDatabase = await response.json();
+                    languagesDatabase.sort((a, b) => a.name.localeCompare(b.name));
+                } else {
+                    languagesDatabase = [];
+                }
+            } catch (e) {
+                console.log(`Error loading languages.json.`, e);
+                languagesDatabase = [];
+            }
+        }
+
+        function normalizeSpellField(v) {
+            if (v === undefined || v === null) return "";
+            if (Array.isArray(v)) return v.join('\n');
+            if (typeof v === 'object') return JSON.stringify(v, null, 2);
+            return String(v);
+        }
+
+        function boolFromSpellValue(v) {
+            return v === true || v === "True" || v === "true";
+        }
+
+        function formatSpellDamageBlock(spell) {
+            const parts = [];
+            if (spell?.damage?.damage_type?.name) parts.push(`Type: ${spell.damage.damage_type.name}`);
+            if (spell?.damage?.damage_at_slot_level) parts.push(`Slot: ${JSON.stringify(spell.damage.damage_at_slot_level)}`);
+            if (spell?.damage?.damage_at_character_level) parts.push(`Char: ${JSON.stringify(spell.damage.damage_at_character_level)}`);
+            if (spell?.heal_at_slot_level) parts.push(`Heal: ${JSON.stringify(spell.heal_at_slot_level)}`);
+            return parts.join('\n');
+        }
+
+        function parseAbracadabraEntry(spell) {
+            const classes = Array.isArray(spell.classes) ? spell.classes.map(c => c.name).join(', ') : "";
+            const subclasses = Array.isArray(spell.subclasses) ? spell.subclasses.map(s => s.name).join(', ') : "";
+            return {
+                name: spell.name || "",
+                index: spell.index || "",
+                desc: normalizeSpellField(spell.desc),
+                higherLevel: normalizeSpellField(spell.higher_level),
+                range: normalizeSpellField(spell.range),
+                components: Array.isArray(spell.components) ? spell.components.join(', ') : normalizeSpellField(spell.components),
+                material: normalizeSpellField(spell.material),
+                ritual: boolFromSpellValue(spell.ritual),
+                duration: normalizeSpellField(spell.duration),
+                concentration: boolFromSpellValue(spell.concentration),
+                castingTime: normalizeSpellField(spell.casting_time),
+                level: Number.isFinite(spell.level) ? spell.level : parseInt(spell.level) || 0,
+                attackType: normalizeSpellField(spell.attack_type),
+                damage: formatSpellDamageBlock(spell),
+                school: spell?.school?.name || "",
+                classes,
+                subclasses,
+                usedCount: 0,
+                studiedCount: 0,
+                usedFlag: false,
+                studiedFlag: false,
+                timestamp: new Date().toLocaleString()
+            };
+        }
+
+        async function loadAbracadabraDB() {
+            try {
+                const resp = await fetch(`jsons/spells.json`);
+                if (!resp.ok) {
+                    abracadabraDatabase = [];
+                    return;
+                }
+                const data = await resp.json();
+                abracadabraDatabase = (data || []).map(parseAbracadabraEntry).sort((a, b) => {
+                    const bySchool = (a.school || '').localeCompare(b.school || '');
+                    if (bySchool !== 0) return bySchool;
+                    return (a.name || '').localeCompare(b.name || '');
+                });
+            } catch (e) {
+                console.log(`Error loading abracadabra DB.`, e);
+                abracadabraDatabase = [];
+            }
+        }
+
+        function getSearchElements(type) {
+            const map = {
+                spell: { inputId: 'spellSearchInput', resultsId: 'spellSearchResults' },
+                feat: { inputId: 'featSearchInput', resultsId: 'featSearchResults' },
+                language: { inputId: 'langSearchInput', resultsId: 'languageSearchResults' },
+                mystuff: { inputId: 'mystuffSearchInput', resultsId: 'mystuffSearchResults' },
+                abracadabra: { inputId: 'abracadabraSearchInput', resultsId: 'abracadabraSearchResults' }
+            };
+            const cfg = map[type];
+            if (!cfg) return { input: null, resultsContainer: null };
+            return {
+                input: document.getElementById(cfg.inputId),
+                resultsContainer: document.getElementById(cfg.resultsId)
+            };
+        }
+
+        function normalizeDesc(descVal) {
+            if (!descVal) return "";
+            if (Array.isArray(descVal)) return descVal.join('\n');
+            if (typeof descVal === 'string') return descVal;
+            return JSON.stringify(descVal);
+        }
+
+        function normalizeProperties(propsVal) {
+            if (!propsVal) return "";
+            if (Array.isArray(propsVal)) {
+                return propsVal.map(p => {
+                    if (typeof p === 'string') return p;
+                    return p?.name || p?.index || '';
+                }).filter(Boolean).join(', ');
+            }
+            return String(propsVal);
+        }
+
+        function normalizeRange(rangeVal) {
+            if (!rangeVal) return "";
+            if (typeof rangeVal === 'string') return rangeVal;
+            if (rangeVal.normal !== undefined) {
+                return rangeVal.long !== undefined ? `${rangeVal.normal}/${rangeVal.long}` : String(rangeVal.normal);
+            }
+            return "";
+        }
+
+        function normalizeDamage(damageVal) {
+            if (!damageVal) return "";
+            if (typeof damageVal === 'string') return damageVal;
+            if (damageVal.damage_dice) {
+                let out = damageVal.damage_dice;
+                if (damageVal.damage_type?.name) out += ` ${damageVal.damage_type.name}`;
+                return out;
+            }
+            return "";
+        }
+
+        function parseMyStuffEntry(rawItem, categoryName, categoryIndex, targetFile) {
+            const armorBase = rawItem?.armor_class?.base ?? "";
+            const armorDexMax = rawItem?.armor_class?.max_bonus ?? "";
+            const armorStrMin = rawItem?.str_minimum ?? "";
+            const costQty = rawItem?.cost?.quantity ?? "";
+            const costUnit = rawItem?.cost?.unit ?? "";
+            const desc = normalizeDesc(rawItem?.desc || rawItem?.description);
+            const props = normalizeProperties(rawItem?.properties);
+            const range = normalizeRange(rawItem?.range);
+            const throwRange = normalizeRange(rawItem?.throw_range);
+            const damage = normalizeDamage(rawItem?.damage);
+            const twoHandedDamage = normalizeDamage(rawItem?.two_handed_damage);
+
+            return {
+                name: rawItem?.name || "",
+                index: rawItem?.index || "",
+                sourceFile: targetFile || "",
+                category: categoryName || "Uncategorized",
+                categoryIndex: categoryIndex || "",
+                desc,
+                weight: rawItem?.weight ?? "",
+                costQty,
+                costUnit,
+                damage,
+                twoHandedDamage,
+                range,
+                throwRange,
+                properties: props,
+                armorClass: armorBase,
+                acBonus: "",
+                defenseBonus: "",
+                attackBonus: "",
+                saveBonus: "",
+                armorDexMax,
+                armorStrMin,
+                stealthDisadvantage: !!rawItem?.stealth_disadvantage,
+                advantage: "",
+                disadvantage: "",
+                modVal: "",
+                modTarget: "",
+                inUse: false
+            };
+        }
+
+        async function loadMyStuffDB() {
+            try {
+                const catResp = await fetch(`jsons/equipment-categories.json`);
+                if (!catResp.ok) {
+                    myStuffDatabase = [];
+                    myStuffCategoryOrder = [];
+                    return;
+                }
+
+                const categories = await catResp.json();
+                myStuffCategoryOrder = categories.map(c => c.name);
+                myStuffCategoryOrderMap = {};
+                myStuffCategoryOrder.forEach((name, idx) => { myStuffCategoryOrderMap[name] = idx; });
+
+                const targetFiles = [...new Set(
+                    categories.flatMap(c => (c.equipment || []).map(eq => eq?.url?.target_file)).filter(Boolean)
+                )];
+
+                const fileCache = {};
+                await Promise.all(targetFiles.map(async (fileName) => {
+                    try {
+                        const resp = await fetch(`jsons/${fileName}`);
+                        fileCache[fileName] = resp.ok ? await resp.json() : [];
+                    } catch (e) {
+                        fileCache[fileName] = [];
+                    }
+                }));
+
+                const merged = [];
+                categories.forEach(cat => {
+                    (cat.equipment || []).forEach(eqRef => {
+                        const targetFile = eqRef?.url?.target_file;
+                        const targetEntry = eqRef?.url?.target_entry;
+                        const sourceList = fileCache[targetFile] || [];
+                        const rawItem = sourceList.find(i => i.index === targetEntry) || {
+                            index: eqRef?.index,
+                            name: eqRef?.name
+                        };
+                        merged.push(parseMyStuffEntry(rawItem, cat.name, cat.index, targetFile));
+                    });
+                });
+
+                myStuffDatabase = merged.sort((a, b) => {
+                    const aOrd = myStuffCategoryOrderMap[a.category] ?? 9999;
+                    const bOrd = myStuffCategoryOrderMap[b.category] ?? 9999;
+                    if (aOrd !== bOrd) return aOrd - bOrd;
+                    return a.name.localeCompare(b.name);
+                });
+            } catch (e) {
+                console.log(`Error loading equipment-categories/mystuff DB.`, e);
+                myStuffDatabase = [];
+                myStuffCategoryOrder = [];
+                myStuffCategoryOrderMap = {};
+            }
+        }
+
+        function filterItems(type) {
+            const db = (type === 'spell') ? spellDatabase : (type === 'feat' ? featsDatabase : (type === 'mystuff' ? myStuffDatabase : (type === 'abracadabra' ? abracadabraDatabase : languagesDatabase)));
+            const { input, resultsContainer } = getSearchElements(type);
+            if (!input || !resultsContainer) return;
+
+            const searchTerm = input.value.toLowerCase();
+            resultsContainer.innerHTML = '';
+
+            const filteredItems = db.filter(item => {
+                if (type === 'mystuff') {
+                    const haystack = [
+                        item.name,
+                        item.category,
+                        item.desc,
+                        item.properties,
+                        item.damage,
+                        item.twoHandedDamage
+                    ].filter(Boolean).join(' ').toLowerCase();
+                    return haystack.includes(searchTerm);
+                }
+                if (type === 'abracadabra') {
+                    const haystack = [
+                        item.name, item.desc, item.school, item.classes, item.subclasses, item.components,
+                        item.range, item.castingTime, item.damage, item.higherLevel
+                    ].filter(Boolean).join(' ').toLowerCase();
+                    return haystack.includes(searchTerm);
+                }
+                return item.name.toLowerCase().includes(searchTerm);
+            });
+
+            if (filteredItems.length > 0) {
+                filteredItems.forEach(item => {
+                    const itemIndex = db.indexOf(item);
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'search-result-item';
+                    itemDiv.textContent = (type === 'spell')
+                        ? `${item.name} (Lvl ${item.level})`
+                        : (type === 'mystuff'
+                            ? `${item.name} [${item.category}]`
+                            : (type === 'abracadabra' ? `${item.name} [${item.school}] (Lvl ${item.level})` : item.name));
+                    itemDiv.onclick = (event) => {
+                        event.stopPropagation();
+                        selectItem(type, itemIndex);
+                    };
+                    resultsContainer.appendChild(itemDiv);
+                });
+                resultsContainer.style.display = 'block';
+            } else {
+                resultsContainer.style.display = 'none';
+            }
+        }
+
+        function showItemResults(type) {
+            const db = (type === 'spell') ? spellDatabase : (type === 'feat' ? featsDatabase : (type === 'mystuff' ? myStuffDatabase : (type === 'abracadabra' ? abracadabraDatabase : languagesDatabase)));
+            const { resultsContainer } = getSearchElements(type);
+            if (!resultsContainer) return;
+
+            resultsContainer.innerHTML = '';
+            db.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'search-result-item';
+                itemDiv.textContent = (type === 'spell')
+                    ? `${item.name} (Lvl ${item.level})`
+                    : (type === 'mystuff'
+                        ? `${item.name} [${item.category}]`
+                        : (type === 'abracadabra' ? `${item.name} [${item.school}] (Lvl ${item.level})` : item.name));
+                itemDiv.onclick = (event) => {
+                    event.stopPropagation();
+                    selectItem(type, index);
+                };
+                resultsContainer.appendChild(itemDiv);
+            });
+            resultsContainer.style.display = 'block';
+        }
+
+        function selectItem(type, index) {
+            const db = (type === 'spell') ? spellDatabase : (type === 'feat' ? featsDatabase : (type === 'mystuff' ? myStuffDatabase : (type === 'abracadabra' ? abracadabraDatabase : languagesDatabase)));
+            const item = db[index];
+
+            if (type === 'spell') {
+                populateSpellForm(item);
+            } else if (type === 'feat') {
+                populateFeatForm(item);
+            } else if (type === 'language') {
+                populateLanguageForm(item);
+            } else if (type === 'mystuff') {
+                populateMyStuffForm(item);
+            } else if (type === 'abracadabra') {
+                populateAbracadabraForm(item);
+            }
+
+            const { input: searchInput, resultsContainer } = getSearchElements(type);
+            if (searchInput) searchInput.value = "";
+            if (resultsContainer) {
+                resultsContainer.innerHTML = '';
+                resultsContainer.style.display = 'none';
+            }
+        }
+
+        function populateSpellForm(spell) {
             document.getElementById("spellName").value = spell.name || "";
             document.getElementById("spellLevel").value = spell.level !== undefined ? spell.level : "";
             document.getElementById("spellSchool").value = spell.school || "";
@@ -942,7 +1285,7 @@
             document.getElementById("spellDuration").value = spell.duration || "";
             document.getElementById("spellCantrip").value = spell.cantripUpgrade || "";
             document.getElementById("spellHigherLevel").value = spell.higherLevelSlot || "";
-            
+
             let classesStr = "";
             if (Array.isArray(spell.classes)) {
                 classesStr = spell.classes.join(', ');
@@ -950,96 +1293,147 @@
                 classesStr = spell.classes;
             }
             document.getElementById("spellClasses").value = classesStr;
-            
+
             let fullDesc = spell.description || "";
             let metaParts = [];
             if (spell.actionType) metaParts.push(`Act: ${spell.actionType}`);
             if (spell.components) metaParts.push(`Comp: ${spell.components.join(',')}`);
-            
+
             let meta = metaParts.length > 0 ? `[${metaParts.join(' | ')}]` : "";
             if (spell.concentration) meta += " [C]";
             if (spell.ritual) meta += " [R]";
-            
+
             document.getElementById("spellDesc").value = (meta ? meta + "\n" : "") + fullDesc;
         }
 
-        function onWeaponSelect() {
-            const sel = document.getElementById("weaponDbSelect");
-            if (sel.value === "") return;
-            
-            const weap = weaponDatabase[sel.value];
-            document.getElementById("weaponName").value = weap.name || "";
-            
-            // Parse nested damage object
-            let dmgStr = "";
-            if (weap.damage && weap.damage.damage_dice) {
-                dmgStr = weap.damage.damage_dice;
-                if (weap.damage.damage_type && weap.damage.damage_type.name) {
-                    dmgStr += " " + weap.damage.damage_type.name;
+        function populateFeatForm(item) {
+            document.getElementById("featName").value = item.name || "";
+
+            let raceParts = [];
+            if (item.races && item.races.length > 0) {
+                raceParts = raceParts.concat(item.races.map(r => r.name));
+            }
+            if (item.subraces && item.subraces.length > 0) {
+                raceParts = raceParts.concat(item.subraces.map(sr => sr.name));
+            }
+            document.getElementById("featRaces").value = raceParts.join(', ');
+
+            let finalDesc = "";
+            if (item.desc && Array.isArray(item.desc)) {
+                finalDesc = item.desc.join('\n');
+            }
+
+            document.getElementById("featDesc").value = finalDesc.trim();
+        }
+
+        function populateLanguageForm(item) {
+            document.getElementById("langName").value = item.name || "";
+
+            if (document.getElementById("langType")) {
+                document.getElementById("langType").value = item.type || "";
+            }
+            if (document.getElementById("langSpeakers")) {
+                document.getElementById("langSpeakers").value = item.typical_speakers ? item.typical_speakers.join(', ') : "";
+            }
+
+            let finalDesc = "";
+            if (item.desc && Array.isArray(item.desc)) {
+                finalDesc = item.desc.join('\n');
+            }
+
+            document.getElementById("langDesc").value = finalDesc.trim();
+        }
+
+        function populateMyStuffForm(item) {
+            document.getElementById("mystuffName").value = item.name || "";
+            document.getElementById("mystuffCategory").value = item.category || "";
+            document.getElementById("mystuffWeight").value = item.weight !== undefined ? item.weight : "";
+            document.getElementById("mystuffCostQty").value = item.costQty !== undefined ? item.costQty : "";
+            document.getElementById("mystuffCostUnit").value = item.costUnit || "";
+            document.getElementById("mystuffDamage").value = item.damage || "";
+            document.getElementById("mystuffTwoHandedDamage").value = item.twoHandedDamage || "";
+            document.getElementById("mystuffRange").value = item.range || "";
+            document.getElementById("mystuffThrowRange").value = item.throwRange || "";
+            document.getElementById("mystuffProperties").value = item.properties || "";
+            document.getElementById("mystuffArmorClass").value = item.armorClass !== undefined ? item.armorClass : "";
+            document.getElementById("mystuffAcBonus").value = item.acBonus !== undefined ? item.acBonus : "";
+            document.getElementById("mystuffDefenseBonus").value = item.defenseBonus !== undefined ? item.defenseBonus : "";
+            document.getElementById("mystuffAttackBonus").value = item.attackBonus !== undefined ? item.attackBonus : "";
+            document.getElementById("mystuffSaveBonus").value = item.saveBonus !== undefined ? item.saveBonus : "";
+            document.getElementById("mystuffArmorDexMax").value = item.armorDexMax !== undefined ? item.armorDexMax : "";
+            document.getElementById("mystuffArmorStrMin").value = item.armorStrMin !== undefined ? item.armorStrMin : "";
+            document.getElementById("mystuffStealthDisadvantage").checked = !!item.stealthDisadvantage;
+            document.getElementById("mystuffAdvantage").value = item.advantage || "";
+            document.getElementById("mystuffDisadvantage").value = item.disadvantage || "";
+            document.getElementById("mystuffModVal").value = item.modVal || "";
+            document.getElementById("mystuffModTarget").value = item.modTarget || "";
+            document.getElementById("mystuffDesc").value = item.desc || "";
+        }
+
+        function parseTagList(value) {
+            if (!value) return [];
+            return String(value).split(',').map(v => v.trim()).filter(Boolean);
+        }
+
+        function getUseLabel(item) {
+            if (item?.inUse) return currentLang === 'en' ? 'In Use' : 'In Uso';
+            return currentLang === 'en' ? 'Carried' : 'Trasportato';
+        }
+
+        function updateMyStuffSummary() {
+            const container = document.getElementById('mystuffSummaryRows');
+            if (!container) return;
+
+            const used = charLists.myStuff.filter(i => !!i.inUse);
+            let atk = 0;
+            let def = 0;
+            let saves = 0;
+            const modSummary = {};
+            const adv = [];
+            const disadv = [];
+
+            used.forEach(item => {
+                atk += parseInt(item.attackBonus) || 0;
+                def += (parseInt(item.defenseBonus) || 0) + (parseInt(item.acBonus) || 0);
+                saves += parseInt(item.saveBonus) || 0;
+                if (item.modVal && item.modTarget) {
+                    modSummary[item.modTarget] = (modSummary[item.modTarget] || 0) + (parseInt(item.modVal) || 0);
                 }
-            }
-            document.getElementById("weaponDamage").value = dmgStr;
-            
-            // Parse Range
-            let rangeStr = "";
-            if (weap.range) {
-                rangeStr = weap.range.normal;
-                if (weap.range.long && weap.range.long !== "None") rangeStr += `/${weap.range.long}`;
-            }
-            document.getElementById("weaponRange").value = rangeStr;
-            
-            document.getElementById("weaponWeight").value = weap.weight !== undefined ? weap.weight : "";
-            
-            // Parse nested properties array
-            let propsStr = "";
-            if (Array.isArray(weap.properties)) {
-                propsStr = weap.properties.map(p => p.name || p.index).join(', ');
-            } else if (weap.properties) {
-                propsStr = weap.properties;
-            }
-            document.getElementById("weaponProps").value = propsStr;
-            
-            // Build rich description from remaining JSON attributes
-            let descParts = [];
-            if (weap.category_range) descParts.push(`Cat: ${weap.category_range}`);
-            else if (weap.weapon_category) descParts.push(`Cat: ${weap.weapon_category}`);
-            
-            if (weap.two_handed_damage && weap.two_handed_damage.damage_dice) {
-                let thDmg = weap.two_handed_damage.damage_dice;
-                if (weap.two_handed_damage.damage_type && weap.two_handed_damage.damage_type.name) {
-                    thDmg += " " + weap.two_handed_damage.damage_type.name;
-                }
-                descParts.push(`2-Handed: ${thDmg}`);
-            }
-            
-            if (weap.cost && weap.cost.quantity !== undefined) {
-                descParts.push(`Cost: ${weap.cost.quantity} ${weap.cost.unit}`);
-            }
-            
-            let finalDesc = descParts.join(" | ");
-            if (weap.desc) finalDesc += (finalDesc ? "\n" : "") + weap.desc;
-            if (weap.description) finalDesc += (finalDesc ? "\n" : "") + weap.description;
-            
-            document.getElementById("weaponDesc").value = finalDesc.trim();
-            
-            document.getElementById("weaponAtkBonus").value = "";
-            document.getElementById("weaponDmgBonus").value = "";
+                parseTagList(item.advantage).forEach(v => adv.push(v));
+                parseTagList(item.disadvantage).forEach(v => disadv.push(v));
+                if (item.stealthDisadvantage) disadv.push('Stealth');
+            });
+
+            const modStr = Object.entries(modSummary)
+                .filter(([, v]) => v !== 0)
+                .map(([k, v]) => `${k} ${v > 0 ? '+' : ''}${v}`)
+                .join(' | ');
+
+            container.innerHTML = `
+                <div><strong>Items In Use:</strong> ${used.length}</div>
+                <div><strong>Attack Bonus:</strong> ${atk >= 0 ? '+' : ''}${atk}</div>
+                <div><strong>Defense Bonus:</strong> ${def >= 0 ? '+' : ''}${def}</div>
+                <div><strong>Save Bonus:</strong> ${saves >= 0 ? '+' : ''}${saves}</div>
+                <div><strong>Bonus Vari:</strong> ${modStr || '-'}</div>
+                <div><strong>Advantages:</strong> ${adv.length ? adv.join(', ') : '-'}</div>
+                <div><strong>Disadvantages:</strong> ${disadv.length ? disadv.join(', ') : '-'}</div>
+            `;
         }
 
         // --- Header Dynamic Name ---
         function updateHeaderName() {
             const nameField = document.getElementById("charName");
             const headerDisplay = document.getElementById("headerCharNameDisplay");
-            if(nameField && headerDisplay) {
+            if (nameField && headerDisplay) {
                 headerDisplay.textContent = nameField.value ? `- ${nameField.value} -` : "";
             }
         }
-        
+
         // --- File Info Display ---
         function updateFileInfo() {
             const display = document.getElementById("fileInfoDisplay");
             if (!display) return;
-            
+
             if (currentFileName) {
                 const lblF = i18n[currentLang].lblFile || "File";
                 const lblS = i18n[currentLang].lblSaved || "Saved";
@@ -1051,23 +1445,76 @@
         }
 
         // --- Application Init ---
-        document.addEventListener("DOMContentLoaded", function() {
-            setLanguage('en'); 
+        document.addEventListener("DOMContentLoaded", function () {
+            setLanguage('en');
             renderBaseStats();
             initDragAndDrop();
             updateSheet();
+            loadFeatsDB();
+            loadLanguagesDB();
+            loadMyStuffDB();
+            loadAbracadabraDB();
             updateWealthTotals();
             renderSlotProgressions();
             renderHiddenPanels();
             updateHeaderName();
             updateFileInfo();
-            
-            window.onclick = function(event) {
-                const modal = document.getElementById('changelogModal');
-                if (event.target == modal) {
-                    modal.style.display = "none";
+            updateMyStuffSummary();
+            updateAbracadabraSummary();
+
+            window.onclick = function (event) {
+                const changelogModal = document.getElementById('changelogModal');
+                if (event.target == changelogModal) {
+                    changelogModal.style.display = "none";
                 }
-            }
+
+                const spellResults = document.getElementById('spellSearchResults');
+                const spellInput = document.getElementById('spellSearchInput');
+                if (spellResults && spellResults.style.display === 'block' && !spellResults.contains(event.target) && event.target !== spellInput) {
+                    spellResults.style.display = 'none';
+                }
+
+                const featResults = document.getElementById('featSearchResults');
+                const featInput = document.getElementById('featSearchInput');
+                if (featResults && featResults.style.display === 'block' && !featResults.contains(event.target) && event.target !== featInput) {
+                    featResults.style.display = 'none';
+                }
+
+                const langResults = document.getElementById('languageSearchResults');
+                const langInput = document.getElementById('langSearchInput');
+                if (langResults && langResults.style.display === 'block' && !langResults.contains(event.target) && event.target !== langInput) {
+                    langResults.style.display = 'none';
+                }
+
+                const mystuffResults = document.getElementById('mystuffSearchResults');
+                const mystuffInput = document.getElementById('mystuffSearchInput');
+                if (mystuffResults && mystuffResults.style.display === 'block' && !mystuffResults.contains(event.target) && event.target !== mystuffInput) {
+                    mystuffResults.style.display = 'none';
+                }
+            };
+
+            document.addEventListener('keydown', (ev) => {
+                if (ev.key !== 'Escape') return;
+                ['spellSearchResults', 'featSearchResults', 'languageSearchResults', 'mystuffSearchResults'].forEach(id => {
+                    const popup = document.getElementById(id);
+                    if (popup) popup.style.display = 'none';
+                });
+            });
+
+            ['spell', 'feat', 'lang', 'mystuff'].forEach(prefix => {
+                const inputId = prefix === 'lang' ? 'langSearchInput' : `${prefix}SearchInput`;
+                const popupId = prefix === 'lang' ? 'languageSearchResults' : `${prefix}SearchResults`;
+                const input = document.getElementById(inputId);
+                const popup = document.getElementById(popupId);
+                if (!input || !popup) return;
+                input.addEventListener('blur', () => {
+                    setTimeout(() => {
+                        if (document.activeElement !== input && !popup.contains(document.activeElement)) {
+                            popup.style.display = 'none';
+                        }
+                    }, 120);
+                });
+            });
         });
 
         function openChangelog() { document.getElementById('changelogModal').style.display = 'block'; }
@@ -1082,6 +1529,19 @@
                     el.readOnly = isViewMode;
                 }
             });
+            // This field should always be readonly
+            const featRacesInput = document.getElementById('featRaces');
+            if (featRacesInput) {
+                featRacesInput.readOnly = true;
+            }
+            const langTypeInput = document.getElementById('langType');
+            if (langTypeInput) {
+                langTypeInput.readOnly = true;
+            }
+            const langSpeakersInput = document.getElementById('langSpeakers');
+            if (langSpeakersInput) {
+                langSpeakersInput.readOnly = true;
+            }
         }
 
         function toggleViewMode() {
@@ -1089,7 +1549,7 @@
             body.classList.toggle('view-mode');
             const isViewMode = body.classList.contains('view-mode');
             const btn = document.getElementById('toggleModeBtn');
-            if(isViewMode) {
+            if (isViewMode) {
                 btn.textContent = i18n[currentLang].editMode;
                 btn.style.background = '#4caf50';
             } else {
@@ -1103,7 +1563,7 @@
             const statsDiv = document.getElementById("statsContainer");
             const savesDiv = document.getElementById("savesContainer");
             const skillsDiv = document.getElementById("skillsContainer");
-            
+
             statsDiv.innerHTML = ""; savesDiv.innerHTML = ""; skillsDiv.innerHTML = "";
 
             stats.forEach(stat => {
@@ -1149,7 +1609,13 @@
         }
 
         function restorePanel(panelId) {
-            document.getElementById(panelId).style.display = 'block';
+            const panel = document.getElementById(panelId);
+            if (!panel) {
+                charLists.hiddenPanels = charLists.hiddenPanels.filter(p => p.id !== panelId);
+                renderHiddenPanels();
+                return;
+            }
+            panel.style.display = 'block';
             charLists.hiddenPanels = charLists.hiddenPanels.filter(p => p.id !== panelId);
             renderHiddenPanels();
         }
@@ -1158,12 +1624,12 @@
             const footer = document.getElementById("footer-hidden-panels");
             const container = document.getElementById("hiddenPanelsContainer");
             container.innerHTML = "";
-            
+
             if (charLists.hiddenPanels.length === 0) {
                 footer.style.display = 'none';
                 return;
             }
-            
+
             footer.style.display = 'block';
             charLists.hiddenPanels.forEach(p => {
                 const dispTitle = i18n[currentLang][p.titleKey] || p.titleKey;
@@ -1178,17 +1644,17 @@
 
             panels.forEach(panel => {
                 const handle = panel.querySelector('.drag-handle');
-                if(!handle) return;
+                if (!handle) return;
                 handle.addEventListener('mousedown', () => panel.setAttribute('draggable', 'true'));
                 handle.addEventListener('mouseup', () => panel.setAttribute('draggable', 'false'));
                 panel.addEventListener('mouseleave', () => panel.setAttribute('draggable', 'false'));
-                
-                panel.addEventListener('dragstart', function(e) { draggedItem = this; setTimeout(() => this.style.opacity = '0.4', 0); });
-                panel.addEventListener('dragend', function(e) { this.setAttribute('draggable', 'false'); setTimeout(() => { this.style.opacity = '1'; draggedItem = null; }, 0); });
-                panel.addEventListener('dragover', function(e) { e.preventDefault(); });
-                panel.addEventListener('dragenter', function(e) { e.preventDefault(); if(this !== draggedItem) this.classList.add('drop-zone'); });
-                panel.addEventListener('dragleave', function(e) { this.classList.remove('drop-zone'); });
-                panel.addEventListener('drop', function(e) {
+
+                panel.addEventListener('dragstart', function (e) { draggedItem = this; setTimeout(() => this.style.opacity = '0.4', 0); });
+                panel.addEventListener('dragend', function (e) { this.setAttribute('draggable', 'false'); setTimeout(() => { this.style.opacity = '1'; draggedItem = null; }, 0); });
+                panel.addEventListener('dragover', function (e) { e.preventDefault(); });
+                panel.addEventListener('dragenter', function (e) { e.preventDefault(); if (this !== draggedItem) this.classList.add('drop-zone'); });
+                panel.addEventListener('dragleave', function (e) { this.classList.remove('drop-zone'); });
+                panel.addEventListener('drop', function (e) {
                     this.classList.remove('drop-zone');
                     if (this !== draggedItem && draggedItem) {
                         const allPanels = [...container.querySelectorAll('.panel')];
@@ -1205,10 +1671,10 @@
             const lvl1 = parseInt(document.getElementById("charLevel")?.value) || 0;
             const lvl2 = parseInt(document.getElementById("multiClassLevel")?.value) || 0;
             const lvl3 = parseInt(document.getElementById("multiClass3Level")?.value) || 0;
-            
+
             let totalLevel = lvl1 + lvl2 + lvl3;
-            if(totalLevel < 1) totalLevel = 1;
-            
+            if (totalLevel < 1) totalLevel = 1;
+
             if (document.getElementById("totalLevelDisplay")) document.getElementById("totalLevelDisplay").textContent = totalLevel;
 
             const profBonus = Math.ceil(totalLevel / 4) + 1;
@@ -1220,9 +1686,9 @@
                 const score = parseInt(document.getElementById(`base_${stat}`)?.value) || 10;
                 const mod = Math.floor((score - 10) / 2);
                 mods[stat] = mod;
-                
+
                 if (document.getElementById(`mod_${stat}`)) document.getElementById(`mod_${stat}`).textContent = (mod >= 0 ? "+" : "") + mod;
-                
+
                 let saveBonus = mod;
                 if (document.getElementById(`save_${stat}`) && document.getElementById(`save_${stat}`).checked) {
                     saveBonus += profBonus;
@@ -1247,8 +1713,8 @@
             if (document.getElementById("addDexToAC") && document.getElementById("addDexToAC").checked) {
                 ac += mods["DES"];
             }
-            charLists.protections.forEach(prot => {
-                ac += (parseInt(prot.acBonus) || 0);
+            charLists.myStuff.forEach(item => {
+                if (item.inUse) ac += (parseInt(item.acBonus) || 0);
             });
             if (document.getElementById("totalAC")) document.getElementById("totalAC").textContent = ac;
 
@@ -1257,14 +1723,14 @@
             let wizPrep = 0;
             if (wizLevel > 0) wizPrep = Math.max(1, wizLevel + mods["INT"]);
             if (document.getElementById("wizTotalPrep")) document.getElementById("wizTotalPrep").textContent = wizPrep;
-            
+
             updateHeaderName();
             updateTotalWeight();
         }
 
         function updateTotalWeight() {
             let totalWeight = 0;
-            ['weapons', 'equipment', 'protections'].forEach(list => {
+            ['myStuff'].forEach(list => {
                 charLists[list].forEach(item => {
                     if (item.weight && !isNaN(item.weight)) {
                         totalWeight += parseFloat(item.weight);
@@ -1276,52 +1742,45 @@
                 display.textContent = totalWeight.toFixed(2).replace(/\.?0+$/, '');
             }
         }
-        
-        function updateEquipModSummary() {
-            const summary = {};
-            charLists.equipment.forEach(item => {
-                if (item.modVal && item.modTarget) {
-                    summary[item.modTarget] = (summary[item.modTarget] || 0) + parseInt(item.modVal);
-                }
-            });
-            
-            const container = document.getElementById('equipModSummary');
-            if (!container) return;
-            container.innerHTML = "";
-            
-            let hasMods = false;
-            for (const [target, val] of Object.entries(summary)) {
-                if (val === 0) continue;
-                hasMods = true;
-                const transTargetKey = 'opt' + target.charAt(0).toUpperCase() + target.slice(1);
-                const transTarget = i18n[currentLang][transTargetKey] || target;
-                const sign = val > 0 ? '+' : '';
-                container.innerHTML += `<span style="background: #2a2a2a; color: var(--accent-color); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--accent-color); font-weight: bold;">${transTarget}: ${sign}${val}</span>`;
-            }
-            if(!hasMods) container.style.display = 'none';
-            else container.style.display = 'flex';
-        }
 
         function getSlotsForClassLevel(className, level) {
             let lvl = parseInt(level) || 0;
-            if(lvl < 0) lvl = 0;
-            if(lvl > 20) lvl = 20;
+            if (lvl < 0) lvl = 0;
+            if (lvl > 20) lvl = 20;
 
-            if(["bardo", "chierico", "druido", "mago", "stregone"].includes(className)) return fullCasterSlots[lvl];
-            else if(["paladino", "ranger"].includes(className)) return halfCasterSlots[lvl];
-            else if(["cavaliere_mistico", "mistificatore_arcano"].includes(className)) return thirdCasterSlots[lvl];
-            else if(className === "warlock") return warlockSlots[lvl];
-            return [0,0,0,0,0,0,0,0,0];
+            if (["bardo", "chierico", "druido", "mago", "stregone"].includes(className)) return fullCasterSlots[lvl];
+            else if (["paladino", "ranger"].includes(className)) return halfCasterSlots[lvl];
+            else if (["cavaliere_mistico", "mistificatore_arcano"].includes(className)) return thirdCasterSlots[lvl];
+            else if (className === "warlock") return warlockSlots[lvl];
+            return [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        }
+
+        function getCantripsForClassLevel(className, level) {
+            let lvl = parseInt(level) || 0;
+            if (lvl < 0) lvl = 0;
+            if (lvl > 20) lvl = 20;
+            const table = cantripsKnownByClass[className];
+            if (!table) return 0;
+            return table[lvl] ?? 0;
+        }
+
+        function getSpellsKnownForClassLevel(className, level) {
+            let lvl = parseInt(level) || 0;
+            if (lvl < 0) lvl = 0;
+            if (lvl > 20) lvl = 20;
+            const table = spellsKnownByClass[className];
+            if (!table) return 0;
+            return table[lvl] ?? 0;
         }
 
         function addSlotProgression() {
             const className = document.getElementById("slotClassSel").value;
             const level = parseInt(document.getElementById("slotLevelSel").value);
             if (!level || level < 1 || level > 20) return;
-            charLists.slotProgressions.unshift({ 
-                className, 
-                level, 
-                timestamp: new Date().toLocaleString() 
+            charLists.slotProgressions.unshift({
+                className,
+                level,
+                timestamp: new Date().toLocaleString()
             });
             document.getElementById("slotLevelSel").value = "";
             renderSlotProgressions();
@@ -1336,11 +1795,13 @@
 
             let html = `
                 <table class="slots-table">
-                    <tr><th>Class</th><th>Lvl</th><th>1°</th><th>2°</th><th>3°</th><th>4°</th><th>5°</th><th>6°</th><th>7°</th><th>8°</th><th>9°</th><th class="edit-only"></th></tr>
+                    <tr><th>Class</th><th>Lvl</th><th>Known</th><th>Cantrip (0°)</th><th>1°</th><th>2°</th><th>3°</th><th>4°</th><th>5°</th><th>6°</th><th>7°</th><th>8°</th><th>9°</th><th class="edit-only"></th></tr>
             `;
 
             charLists.slotProgressions.forEach((prog, index) => {
                 const slots = getSlotsForClassLevel(prog.className, prog.level);
+                const cantripsKnown = getCantripsForClassLevel(prog.className, prog.level);
+                const spellsKnown = getSpellsKnownForClassLevel(prog.className, prog.level);
                 let slotsHtml = slots.map(s => `<td>${s > 0 ? s : '-'}</td>`).join('');
                 let nameFormat = prog.className.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
@@ -1349,6 +1810,8 @@
                 html += `<tr>
                     <td><strong>${nameFormat}</strong>${timeStr}</td>
                     <td>${prog.level}</td>
+                    <td>${spellsKnown > 0 ? spellsKnown : '-'}</td>
+                    <td>${cantripsKnown > 0 ? cantripsKnown : '-'}</td>
                     ${slotsHtml}
                     <td class="edit-only">
                         <button style="padding: 2px 6px; margin-bottom: 2px;" title="Modifica" onclick="editCustomItem('slotProgressions', ${index})">E</button>
@@ -1366,28 +1829,28 @@
             const descInput = document.getElementById(descId);
             const modValInput = document.getElementById(modValId);
             const modTargetInput = document.getElementById(modTargetId);
-            
+
             const name = nameInput.value.trim();
             const desc = descInput ? descInput.value.trim() : "";
             const modVal = modValInput ? modValInput.value.trim() : "";
             const modTarget = modTargetInput ? modTargetInput.value : "";
-            
+
             if (!name) return;
 
-            const newItem = { 
-                name, 
-                desc, 
+            const newItem = {
+                name,
+                desc,
                 modVal,
                 modTarget,
-                timestamp: new Date().toLocaleString() 
+                timestamp: new Date().toLocaleString()
             };
-            
+
             charLists[listName].unshift(newItem);
-            nameInput.value = ""; 
-            if(descInput) descInput.value = "";
-            if(modValInput) modValInput.value = "";
-            if(modTargetInput) modTargetInput.value = "";
-            
+            nameInput.value = "";
+            if (descInput) descInput.value = "";
+            if (modValInput) modValInput.value = "";
+            if (modTargetInput) modTargetInput.value = "";
+
             renderCustomList(listName);
         }
 
@@ -1396,15 +1859,15 @@
             const descInput = document.getElementById(descId);
             const name = nameInput.value.trim();
             const desc = descInput ? descInput.value.trim() : "";
-            
+
             if (!name) return;
 
-            const newItem = { 
-                name, 
-                desc, 
-                timestamp: new Date().toLocaleString() 
+            const newItem = {
+                name,
+                desc,
+                timestamp: new Date().toLocaleString()
             };
-            
+
             if (listName === 'spells') {
                 newItem.level = document.getElementById('spellLevel') ? document.getElementById('spellLevel').value : "";
                 newItem.school = document.getElementById('spellSchool') ? document.getElementById('spellSchool').value.trim() : "";
@@ -1413,9 +1876,9 @@
                 newItem.cantripUpgrade = document.getElementById('spellCantrip') ? document.getElementById('spellCantrip').value.trim() : "";
                 newItem.higherLevelSlot = document.getElementById('spellHigherLevel') ? document.getElementById('spellHigherLevel').value.trim() : "";
                 newItem.classes = document.getElementById('spellClasses') ? document.getElementById('spellClasses').value.trim() : "";
-                newItem.prepared = false; 
+                newItem.prepared = false;
                 newItem.cast = false;
-                
+
                 if (document.getElementById('spellLevel')) document.getElementById('spellLevel').value = "";
                 if (document.getElementById('spellSchool')) document.getElementById('spellSchool').value = "";
                 if (document.getElementById('spellRange')) document.getElementById('spellRange').value = "";
@@ -1423,116 +1886,197 @@
                 if (document.getElementById('spellCantrip')) document.getElementById('spellCantrip').value = "";
                 if (document.getElementById('spellHigherLevel')) document.getElementById('spellHigherLevel').value = "";
                 if (document.getElementById('spellClasses')) document.getElementById('spellClasses').value = "";
-                
-                const dbSel = document.getElementById("spellDbSelect");
-                if (dbSel) dbSel.value = "";
+
             }
 
             charLists[listName].unshift(newItem);
-            nameInput.value = ""; 
-            if(descInput) descInput.value = "";
-            
+            nameInput.value = "";
+            if (descInput) descInput.value = "";
+
             renderCustomList(listName);
         }
 
-        function addWeaponItem() {
-            const name = document.getElementById('weaponName').value.trim();
-            const desc = document.getElementById('weaponDesc').value.trim();
-            const damage = document.getElementById('weaponDamage').value.trim();
-            const range = document.getElementById('weaponRange').value.trim();
-            const weight = document.getElementById('weaponWeight').value.trim();
-            const props = document.getElementById('weaponProps').value.trim();
-            const atkBonus = document.getElementById('weaponAtkBonus').value.trim();
-            const dmgBonus = document.getElementById('weaponDmgBonus').value.trim();
+        function addMyStuffItem() {
+            const name = document.getElementById('mystuffName').value.trim();
+            if (!name) return;
 
-            if(!name) return;
-            charLists.weapons.unshift({ name, desc, damage, range, props, weight, atkBonus, dmgBonus, timestamp: new Date().toLocaleString() });
-            
-            document.getElementById('weaponName').value = '';
-            document.getElementById('weaponDesc').value = '';
-            document.getElementById('weaponDamage').value = '';
-            document.getElementById('weaponRange').value = '';
-            document.getElementById('weaponWeight').value = '';
-            document.getElementById('weaponProps').value = '';
-            document.getElementById('weaponAtkBonus').value = '';
-            document.getElementById('weaponDmgBonus').value = '';
-            
-            const dbSel = document.getElementById("weaponDbSelect");
-            if (dbSel) dbSel.value = "";
+            const newItem = {
+                name,
+                category: document.getElementById('mystuffCategory').value.trim() || "Uncategorized",
+                desc: document.getElementById('mystuffDesc').value.trim(),
+                weight: document.getElementById('mystuffWeight').value.trim(),
+                costQty: document.getElementById('mystuffCostQty').value.trim(),
+                costUnit: document.getElementById('mystuffCostUnit').value.trim(),
+                damage: document.getElementById('mystuffDamage').value.trim(),
+                twoHandedDamage: document.getElementById('mystuffTwoHandedDamage').value.trim(),
+                range: document.getElementById('mystuffRange').value.trim(),
+                throwRange: document.getElementById('mystuffThrowRange').value.trim(),
+                properties: document.getElementById('mystuffProperties').value.trim(),
+                armorClass: document.getElementById('mystuffArmorClass').value.trim(),
+                acBonus: document.getElementById('mystuffAcBonus').value.trim(),
+                defenseBonus: document.getElementById('mystuffDefenseBonus').value.trim(),
+                attackBonus: document.getElementById('mystuffAttackBonus').value.trim(),
+                saveBonus: document.getElementById('mystuffSaveBonus').value.trim(),
+                armorDexMax: document.getElementById('mystuffArmorDexMax').value.trim(),
+                armorStrMin: document.getElementById('mystuffArmorStrMin').value.trim(),
+                stealthDisadvantage: document.getElementById('mystuffStealthDisadvantage').checked,
+                advantage: document.getElementById('mystuffAdvantage').value.trim(),
+                disadvantage: document.getElementById('mystuffDisadvantage').value.trim(),
+                modVal: document.getElementById('mystuffModVal').value.trim(),
+                modTarget: document.getElementById('mystuffModTarget').value,
+                inUse: false,
+                timestamp: new Date().toLocaleString()
+            };
 
-            renderCustomList('weapons');
-        }
+            charLists.myStuff.unshift(newItem);
 
-        function addEquipmentItem() {
-            const name = document.getElementById('equipName').value.trim();
-            const desc = document.getElementById('equipDesc').value.trim();
-            const weight = document.getElementById('equipWeight').value.trim();
-            const magic = document.getElementById('equipMagic').checked;
-            const modVal = document.getElementById('equipModVal').value.trim();
-            const modTarget = document.getElementById('equipModTarget').value;
+            [
+                'mystuffName', 'mystuffCategory', 'mystuffDesc', 'mystuffWeight', 'mystuffCostQty', 'mystuffCostUnit',
+                'mystuffDamage', 'mystuffTwoHandedDamage', 'mystuffRange', 'mystuffThrowRange', 'mystuffProperties',
+                'mystuffArmorClass', 'mystuffAcBonus', 'mystuffDefenseBonus', 'mystuffAttackBonus', 'mystuffSaveBonus', 'mystuffArmorDexMax', 'mystuffArmorStrMin',
+                'mystuffAdvantage', 'mystuffDisadvantage',
+                'mystuffModVal', 'mystuffModTarget'
+            ].forEach(id => {
+                if (document.getElementById(id)) document.getElementById(id).value = '';
+            });
+            document.getElementById('mystuffStealthDisadvantage').checked = false;
 
-            if(!name) return;
-            charLists.equipment.unshift({ name, desc, weight, magic, modVal, modTarget, timestamp: new Date().toLocaleString() });
-            
-            document.getElementById('equipName').value = '';
-            document.getElementById('equipDesc').value = '';
-            document.getElementById('equipWeight').value = '';
-            document.getElementById('equipModVal').value = '';
-            document.getElementById('equipModTarget').value = '';
-            document.getElementById('equipMagic').checked = false;
-            
-            renderCustomList('equipment');
-        }
-
-        function addProtection() {
-            const nameInput = document.getElementById('protName');
-            const acInput = document.getElementById('protAC');
-            const descInput = document.getElementById('protDesc');
-            const weightInput = document.getElementById('protWeight');
-            const magicInput = document.getElementById('protMagic');
-            
-            const name = nameInput.value.trim();
-            const acBonus = parseInt(acInput.value) || 0;
-            const desc = descInput.value.trim();
-            const weight = weightInput.value.trim();
-            const magic = magicInput.checked;
-
-            if(!name) return;
-
-            charLists.protections.unshift({ name, acBonus, desc, weight, magic, timestamp: new Date().toLocaleString() });
-            
-            nameInput.value = ""; acInput.value = ""; descInput.value = ""; weightInput.value = ""; magicInput.checked = false;
-            renderCustomList('protections');
+            renderCustomList('myStuff');
             updateSheet();
         }
 
+        function addFeatItem() {
+            const name = document.getElementById('featName').value.trim();
+            const desc = document.getElementById('featDesc').value.trim();
+            const races = document.getElementById('featRaces').value.trim();
+
+            if (!name) return;
+
+            charLists.feats.unshift({ name, desc, races, timestamp: new Date().toLocaleString() });
+
+            document.getElementById('featName').value = '';
+            document.getElementById('featDesc').value = '';
+            document.getElementById('featRaces').value = '';
+
+            renderCustomList('feats');
+        }
+
+        function addLanguageItem() {
+            const name = document.getElementById('langName').value.trim();
+            const desc = document.getElementById('langDesc').value.trim();
+            const type = document.getElementById('langType') ? document.getElementById('langType').value.trim() : "";
+            const speakers = document.getElementById('langSpeakers') ? document.getElementById('langSpeakers').value.trim() : "";
+
+            if (!name) return;
+
+            charLists.languages.unshift({ name, desc, type, speakers, timestamp: new Date().toLocaleString() });
+
+            document.getElementById('langName').value = '';
+            document.getElementById('langDesc').value = '';
+            if (document.getElementById('langType')) document.getElementById('langType').value = '';
+            if (document.getElementById('langSpeakers')) document.getElementById('langSpeakers').value = '';
+
+            renderCustomList('languages');
+        }
+
         function toggleItemState(listName, index, prop, state) {
-            if(charLists[listName][index]) charLists[listName][index][prop] = state;
+            if (charLists[listName][index]) charLists[listName][index][prop] = state;
+        }
+
+        function toggleMyStuffUse(index) {
+            if (!charLists.myStuff[index]) return;
+            charLists.myStuff[index].inUse = !charLists.myStuff[index].inUse;
+            renderCustomList('myStuff');
+            updateSheet();
         }
 
         function renderCustomList(listName) {
             const containerMap = {
-                "weapons": "weaponsList", "equipment": "equipmentList", "feats": "featsList",
-                "spells": "spellsList", "raceTraits": "raceTraitsList", "classFeatures": "classFeaturesList", 
-                "multiClassFeatures": "multiFeaturesList", "languages": "languagesList", "protections": "protectionsList"
+                "feats": "featsList",
+                "spells": "spellsList", "raceTraits": "raceTraitsList", "classFeatures": "classFeaturesList",
+                "multiClassFeatures": "multiFeaturesList", "languages": "languagesList",
+                "myStuff": "mystuffList"
             };
             const containerId = containerMap[listName];
             if (!containerId) return;
 
             const container = document.getElementById(containerId);
             container.innerHTML = "";
-            
+
+            if (listName === "myStuff") {
+                const grouped = {};
+                charLists.myStuff.forEach((item, index) => {
+                    const cat = item.category || "Uncategorized";
+                    if (!grouped[cat]) grouped[cat] = [];
+                    grouped[cat].push({ item, index });
+                });
+
+                const orderedCats = [];
+                myStuffCategoryOrder.forEach(cat => { if (grouped[cat]) orderedCats.push(cat); });
+                Object.keys(grouped).forEach(cat => { if (!orderedCats.includes(cat)) orderedCats.push(cat); });
+
+                orderedCats.forEach(cat => {
+                    container.innerHTML += `<div class="mystuff-category-title">${cat}</div>`;
+                    grouped[cat]
+                        .slice()
+                        .sort((a, b) => (a.item.name || '').localeCompare(b.item.name || ''))
+                        .forEach(({ item, index }) => {
+                            let tags = "";
+                            if (item.weight) tags += ` <span style="font-size:0.85em; color:#aaa;">[${item.weight} kg]</span>`;
+                            if (item.costQty || item.costUnit) tags += ` <span style="font-size:0.85em; color:#aaa;">[Cost: ${item.costQty || ''} ${item.costUnit || ''}]</span>`;
+                            if (item.damage) tags += ` <span style="font-size:0.85em; color:#f44336;">[${item.damage}]</span>`;
+                            if (item.twoHandedDamage) tags += ` <span style="font-size:0.85em; color:#f44336;">[2H: ${item.twoHandedDamage}]</span>`;
+                            if (item.range) tags += ` <span style="font-size:0.85em; color:#aaa;">[Rng: ${item.range}]</span>`;
+                            if (item.throwRange) tags += ` <span style="font-size:0.85em; color:#aaa;">[Throw: ${item.throwRange}]</span>`;
+                            if (item.armorClass) tags += ` <span style="font-size:0.85em; color:#aaa;">[AC base: ${item.armorClass}]</span>`;
+                            if (item.acBonus) tags += ` <span style="font-size:0.85em; color:#aaa;">[AC bonus: ${item.acBonus}]</span>`;
+                            if (item.stealthDisadvantage) tags += ` <span style="font-size:0.85em; color:#ff9800;">[Stealth Disadv.]</span>`;
+                            if (item.modVal && item.modTarget) {
+                                const sign = Number(item.modVal) > 0 ? '+' : '';
+                                tags += ` <span style="font-size:0.85em; color:var(--positive-color);">[${item.modTarget}: ${sign}${item.modVal}]</span>`;
+                            }
+                            tags += ` <span style="font-size:0.85em; color:${item.inUse ? 'var(--positive-color)' : '#999'};">[${getUseLabel(item)}]</span>`;
+
+                            let details = "";
+                            if (item.properties) details += `<div style="font-size: 0.85em; color: #888; font-style: italic; margin-top: 2px;">${item.properties}</div>`;
+                            if (item.timestamp) details += `<div style="font-size:0.65em; color:#555; margin-top:2px;">${item.timestamp}</div>`;
+                            if (item.desc) details += `<div style="font-size: 0.85em; color: #aaa; margin-top: 4px; white-space: pre-wrap;">${item.desc}</div>`;
+
+                            container.innerHTML += `
+                            <div class="list-item">
+                                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                    <div style="flex-grow: 1;">
+                                        <strong style="color: var(--accent-color);">${item.name}</strong>${tags}
+                                        ${details}
+                                    </div>
+                                    <div>
+                                        <button style="padding: 2px 6px; margin-right: 4px;" class="edit-only" title="Usa/Trasporta" onclick="toggleMyStuffUse(${index})">U</button>
+                                        <button style="padding: 2px 6px; margin-right: 4px;" class="edit-only" title="Modifica" onclick="editCustomItem('myStuff', ${index})">E</button>
+                                        <button style="padding: 2px 6px;" class="edit-only" title="Elimina" onclick="removeCustomItem('myStuff', ${index})">X</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        });
+                });
+
+                updateTotalWeight();
+                updateMyStuffSummary();
+                if (document.body.classList.contains('view-mode')) applyViewModeState(true);
+                return;
+            }
+
             charLists[listName].forEach((item, index) => {
                 let controlsHTML = "";
                 let titleExtras = "";
-                
+
                 if (listName === "spells") {
                     let spellInfo = "";
                     if (item.level !== undefined && item.level !== "") spellInfo += `Lvl ${item.level}`;
                     if (item.school) spellInfo += (spellInfo ? ` - ${item.school}` : `${item.school}`);
                     if (item.range) spellInfo += ` | ${item.range}`;
                     if (item.duration) spellInfo += ` | ${item.duration}`;
-                    
+
                     if (spellInfo) titleExtras += ` <span style="font-size:0.85em; color:var(--accent-color);">[${spellInfo}]</span>`;
 
                     controlsHTML = `
@@ -1541,26 +2085,6 @@
                             <label><input type="checkbox" ${item.cast ? 'checked' : ''} onchange="toggleItemState('${listName}', ${index}, 'cast', this.checked)"> Cast</label>
                         </div>
                     `;
-                } else if (listName === "protections") {
-                    const sign = item.acBonus > 0 ? "+" : "";
-                    titleExtras += ` <span style="font-size:0.9em; color:#aaa;">(${sign}${item.acBonus} AC)</span>`;
-                    if(item.weight) titleExtras += ` <span style="font-size:0.85em; color:#aaa;">[${item.weight} kg]</span>`;
-                    if(item.magic) titleExtras += ` <span style="color:#00bcd4; font-size:0.8em;">[M]</span>`;
-                } else if (listName === "weapons") {
-                    if(item.atkBonus) {
-                        const atkSign = item.atkBonus > 0 ? "+" : "";
-                        titleExtras += ` <span style="font-size:0.85em; color:var(--accent-color);">[Atk: ${atkSign}${item.atkBonus}]</span>`;
-                    }
-                    if(item.dmgBonus) {
-                        const dmgSign = item.dmgBonus > 0 ? "+" : "";
-                        titleExtras += ` <span style="font-size:0.85em; color:#f44336;">[Dmg: ${dmgSign}${item.dmgBonus}]</span>`;
-                    }
-                    if (item.damage) titleExtras += ` <span style="font-size:0.85em; color:#f44336;">[${item.damage}]</span>`;
-                    if (item.range) titleExtras += ` <span style="font-size:0.85em; color:#aaa;">[Rng: ${item.range}]</span>`;
-                    if(item.weight) titleExtras += ` <span style="font-size:0.85em; color:#aaa;">[${item.weight} kg]</span>`;
-                } else if (listName === "equipment") {
-                    if(item.weight) titleExtras += ` <span style="font-size:0.85em; color:#aaa;">[${item.weight} kg]</span>`;
-                    if (item.magic) titleExtras += ` <span style="color:#00bcd4; font-size:0.8em;">[M]</span>`;
                 }
 
                 if (item.modVal && item.modTarget) {
@@ -1571,16 +2095,13 @@
                 }
 
                 let descHtml = "";
-                
+
                 if (item.timestamp) {
                     descHtml += `<div style="font-size:0.65em; color:#555; margin-top:2px;">${item.timestamp}</div>`;
                 }
 
                 if (listName === "spells" && item.classes) {
                     descHtml += `<div style="font-size: 0.8em; color: #888; font-style: italic; margin-top: 2px;">${i18n[currentLang].lblClassesSpells || "Classes:"} ${item.classes}</div>`;
-                }
-                if (listName === "weapons" && item.props) {
-                    descHtml += `<div style="font-size: 0.85em; color: #888; font-style: italic; margin-top: 2px;">${item.props}</div>`;
                 }
                 if (item.desc) {
                     descHtml += `<div style="font-size: 0.85em; color: #aaa; margin-top: 4px; white-space: pre-wrap;">${item.desc}</div>`;
@@ -1608,10 +2129,8 @@
                     </div>
                 `;
             });
-            
-            updateTotalWeight();
-            if(listName === 'equipment') updateEquipModSummary();
 
+            updateTotalWeight();
             if (document.body.classList.contains('view-mode')) {
                 applyViewModeState(true);
             }
@@ -1619,41 +2138,65 @@
 
         function editCustomItem(listName, index) {
             const item = charLists[listName][index];
-            
-            if (listName === 'raceTraits') { 
-                document.getElementById('raceTraitName').value = item.name; document.getElementById('raceTraitDesc').value = item.desc; 
+
+            if (listName === 'raceTraits') {
+                document.getElementById('raceTraitName').value = item.name; document.getElementById('raceTraitDesc').value = item.desc;
                 document.getElementById('raceTraitModVal').value = item.modVal || ""; document.getElementById('raceTraitModTarget').value = item.modTarget || "";
             }
-            else if (listName === 'classFeatures') { 
+            else if (listName === 'classFeatures') {
                 document.getElementById('classFeatureName').value = item.name; document.getElementById('classFeatureDesc').value = item.desc;
                 document.getElementById('classFeatureModVal').value = item.modVal || ""; document.getElementById('classFeatureModTarget').value = item.modTarget || "";
             }
-            else if (listName === 'multiClassFeatures') { 
+            else if (listName === 'multiClassFeatures') {
                 document.getElementById('multiFeatureName').value = item.name; document.getElementById('multiFeatureDesc').value = item.desc;
                 document.getElementById('multiFeatureModVal').value = item.modVal || ""; document.getElementById('multiFeatureModTarget').value = item.modTarget || "";
             }
-            else if (listName === 'protections') { 
-                document.getElementById('protName').value = item.name; document.getElementById('protAC').value = item.acBonus; document.getElementById('protDesc').value = item.desc; document.getElementById('protWeight').value = item.weight || ""; document.getElementById('protMagic').checked = !!item.magic; 
+            else if (listName === 'myStuff') {
+                document.getElementById('mystuffName').value = item.name || "";
+                document.getElementById('mystuffCategory').value = item.category || "";
+                document.getElementById('mystuffDesc').value = item.desc || "";
+                document.getElementById('mystuffWeight').value = item.weight || "";
+                document.getElementById('mystuffCostQty').value = item.costQty || "";
+                document.getElementById('mystuffCostUnit').value = item.costUnit || "";
+                document.getElementById('mystuffDamage').value = item.damage || "";
+                document.getElementById('mystuffTwoHandedDamage').value = item.twoHandedDamage || "";
+                document.getElementById('mystuffRange').value = item.range || "";
+                document.getElementById('mystuffThrowRange').value = item.throwRange || "";
+                document.getElementById('mystuffProperties').value = item.properties || "";
+                document.getElementById('mystuffArmorClass').value = item.armorClass || "";
+                document.getElementById('mystuffAcBonus').value = item.acBonus || "";
+                document.getElementById('mystuffDefenseBonus').value = item.defenseBonus || "";
+                document.getElementById('mystuffAttackBonus').value = item.attackBonus || "";
+                document.getElementById('mystuffSaveBonus').value = item.saveBonus || "";
+                document.getElementById('mystuffArmorDexMax').value = item.armorDexMax || "";
+                document.getElementById('mystuffArmorStrMin').value = item.armorStrMin || "";
+                document.getElementById('mystuffStealthDisadvantage').checked = !!item.stealthDisadvantage;
+                document.getElementById('mystuffAdvantage').value = item.advantage || "";
+                document.getElementById('mystuffDisadvantage').value = item.disadvantage || "";
+                document.getElementById('mystuffModVal').value = item.modVal || "";
+                document.getElementById('mystuffModTarget').value = item.modTarget || "";
             }
-            else if (listName === 'weapons') { 
-                document.getElementById('weaponName').value = item.name; document.getElementById('weaponDesc').value = item.desc; document.getElementById('weaponDamage').value = item.damage || ""; document.getElementById('weaponRange').value = item.range || ""; document.getElementById('weaponWeight').value = item.weight || ""; document.getElementById('weaponProps').value = item.props || ""; document.getElementById('weaponAtkBonus').value = item.atkBonus || ""; document.getElementById('weaponDmgBonus').value = item.dmgBonus || "";
+            else if (listName === 'feats') {
+                document.getElementById('featName').value = item.name;
+                document.getElementById('featDesc').value = item.desc;
+                document.getElementById('featRaces').value = item.races || "";
             }
-            else if (listName === 'equipment') { 
-                document.getElementById('equipName').value = item.name; document.getElementById('equipDesc').value = item.desc; document.getElementById('equipWeight').value = item.weight || ""; document.getElementById('equipMagic').checked = !!item.magic;
-                document.getElementById('equipModVal').value = item.modVal || ""; document.getElementById('equipModTarget').value = item.modTarget || "";
+            else if (listName === 'languages') {
+                document.getElementById('langName').value = item.name;
+                if (document.getElementById('langType')) document.getElementById('langType').value = item.type || "";
+                if (document.getElementById('langSpeakers')) document.getElementById('langSpeakers').value = item.speakers || "";
+                document.getElementById('langDesc').value = item.desc || "";
             }
-            else if (listName === 'feats') { document.getElementById('featName').value = item.name; document.getElementById('featDesc').value = item.desc; }
-            else if (listName === 'languages') { document.getElementById('langName').value = item.name; document.getElementById('langDesc').value = item.desc; }
-            else if (listName === 'spells') { 
-                if(document.getElementById('spellName')) document.getElementById('spellName').value = item.name; 
-                if(document.getElementById('spellDesc')) document.getElementById('spellDesc').value = item.desc; 
-                if(document.getElementById('spellLevel')) document.getElementById('spellLevel').value = item.level !== undefined ? item.level : ""; 
-                if(document.getElementById('spellSchool')) document.getElementById('spellSchool').value = item.school || ""; 
-                if(document.getElementById('spellRange')) document.getElementById('spellRange').value = item.range || ""; 
-                if(document.getElementById('spellDuration')) document.getElementById('spellDuration').value = item.duration || ""; 
-                if(document.getElementById('spellCantrip')) document.getElementById('spellCantrip').value = item.cantripUpgrade || ""; 
-                if(document.getElementById('spellHigherLevel')) document.getElementById('spellHigherLevel').value = item.higherLevelSlot || ""; 
-                if(document.getElementById('spellClasses')) document.getElementById('spellClasses').value = item.classes || ""; 
+            else if (listName === 'spells') {
+                if (document.getElementById('spellName')) document.getElementById('spellName').value = item.name;
+                if (document.getElementById('spellDesc')) document.getElementById('spellDesc').value = item.desc;
+                if (document.getElementById('spellLevel')) document.getElementById('spellLevel').value = item.level !== undefined ? item.level : "";
+                if (document.getElementById('spellSchool')) document.getElementById('spellSchool').value = item.school || "";
+                if (document.getElementById('spellRange')) document.getElementById('spellRange').value = item.range || "";
+                if (document.getElementById('spellDuration')) document.getElementById('spellDuration').value = item.duration || "";
+                if (document.getElementById('spellCantrip')) document.getElementById('spellCantrip').value = item.cantripUpgrade || "";
+                if (document.getElementById('spellHigherLevel')) document.getElementById('spellHigherLevel').value = item.higherLevelSlot || "";
+                if (document.getElementById('spellClasses')) document.getElementById('spellClasses').value = item.classes || "";
             }
             else if (listName === 'wealthLog') {
                 document.getElementById('wealthAmount').value = Math.abs(item.amount); document.getElementById('wealthType').value = item.type; document.getElementById('wealthReason').value = item.reason;
@@ -1672,9 +2215,10 @@
         function removeCustomItem(listName, index) {
             charLists[listName].splice(index, 1);
             if (listName === "slotProgressions") renderSlotProgressions();
-            else if (listName === "wealthLog") { renderWealthLog(); updateWealthTotals(); } 
+            else if (listName === "wealthLog") { renderWealthLog(); updateWealthTotals(); }
             else renderCustomList(listName);
-            if(listName === 'protections') updateSheet();
+            if (listName === 'myStuff') updateSheet();
+            if (listName === 'myStuff') updateMyStuffSummary();
         }
 
         function addWealth() {
@@ -1684,8 +2228,8 @@
             const type = document.getElementById('wealthType').value;
             const reasonInput = document.getElementById('wealthReason');
             const reason = reasonInput.value || "Generic";
-            
-            charLists.wealthLog.unshift({ amount, type, reason, timestamp: new Date().toLocaleString() }); 
+
+            charLists.wealthLog.unshift({ amount, type, reason, timestamp: new Date().toLocaleString() });
             amountInput.value = ''; reasonInput.value = '';
             renderWealthLog(); updateWealthTotals();
         }
@@ -1717,27 +2261,27 @@
 
         function stampaScheda() {
             const safeVal = (id) => document.getElementById(id) ? document.getElementById(id).value : "";
-            
+
             const nome = safeVal("charName") || "Unknown";
             const razza = safeVal("charRace") || "-";
             const classe = safeVal("charClassPrimary") || "-";
-            
+
             const lvl1 = parseInt(safeVal("charLevel")) || 0;
             const lvl2 = parseInt(safeVal("multiClassLevel")) || 0;
             const lvl3 = parseInt(safeVal("multiClass3Level")) || 0;
-            
+
             let classeInfo = classe + (lvl1 > 0 ? ` (Lvl. ${lvl1})` : "");
             const multiClass = safeVal("multiClassName");
             const multiClass3 = safeVal("multiClass3Name");
-            
+
             if (multiClass && lvl2 > 0) classeInfo += ` / ${multiClass} (Lvl. ${lvl2})`;
             if (multiClass3 && lvl3 > 0) classeInfo += ` / ${multiClass3} (Lvl. ${lvl3})`;
-            
+
             const totalLevel = document.getElementById("totalLevelDisplay") ? document.getElementById("totalLevelDisplay").textContent : 1;
             const totWeight = document.getElementById("totalWeightDisplay") ? document.getElementById("totalWeightDisplay").textContent : 0;
             const maxWeight = safeVal("maxWeight") || 150;
 
-            const t = i18n[currentLang]; 
+            const t = i18n[currentLang];
 
             let printWin = window.open('', '_blank');
             let content = `
@@ -1754,13 +2298,13 @@
                     @media print { body { padding: 0; } }
                 </style></head><body>
             `;
-            
+
             content += `<h1>${nome}</h1>`;
-            content += `<div class="header-info"><strong>${t.lblCharRace.replace(':','')}</strong> ${razza} | <strong>${t.lblCharClass.replace(':','')}</strong> ${classeInfo} | <strong>${t.lblTotLvl.replace(':','')}</strong> ${totalLevel}</div>`;
-            
+            content += `<div class="header-info"><strong>${t.lblCharRace.replace(':', '')}</strong> ${razza} | <strong>${t.lblCharClass.replace(':', '')}</strong> ${classeInfo} | <strong>${t.lblTotLvl.replace(':', '')}</strong> ${totalLevel}</div>`;
+
             content += `<div class="columns">`;
-            content += `<p style="font-size:1.1em; text-align:center;"><strong>${t.lblTotalAc.replace(':','')}</strong> ${document.getElementById("totalAC") ? document.getElementById("totalAC").textContent : 10} &nbsp;&nbsp;&bull;&nbsp;&nbsp; <strong>${t.lblMaxHp.replace(':','')}</strong> ${safeVal("hpMax")} &nbsp;&nbsp;&bull;&nbsp;&nbsp; <strong>${t.lblWeightCarried.replace(':','')}</strong> ${totWeight} / ${maxWeight} kg</p>`;
-            
+            content += `<p style="font-size:1.1em; text-align:center;"><strong>${t.lblTotalAc.replace(':', '')}</strong> ${document.getElementById("totalAC") ? document.getElementById("totalAC").textContent : 10} &nbsp;&nbsp;&bull;&nbsp;&nbsp; <strong>${t.lblMaxHp.replace(':', '')}</strong> ${safeVal("hpMax")} &nbsp;&nbsp;&bull;&nbsp;&nbsp; <strong>${t.lblWeightCarried.replace(':', '')}</strong> ${totWeight} / ${maxWeight} kg</p>`;
+
             content += `<h2>${t.printStats || 'Stats'}</h2>`;
             stats.forEach(stat => {
                 const val = safeVal(`base_${stat}`);
@@ -1769,30 +2313,20 @@
             });
 
             const formatList = (title, list, isSpell = false) => {
-                if(list.length === 0) return '';
+                if (list.length === 0) return '';
                 let html = `<h2>${title}</h2>`;
                 list.forEach(item => {
                     let extra = "";
-                    if(list === charLists.protections && item.acBonus !== undefined) extra += ` (AC: ${item.acBonus > 0 ? '+'+item.acBonus : item.acBonus})`;
-                    if(list === charLists.protections && item.magic) extra += ` [M]`;
-                    
-                    if(list === charLists.weapons) {
-                        if(item.atkBonus) extra += ` [Atk: ${item.atkBonus > 0 ? '+'+item.atkBonus : item.atkBonus}]`;
-                        if(item.dmgBonus) extra += ` [Dmg: ${item.dmgBonus > 0 ? '+'+item.dmgBonus : item.dmgBonus}]`;
-                        if(item.damage) extra += ` [${item.damage}]`;
-                        if (item.range) extra += ` [Rng: ${item.range}]`;
-                    }
-                    if(list === charLists.equipment && item.magic) extra += ` [M]`;
-                    if(item.weight) extra += ` [${item.weight} kg]`;
-                    
-                    if(item.modVal && item.modTarget) {
+                    if (item.weight) extra += ` [${item.weight} kg]`;
+
+                    if (item.modVal && item.modTarget) {
                         const transTargetKey = 'opt' + item.modTarget.charAt(0).toUpperCase() + item.modTarget.slice(1);
                         const transTarget = t[transTargetKey] || item.modTarget;
                         const sign = item.modVal > 0 ? "+" : "";
                         extra += ` [${transTarget}: ${sign}${item.modVal}]`;
                     }
 
-                    if(isSpell) {
+                    if (isSpell) {
                         if (item.level !== undefined && item.level !== "") extra += ` [Lvl: ${item.level}]`;
                         if (item.school) extra += ` [${item.school}]`;
                         if (item.range) extra += ` [Rng: ${item.range}]`;
@@ -1800,24 +2334,77 @@
                         extra += item.prepared ? " [Prep]" : "";
                     }
                     html += `<div class="item"><span class="item-title">- ${item.name}</span>${extra}`;
-                    
-                    if(list === charLists.weapons && item.props) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>Prop: ${item.props}</i></span>`;
-                    if(isSpell && item.classes) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>${t.lblClassesSpells || "Classes:"} ${item.classes}</i></span>`;
-                    
-                    if(item.desc) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; white-space: pre-wrap;">${item.desc}</span>`;
-                    if(isSpell && item.cantripUpgrade) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; color: #555;"><strong>Upgrade:</strong> ${item.cantripUpgrade}</span>`;
-                    if(isSpell && item.higherLevelSlot) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block;"><strong>${t.lblHigherLvl || "Higher Levels:"}</strong> ${item.higherLevelSlot}</span>`;
+
+                    if (isSpell && item.classes) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>${t.lblClassesSpells || "Classes:"} ${item.classes}</i></span>`;
+
+                    if (item.desc) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; white-space: pre-wrap;">${item.desc}</span>`;
+                    if (isSpell && item.cantripUpgrade) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; color: #555;"><strong>Upgrade:</strong> ${item.cantripUpgrade}</span>`;
+                    if (isSpell && item.higherLevelSlot) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block;"><strong>${t.lblHigherLvl || "Higher Levels:"}</strong> ${item.higherLevelSlot}</span>`;
                     html += `</div>`;
                 });
+                return html;
+            };
+
+            const formatMyStuffSection = () => {
+                if (!charLists.myStuff || charLists.myStuff.length === 0) return '';
+
+                let html = `<h2>${t.printEquip || "Equipment"}</h2>`;
+
+                const inUse = charLists.myStuff.filter(i => i.inUse);
+                const carried = charLists.myStuff.filter(i => !i.inUse);
+
+                if (inUse.length > 0) {
+                    html += `<div class="item"><strong>In Uso</strong></div>`;
+                    inUse.forEach(item => {
+                        let extra = item.weight ? ` [${item.weight} kg]` : '';
+                        if (item.category) extra += ` [${item.category}]`;
+                        if (item.modVal && item.modTarget) {
+                            const sign = item.modVal > 0 ? "+" : "";
+                            extra += ` [${item.modTarget}: ${sign}${item.modVal}]`;
+                        }
+                        html += `<div class="item"><span class="item-title">- ${item.name}</span>${extra}`;
+                        if (item.properties) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>Prop: ${item.properties}</i></span>`;
+                        if (item.desc) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; white-space: pre-wrap;">${item.desc}</span>`;
+                        html += `</div>`;
+                    });
+                }
+
+                const grouped = {};
+                carried.forEach(item => {
+                    const cat = item.category || "Uncategorized";
+                    if (!grouped[cat]) grouped[cat] = [];
+                    grouped[cat].push(item);
+                });
+
+                const orderedCats = [];
+                myStuffCategoryOrder.forEach(cat => { if (grouped[cat]) orderedCats.push(cat); });
+                Object.keys(grouped).forEach(cat => { if (!orderedCats.includes(cat)) orderedCats.push(cat); });
+
+                orderedCats.forEach(cat => {
+                    html += `<div class="item"><strong>${cat}</strong></div>`;
+                    grouped[cat]
+                        .slice()
+                        .sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+                        .forEach(item => {
+                            let extra = item.weight ? ` [${item.weight} kg]` : '';
+                            if (item.modVal && item.modTarget) {
+                                const sign = item.modVal > 0 ? "+" : "";
+                                extra += ` [${item.modTarget}: ${sign}${item.modVal}]`;
+                            }
+                            html += `<div class="item"><span class="item-title">- ${item.name}</span>${extra}`;
+                            if (item.properties) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>Prop: ${item.properties}</i></span>`;
+                            if (item.desc) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; white-space: pre-wrap;">${item.desc}</span>`;
+                            html += `</div>`;
+                        });
+                });
+
                 return html;
             };
 
             content += formatList(t.printTraits || "Traits", charLists.raceTraits);
             content += formatList(t.printFeatures || "Features", charLists.classFeatures);
             content += formatList(t.printMulti || "Multi Features", charLists.multiClassFeatures);
-            content += formatList(t.printArmor || "Armor", charLists.protections);
-            content += formatList(t.printWeapons || "Weapons", charLists.weapons);
-            content += formatList(t.printEquip || "Equipment", charLists.equipment);
+            content += formatMyStuffSection();
             content += formatList(t.printFeats || "Feats", charLists.feats);
             content += formatList(t.printSpells || "Spells", charLists.spells, true);
 
@@ -1830,10 +2417,10 @@
         function salvaJSON() {
             const safeVal = (id) => document.getElementById(id) ? document.getElementById(id).value : "";
             const safeCheck = (id) => document.getElementById(id) ? document.getElementById(id).checked : false;
-            
+
             const panelSizes = {};
             document.querySelectorAll('.panel').forEach(p => {
-                if(p.style.width || p.style.height) panelSizes[p.id] = { width: p.style.width, height: p.style.height };
+                if (p.style.width || p.style.height) panelSizes[p.id] = { width: p.style.width, height: p.style.height };
             });
 
             // Updating Save Date & Filename
@@ -1862,26 +2449,26 @@
                 hpCurrent: safeVal("hpCurrent"),
                 hitDice: safeVal("hitDice"),
                 maxWeight: safeVal("maxWeight") || 150,
-                
+
                 baseACInput: safeVal("baseACInput") || 10,
                 addDexToAC: safeCheck("addDexToAC"),
                 wizardLevel: safeVal("wizardLevel"),
 
                 notes: safeVal("notesArea"),
                 stats: {}, saves: {}, skills: {},
-                
-                weapons: charLists.weapons, equipment: charLists.equipment, feats: charLists.feats, spells: charLists.spells, wealthLog: charLists.wealthLog, raceTraits: charLists.raceTraits, classFeatures: charLists.classFeatures, multiClassFeatures: charLists.multiClassFeatures, languages: charLists.languages, protections: charLists.protections, slotProgressions: charLists.slotProgressions, hiddenPanels: charLists.hiddenPanels,
-                
+
+                myStuff: charLists.myStuff, feats: charLists.feats, spells: charLists.spells, wealthLog: charLists.wealthLog, raceTraits: charLists.raceTraits, classFeatures: charLists.classFeatures, multiClassFeatures: charLists.multiClassFeatures, languages: charLists.languages, slotProgressions: charLists.slotProgressions, hiddenPanels: charLists.hiddenPanels,
+
                 layout: Array.from(document.getElementById("mainContainer").children).map(el => el.id),
                 panelSizes: panelSizes
             };
-            
+
             stats.forEach(stat => {
                 charData.stats[stat] = safeVal(`base_${stat}`);
                 charData.saves[stat] = safeCheck(`save_${stat}`);
             });
             skills.forEach(skill => { charData.skills[skill.id] = safeCheck(`skill_${skill.id}`); });
-            
+
             const blob = new Blob([JSON.stringify(charData, null, 2)], { type: "application/json" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
@@ -1889,71 +2476,158 @@
             a.download = currentFileName;
             a.click();
             URL.revokeObjectURL(url);
-            
+
             updateFileInfo();
         }
 
         function caricaJSON(event) {
             const file = event.target.files[0];
             if (!file) return;
-            
+
             currentFileName = file.name;
 
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 try {
                     const data = JSON.parse(e.target.result);
-                    
+
                     if (data.language && i18n[data.language]) {
                         setLanguage(data.language);
                     }
 
                     currentSaveDate = data.lastSaveDate || i18n[currentLang].lblNoSave || "Mai";
 
-                    const setVal = (id, val) => { if(document.getElementById(id)) document.getElementById(id).value = val; };
-                    const setCheck = (id, val) => { if(document.getElementById(id)) document.getElementById(id).checked = !!val; };
+                    const setVal = (id, val) => { if (document.getElementById(id)) document.getElementById(id).value = val; };
+                    const setCheck = (id, val) => { if (document.getElementById(id)) document.getElementById(id).checked = !!val; };
 
                     setVal("charName", data.name || ""); setVal("charRace", data.charRace || ""); setVal("charClassPrimary", data.charClassPrimary || ""); setVal("charClassNotes", data.charClassNotes || ""); setVal("multiClassName", data.multiClassName || ""); setVal("multiClassLevel", data.multiClassLevel || 0); setVal("multiClass3Name", data.multiClass3Name || ""); setVal("multiClass3Level", data.multiClass3Level || 0); setVal("charLevel", data.level || 1); setVal("charBackground", data.background || ""); setVal("charHeight", data.height || ""); setVal("charWeight", data.weight || ""); setVal("charSpeed", data.speed || "30ft"); setVal("hpMax", data.hpMax || ""); setVal("hpCurrent", data.hpCurrent || ""); setVal("hitDice", data.hitDice || "");
                     setVal("maxWeight", data.maxWeight || 150);
 
                     setVal("baseACInput", data.baseACInput || 10);
-                    if(data.addDexToAC !== undefined) setCheck("addDexToAC", data.addDexToAC);
+                    if (data.addDexToAC !== undefined) setCheck("addDexToAC", data.addDexToAC);
                     setVal("wizardLevel", data.wizardLevel || 0);
                     setVal("notesArea", data.notes || "");
-                    
+
                     if (data.stats) stats.forEach(stat => setVal(`base_${stat}`, data.stats[stat] || 10));
                     if (data.saves) stats.forEach(stat => setCheck(`save_${stat}`, data.saves[stat]));
-                    if (data.skills) skills.forEach(skill => { 
-                        if(data.skills[skill.id] !== undefined) { 
-                            setCheck(`skill_${skill.id}`, typeof data.skills[skill.id] === 'object' ? data.skills[skill.id].prof : data.skills[skill.id]); 
-                        } 
+                    if (data.skills) skills.forEach(skill => {
+                        if (data.skills[skill.id] !== undefined) {
+                            setCheck(`skill_${skill.id}`, typeof data.skills[skill.id] === 'object' ? data.skills[skill.id].prof : data.skills[skill.id]);
+                        }
                     });
 
-                    const migrateList = (arr) => arr ? arr.map(item => typeof item === 'string' ? {name: item, desc: ''} : item) : [];
-                    charLists.weapons = migrateList(data.weapons); 
-                    charLists.equipment = migrateList(data.equipment); 
-                    charLists.feats = migrateList(data.feats); 
-                    
+                    const migrateList = (arr) => arr ? arr.map(item => typeof item === 'string' ? { name: item, desc: '' } : item) : [];
+                    const toMyStuffFromWeapon = (item) => ({
+                        name: item.name || "Unnamed Weapon",
+                        category: "Legacy Weapons",
+                        desc: item.desc || "",
+                        weight: item.weight || "",
+                        costQty: "",
+                        costUnit: "",
+                        damage: item.damage || "",
+                        twoHandedDamage: "",
+                        range: item.range || "",
+                        throwRange: "",
+                        properties: item.props || "",
+                        armorClass: "",
+                        acBonus: "",
+                        defenseBonus: "",
+                        attackBonus: item.atkBonus || "",
+                        saveBonus: "",
+                        armorDexMax: "",
+                        armorStrMin: "",
+                        stealthDisadvantage: false,
+                        advantage: "",
+                        disadvantage: "",
+                        modVal: "",
+                        modTarget: "",
+                        inUse: !!item.inUse,
+                        timestamp: item.timestamp || new Date().toLocaleString()
+                    });
+                    const toMyStuffFromEquipment = (item) => ({
+                        name: item.name || "Unnamed Equipment",
+                        category: "Legacy Equipment",
+                        desc: item.desc || "",
+                        weight: item.weight || "",
+                        costQty: "",
+                        costUnit: "",
+                        damage: "",
+                        twoHandedDamage: "",
+                        range: "",
+                        throwRange: "",
+                        properties: "",
+                        armorClass: "",
+                        acBonus: "",
+                        defenseBonus: "",
+                        attackBonus: "",
+                        saveBonus: "",
+                        armorDexMax: "",
+                        armorStrMin: "",
+                        stealthDisadvantage: false,
+                        advantage: "",
+                        disadvantage: "",
+                        modVal: item.modVal || "",
+                        modTarget: item.modTarget || "",
+                        inUse: !!item.inUse,
+                        timestamp: item.timestamp || new Date().toLocaleString()
+                    });
+                    const toMyStuffFromProtection = (item) => ({
+                        name: item.name || "Unnamed Protection",
+                        category: "Legacy Protections",
+                        desc: item.desc || "",
+                        weight: item.weight || "",
+                        costQty: "",
+                        costUnit: "",
+                        damage: "",
+                        twoHandedDamage: "",
+                        range: "",
+                        throwRange: "",
+                        properties: "",
+                        armorClass: "",
+                        acBonus: item.acBonus || "",
+                        defenseBonus: "",
+                        attackBonus: "",
+                        saveBonus: "",
+                        armorDexMax: "",
+                        armorStrMin: "",
+                        stealthDisadvantage: false,
+                        advantage: "",
+                        disadvantage: "",
+                        modVal: "",
+                        modTarget: "",
+                        inUse: !!item.inUse,
+                        timestamp: item.timestamp || new Date().toLocaleString()
+                    });
+
+                    const migratedMyStuff = migrateList(data.myStuff).map(item => ({
+                        ...item,
+                        inUse: !!item.inUse
+                    }));
+                    const legacyWeapons = migrateList(data.weapons).map(toMyStuffFromWeapon);
+                    const legacyEquipment = migrateList(data.equipment).map(toMyStuffFromEquipment);
+                    const legacyProtections = migrateList(data.protections).map(toMyStuffFromProtection);
+                    charLists.myStuff = migratedMyStuff.concat(legacyWeapons, legacyEquipment, legacyProtections);
+                    charLists.feats = migrateList(data.feats);
+
                     let legacySpells = [];
-                    if(data.arcaneSpells) legacySpells = legacySpells.concat(migrateList(data.arcaneSpells));
-                    if(data.divineSpells) legacySpells = legacySpells.concat(migrateList(data.divineSpells));
-                    charLists.spells = data.spells ? migrateList(data.spells) : legacySpells; 
+                    if (data.arcaneSpells) legacySpells = legacySpells.concat(migrateList(data.arcaneSpells));
+                    if (data.divineSpells) legacySpells = legacySpells.concat(migrateList(data.divineSpells));
+                    charLists.spells = data.spells ? migrateList(data.spells) : legacySpells;
 
                     charLists.raceTraits = migrateList(data.raceTraits);
                     charLists.classFeatures = migrateList(data.classFeatures);
                     charLists.multiClassFeatures = migrateList(data.multiClassFeatures);
                     charLists.languages = migrateList(data.languages);
-                    charLists.protections = data.protections || [];
                     charLists.wealthLog = data.wealthLog || [];
                     charLists.slotProgressions = data.slotProgressions || [];
-                    
-                    charLists.hiddenPanels = data.hiddenPanels || [];
+
+                    charLists.hiddenPanels = (data.hiddenPanels || []).filter(p => !!document.getElementById(p.id));
                     charLists.hiddenPanels.forEach(p => {
                         const el = document.getElementById(p.id);
                         if (el) el.style.display = 'none';
                     });
-                    
-                    ["weapons","equipment","feats","spells","raceTraits","classFeatures","multiClassFeatures","languages","protections"].forEach(renderCustomList);
+
+                    ["myStuff", "feats", "spells", "raceTraits", "classFeatures", "multiClassFeatures", "languages"].forEach(renderCustomList);
                     renderWealthLog(); updateWealthTotals();
                     renderSlotProgressions();
                     renderHiddenPanels();
@@ -1965,14 +2639,14 @@
                     if (data.panelSizes) {
                         Object.keys(data.panelSizes).forEach(id => {
                             const p = document.getElementById(id);
-                            if(p) { p.style.width = data.panelSizes[id].width; p.style.height = data.panelSizes[id].height; }
+                            if (p) { p.style.width = data.panelSizes[id].width; p.style.height = data.panelSizes[id].height; }
                         });
                     }
 
                     updateSheet();
                     updateHeaderName();
                     updateFileInfo();
-                    
+
                     if (document.body.classList.contains('view-mode')) applyViewModeState(true);
                 } catch (err) { alert("Invalid save file."); console.error(err); }
             };
@@ -1980,4 +2654,5 @@
         }
     </script>
 </body>
+
 </html>
