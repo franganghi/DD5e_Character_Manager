@@ -12,8 +12,7 @@
 
     <div class="menu-bar">
         <h2 style="margin:0;"><span data-i18n="appTitle">D&D 5e Character Manager</span><span
-                class="version-tag">v1.41</span><button class="changelog-btn"
-                onclick="openChangelog()">CHANGELOG</button></h2>
+                class="version-tag">v1.33</span></h2>
 
         <div style="margin-left: 20px; display: flex; gap: 5px;">
             <button class="lang-btn active" onclick="setLanguage('en')" id="btn-lang-en">EN</button>
@@ -37,57 +36,6 @@
             <button onclick="salvaJSON()" data-i18n="save">Save</button>
             <button onclick="document.getElementById('fileInput').click()" data-i18n="open">Open</button>
             <input type="file" id="fileInput" accept=".json" onchange="caricaJSON(event)" style="display: none;">
-        </div>
-    </div>
-
-    <div id="changelogModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeChangelog()">&times;</span>
-            <h2 style="margin-top: 0;" data-i18n="changelogTitle">Changelog</h2>
-
-            <div class="log-version">v1.33 - Attuale</div>
-            <span class="log-note">Parser Armi Avanzato.</span>
-            <div class="log-section log-miglioramenti">Miglioramenti:</div>
-            <ul class="log-ul">
-                <li><strong>Logica Json Annidato:</strong> Il caricamento delle armi da <code>weapons_xx.json</code> ora
-                    gestisce gli oggetti annidati dello standard 5e (es. <code>damage.damage_dice</code> e
-                    <code>damage.damage_type.name</code>).</li>
-                <li><strong>Nuovo campo Gittata:</strong> Aggiunto input specifico per il Raggio (Range) nel modulo
-                    delle Armi.</li>
-                <li><strong>Auto-compilazione Dettagliata:</strong> Costo, Categoria arma e Danni a due mani
-                    (Two-Handed) vengono estratti automaticamente dal file e inseriti nel campo Descrizione. Le
-                    Proprietà vengono scompattate dall'array e formattate.</li>
-            </ul>
-
-            <div class="log-version">v1.32</div>
-            <span class="log-note">Automazione Database Armi.</span>
-            <div class="log-section log-miglioramenti">Miglioramenti:</div>
-            <ul class="log-ul">
-                <li>Integrazione menu a tendina nel box Armi per caricare i dati direttamente dalla cartella
-                    <code>jsons/</code>.</li>
-            </ul>
-
-            <div class="log-version">v1.31</div>
-            <span class="log-note">Tracciamento File, Fix i18n Avvio.</span>
-            <div class="log-section log-miglioramenti">Miglioramenti:</div>
-            <ul class="log-ul">
-                <li>Visualizzazione del nome file e della data di salvataggio nella barra superiore.</li>
-                <li>Risolto il problema dell'etichetta temporanea "appTitle".</li>
-            </ul>
-
-            <div class="log-version">v1.27 - v1.30</div>
-            <span class="log-note">Sistema Modificatori, Pesi, Liberazione Layout.</span>
-            <div class="log-section log-miglioramenti">Miglioramenti:</div>
-            <ul class="log-ul">
-                <li>Layout a griglia per Box Personaggio. Riordino Box Combattimento.</li>
-                <li>Rimosso `max-width` strutturale. Layout full-screen.</li>
-                <li>Sistema di calcolo "Carico Trasportato" automatico (kg) con penalità dinamiche.</li>
-                <li>Modificatori integrati per Statistiche, TPC e Danni negli equipaggiamenti.</li>
-            </ul>
-
-            <div style="text-align: center; margin-top: 30px; font-size: 0.8em; color: #666;">
-                Developed with dedication by Ambrogio for the President of the World.
-            </div>
         </div>
     </div>
 
@@ -534,62 +482,13 @@
             <div id="slotProgressionsList" class="list-container" style="overflow-x: auto; min-height: 50px;"></div>
         </div>
 
-        <div class="panel span-2" id="panel-spells">
-            <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
-            <h2 class="panel-title"><span data-i18n="pSpells">Spells</span> <button class="hide-btn edit-only"
-                    onclick="hidePanel('panel-spells', 'Incantesimi')">👁️</button></h2>
-            <div class="input-group edit-only">
-
-                <div
-                    style="position: relative; display:flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; padding: 5px; border: 1px solid var(--accent-color); border-radius: 4px;">
-                    <label style="width: 100%; color: var(--accent-color); font-size: 0.85em;"
-                        data-i18n="lblDbLoad">Load from Database:</label>
-                    <input type="text" id="spellSearchInput" onkeyup="filterItems('spell')"
-                        onfocus="showItemResults('spell')" data-i18n-ph="phSearchSpell"
-                        placeholder="Search for a spell..." style="flex-grow: 1;">
-                    <div id="spellSearchResults" class="search-results-popup"></div>
-                </div>
-
-                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
-                    <input type="text" id="spellName" placeholder="Spell Name" data-i18n-ph="phSpellName"
-                        style="flex-grow: 1; min-width: 150px;">
-                    <input type="number" id="spellLevel" placeholder="Lvl" min="0" max="9" style="width: 60px;">
-                    <input type="text" id="spellSchool" placeholder="School" data-i18n-ph="phSchool"
-                        style="width: 100px;">
-                </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px;">
-                    <input type="text" id="spellRange" placeholder="Range" data-i18n-ph="phRange" style="width: 100px;">
-                    <input type="text" id="spellDuration" placeholder="Duration" data-i18n-ph="phDuration"
-                        style="width: 100px;">
-                    <input type="text" id="spellClasses" placeholder="Classes" data-i18n-ph="phClasses"
-                        style="flex-grow: 1; min-width: 150px;">
-                </div>
-                <textarea id="spellDesc" class="flex-expand" placeholder="Description & Effects"
-                    data-i18n-ph="phDescEff" style="height: 60px; margin-top: 5px;"></textarea>
-                <textarea id="spellCantrip" class="flex-expand" placeholder="Cantrip Upgrade" data-i18n-ph="phCantrip"
-                    style="height: 40px; margin-top: 5px;"></textarea>
-                <textarea id="spellHigherLevel" class="flex-expand" placeholder="At Higher Levels"
-                    data-i18n-ph="phHigherLevel" style="height: 40px; margin-top: 5px;"></textarea>
-
-                <button onclick="addCustomItem('spells', 'spellName', 'spellDesc')" data-i18n="btnAddSpell"
-                    style="margin-top: 5px;">Add Spell</button>
-            </div>
-            <div id="spellsList" class="list-container" style="max-height: 500px;"></div>
-        </div>
-
         <div class="panel span-2" id="panel-abracadabra">
             <div class="drag-handle edit-only" title="Trascina per spostare">≡</div>
             <h2 class="panel-title"><span>Abracadabra</span> <button class="hide-btn edit-only"
                     onclick="hidePanel('panel-abracadabra', 'Abracadabra')">👁️</button></h2>
             <div id="abracadabraSummary"
                 style="margin-bottom: 12px; padding: 8px; border: 1px solid var(--accent-color); border-radius: 6px; background: #1a1a1a;">
-                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
-                    <div style="font-size: 0.85em; color: var(--accent-color); font-weight: bold;">Spell Counters</div>
-                    <div style="font-size:0.8em; color:#aaa;">Cast Total: <span id="abraCastTotal">0</span> <button
-                            class="edit-only" style="padding:2px 6px;" onclick="resetAbracadabraUsed()">R</button> |
-                        Studied Total: <span id="abraStudyTotal">0</span> <button class="edit-only"
-                            style="padding:2px 6px;" onclick="resetAbracadabraStudied()">R</button></div>
-                </div>
+                <div style="font-size: 0.85em; color: var(--accent-color); font-weight: bold; margin-bottom: 6px;">Spell Counters</div>
                 <div id="abracadabraSummaryRows" style="font-size: 0.85em; color: #bbb; margin-top:6px;"></div>
             </div>
 
@@ -657,7 +556,7 @@
         // --- MULTILINGUAL DICTIONARY (i18n) ---
         const i18n = {
             en: {
-                appTitle: "D&D 5e Character Manager", readMode: "Read Mode", editMode: "Edit Mode", summary: "Summary", save: "Save", open: "Open", changelogTitle: "Changelog",
+                appTitle: "D&D 5e Character Manager", readMode: "Read Mode", editMode: "Edit Mode", summary: "Summary", save: "Save", open: "Open",
                 pCharacter: "Character", lblCharName: "Name:", lblCharRace: "Race:", lblCharClass: "Main Class:", lblCharLvl: "Class Level:", lblTotLvl: "Total Level:", lblHeight: "Height:", lblWeight: "Weight:", lblProfBonus: "Proficiency Bonus:",
                 lblWeightCarried: "Weight Carried:", lblKg: "kg",
                 pStats: "Ability Scores", pSaves: "Saving Throws", pSkills: "Skills",
@@ -670,7 +569,6 @@
                 pFeats: "Feats", btnAddFeat: "Add Feat", pLangs: "Languages", btnAddLang: "Add Language",
                 pWiz: "Wizard Preparation", lblWizLvl: "Wizard Level:", lblWizInt: "INT Mod:", lblWizPrep: "Prepared Spells:", lblWizNote: "(Auto-calc: Wizard Level + INT Modifier. Min 1 if level > 0)",
                 pSlots: "Spell Slots", btnAddCareer: "Add Career",
-                pSpells: "Spells", lblDbLoad: "Load from Database:", optSelectSpell: "-- Select a Spell --", btnAddSpell: "Add Spell", lblClassesSpells: "Classes:", lblHigherLvl: "Higher Levels:",
                 lblWeapDbLoad: "Load from Database:", optSelectWeap: "-- Select a Weapon --",
                 pNotes: "Notes & Backstory", lblHiddenPanels: "Hidden Panels",
                 lblEquipDbLoad: "Load from Database:",
@@ -681,15 +579,14 @@
                 phLangType: "Type", phLangSpeakers: "Typical Speakers",
                 phFeatRaces: "Associated Races/Subraces",
                 phSearchEquip: "Search for an item...",
-                phSearchWeapon: "Search for a weapon...", phSearchSpell: "Search for a spell...",
+                phSearchWeapon: "Search for a weapon...",
                 optNone: "-- Target --", optStr: "STR", optDex: "DEX", optCon: "CON", optInt: "INT", optWis: "WIS", optCha: "CHA", optAtk: "Attack", optDmg: "Damage",
                 phTraitName: "Trait Name", phFeatName: "Feature Name", phDesc: "Description (max 200 char)", phOtherNotes: "Other notes (max 200 char)", phProp: "Properties (max 200 char)", phWeaponProps: "Properties (Finesse, Light, Heavy...)", phDetails: "Details (optional)", phWeight: "kg", phAtkBonus: "Atk", phDmgBonus: "Dmg",
-                phSpellName: "Spell Name", phSchool: "School", phRange: "Range", phDuration: "Duration", phClasses: "Classes (e.g. Wizard)", phDescEff: "Description & Effects", phCantrip: "Cantrip Upgrade (if any)", phHigherLevel: "At Higher Levels",
-                printStats: "Stats", printTraits: "Traits", printFeatures: "Features", printMulti: "Multi Features", printArmor: "Armor", printWeapons: "Weapons", printEquip: "Equipment", printFeats: "Feats", printSpells: "Spells",
+                printStats: "Stats", printTraits: "Traits", printFeatures: "Features", printMulti: "Multi Features", printArmor: "Armor", printWeapons: "Weapons", printEquip: "Equipment", printFeats: "Feats",
                 lblFile: "File", lblSaved: "Saved", lblUnsaved: "Unsaved", lblNoSave: "Never"
             },
             it: {
-                appTitle: "Gestione Personaggio D&D 5e", readMode: "Lettura", editMode: "Modifica", summary: "Sintesi", save: "Salva", open: "Apri", changelogTitle: "Registro Aggiornamenti",
+                appTitle: "Gestione Personaggio D&D 5e", readMode: "Lettura", editMode: "Modifica", summary: "Sintesi", save: "Salva", open: "Apri",
                 pCharacter: "Personaggio", lblCharName: "Nome:", lblCharRace: "Razza:", lblCharClass: "Classe Princ.:", lblCharLvl: "Livello Classe:", lblTotLvl: "Livello Totale:", lblHeight: "Statura:", lblWeight: "Peso base:", lblProfBonus: "Bonus Comp.:",
                 lblWeightCarried: "Carico Trasportato:", lblKg: "kg",
                 pStats: "Caratteristiche", pSaves: "Tiri Salvezza", pSkills: "Abilità",
@@ -702,7 +599,6 @@
                 pFeats: "Talenti", btnAddFeat: "Aggiungi Talento", pLangs: "Lingue Conosciute", btnAddLang: "Aggiungi Lingua",
                 pWiz: "Preparazione Incantesimi (Mago)", lblWizLvl: "Livello da Mago:", lblWizInt: "Modificatore INT:", lblWizPrep: "Totale Preparabili:", lblWizNote: "(Calcolo: Livello Mago + Mod. INT. Minimo 1)",
                 pSlots: "Slot Incantesimi", btnAddCareer: "Aggiungi Carriera",
-                pSpells: "Tutti gli Incantesimi", lblDbLoad: "Carica dal Database:", optSelectSpell: "-- Seleziona Incantesimo --", btnAddSpell: "Aggiungi Incantesimo", lblClassesSpells: "Classi:", lblHigherLvl: "Ai Livelli Superiori:",
                 lblWeapDbLoad: "Carica dal Database:", optSelectWeap: "-- Seleziona Arma --",
                 pNotes: "Note Generali e Storia", lblHiddenPanels: "Pannelli Nascosti",
                 lblEquipDbLoad: "Carica dal Database:",
@@ -713,15 +609,14 @@
                 phLangType: "Tipo", phLangSpeakers: "Parlanti Tipici",
                 phFeatRaces: "Razze/Sottorazze Associate",
                 phSearchEquip: "Cerca un oggetto...",
-                phSearchWeapon: "Cerca un'arma...", phSearchSpell: "Cerca un incantesimo...",
+                phSearchWeapon: "Cerca un'arma...",
                 optNone: "-- Bersaglio --", optStr: "FOR", optDex: "DES", optCon: "COS", optInt: "INT", optWis: "SAG", optCha: "CAR", optAtk: "TPC", optDmg: "Danno",
                 phTraitName: "Nome Tratto", phFeatName: "Nome Privilegio", phDesc: "Descrizione (max 200 car.)", phOtherNotes: "Altre note (max 200 car.)", phProp: "Proprietà (max 200 car.)", phWeaponProps: "Proprietà (Accurata, Leggera...)", phDetails: "Dettagli (opzionale)", phWeight: "kg", phAtkBonus: "TPC", phDmgBonus: "Danno",
-                phSpellName: "Nome Incantesimo", phSchool: "Scuola", phRange: "Raggio", phDuration: "Durata", phClasses: "Classi (es. Mago)", phDescEff: "Descrizione e Effetti", phCantrip: "Miglioramento Trucchetto", phHigherLevel: "Lanciato a Livelli Superiori",
-                printStats: "Statistiche", printTraits: "Tratti", printFeatures: "Privilegi", printMulti: "Priv. Multiclasse", printArmor: "Armature", printWeapons: "Armi", printEquip: "Equipaggiamento", printFeats: "Talenti", printSpells: "Incantesimi",
+                printStats: "Statistiche", printTraits: "Tratti", printFeatures: "Privilegi", printMulti: "Priv. Multiclasse", printArmor: "Armature", printWeapons: "Armi", printEquip: "Equipaggiamento", printFeats: "Talenti",
                 lblFile: "File", lblSaved: "Salvato", lblUnsaved: "Non salvato", lblNoSave: "Mai"
             },
             fr: {
-                appTitle: "Gestion de Personnage D&D 5e", readMode: "Lecture", editMode: "Modifier", summary: "Résumé", save: "Enregistrer", open: "Ouvrir", changelogTitle: "Journal des modifications",
+                appTitle: "Gestion de Personnage D&D 5e", readMode: "Lecture", editMode: "Modifier", summary: "Résumé", save: "Enregistrer", open: "Ouvrir",
                 pCharacter: "Personnage", lblCharName: "Nom:", lblCharRace: "Race:", lblCharClass: "Classe Prin.:", lblCharLvl: "Niveau de Classe:", lblTotLvl: "Niveau Total:", lblHeight: "Taille:", lblWeight: "Poids:", lblProfBonus: "Bonus de Maîtrise:",
                 lblWeightCarried: "Poids Porté:", lblKg: "kg",
                 pStats: "Caractéristiques", pSaves: "Jets de Sauvegarde", pSkills: "Compétences",
@@ -734,7 +629,6 @@
                 pFeats: "Dons", btnAddFeat: "Ajouter Don", pLangs: "Langues", btnAddLang: "Ajouter Langue",
                 pWiz: "Préparation (Magicien)", lblWizLvl: "Niveau Magicien:", lblWizInt: "Mod. INT:", lblWizPrep: "Sorts Préparés:", lblWizNote: "(Calcul: Niv + INT. Minimum 1)",
                 pSlots: "Emplacements de Sorts", btnAddCareer: "Ajouter Carrière",
-                pSpells: "Sorts", lblDbLoad: "Charger depuis la base de données:", optSelectSpell: "-- Sélectionner un Sort --", btnAddSpell: "Ajouter Sort", lblClassesSpells: "Classes:", lblHigherLvl: "Niveaux Supérieurs:",
                 lblWeapDbLoad: "Charger depuis la base de données:", optSelectWeap: "-- Sélectionner une Arme --",
                 pNotes: "Notes et Histoire", lblHiddenPanels: "Panneaux Masqués",
                 lblEquipDbLoad: "Charger depuis la base de données:",
@@ -745,15 +639,14 @@
                 phLangType: "Type", phLangSpeakers: "Locuteurs Typiques",
                 phFeatRaces: "Races/Sous-races associées",
                 phSearchEquip: "Rechercher un objet...",
-                phSearchWeapon: "Rechercher une arme...", phSearchSpell: "Rechercher un sort...",
+                phSearchWeapon: "Rechercher une arme...",
                 optNone: "-- Cible --", optStr: "FOR", optDex: "DEX", optCon: "CON", optInt: "INT", optWis: "SAG", optCha: "CHA", optAtk: "Attaque", optDmg: "Dégâts",
                 phTraitName: "Nom du Trait", phFeatName: "Nom de la Capacité", phDesc: "Description (max 200 car.)", phOtherNotes: "Autres notes (max 200 car.)", phProp: "Propriétés (max 200 car.)", phWeaponProps: "Propriétés (Finesse, Lourd...)", phDetails: "Détails (optionnel)", phWeight: "kg", phAtkBonus: "Att", phDmgBonus: "Dég",
-                phSpellName: "Nom du Sort", phSchool: "École", phRange: "Portée", phDuration: "Durée", phClasses: "Classes (ex. Magicien)", phDescEff: "Description et Effets", phCantrip: "Amélioration Mineur", phHigherLevel: "Aux Niveaux Supérieurs",
-                printStats: "Statistiques", printTraits: "Traits", printFeatures: "Capacités", printMulti: "Capacités Multiclasses", printArmor: "Armures", printWeapons: "Armes", printEquip: "Équipement", printFeats: "Dons", printSpells: "Sorts",
+                printStats: "Statistiques", printTraits: "Traits", printFeatures: "Capacités", printMulti: "Capacités Multiclasses", printArmor: "Armures", printWeapons: "Armes", printEquip: "Équipement", printFeats: "Dons",
                 lblFile: "Fichier", lblSaved: "Enregistré", lblUnsaved: "Non enregistré", lblNoSave: "Jamais"
             },
             de: {
-                appTitle: "D&D 5e Charakter-Manager", readMode: "Lese-Modus", editMode: "Bearbeiten", summary: "Zusammenfassung", save: "Speichern", open: "Öffnen", changelogTitle: "Änderungsprotokoll",
+                appTitle: "D&D 5e Charakter-Manager", readMode: "Lese-Modus", editMode: "Bearbeiten", summary: "Zusammenfassung", save: "Speichern", open: "Öffnen",
                 pCharacter: "Charakter", lblCharName: "Name:", lblCharRace: "Volk:", lblCharClass: "Hauptklasse:", lblCharLvl: "Klassenstufe:", lblTotLvl: "Gesamtstufe:", lblHeight: "Größe:", lblWeight: "Gewicht:", lblProfBonus: "Übungsbonus:",
                 lblWeightCarried: "Getragenes Gewicht:", lblKg: "kg",
                 pStats: "Attribute", pSaves: "Rettungswürfe", pSkills: "Fertigkeiten",
@@ -766,7 +659,6 @@
                 pFeats: "Talente", btnAddFeat: "Talent hinzufügen", pLangs: "Sprachen", btnAddLang: "Sprache hinzufügen",
                 pWiz: "Magier-Vorbereitung", lblWizLvl: "Magierstufe:", lblWizInt: "INT-Mod:", lblWizPrep: "Vorbereitete Zauber:", lblWizNote: "(Auto: Stufe + INT. Minimum 1)",
                 pSlots: "Zauberplätze", btnAddCareer: "Karriere hinzufügen",
-                pSpells: "Zauber", lblDbLoad: "Aus Datenbank laden:", optSelectSpell: "-- Zauber auswählen --", btnAddSpell: "Zauber hinzufügen", lblClassesSpells: "Klassen:", lblHigherLvl: "Auf höheren Stufen:",
                 lblWeapDbLoad: "Aus Datenbank laden:", optSelectWeap: "-- Waffe auswählen --",
                 pNotes: "Notizen & Hintergrund", lblHiddenPanels: "Versteckte Panels",
                 lblEquipDbLoad: "Aus Datenbank laden:",
@@ -777,15 +669,14 @@
                 phLangType: "Typ", phLangSpeakers: "Typische Sprecher",
                 phFeatRaces: "Zugehörige Völker/Untervölker",
                 phSearchEquip: "Gegenstand suchen...",
-                phSearchWeapon: "Waffe suchen...", phSearchSpell: "Zauber suchen...",
+                phSearchWeapon: "Waffe suchen...",
                 optNone: "-- Ziel --", optStr: "STR", optDex: "GES", optCon: "KON", optInt: "INT", optWis: "WEI", optCha: "CHA", optAtk: "Angriff", optDmg: "Schaden",
                 phTraitName: "Merkmalname", phFeatName: "Klassenmerkmalname", phDesc: "Beschreibung (max. 200)", phOtherNotes: "Weitere Notizen (max 200)", phProp: "Eigenschaften (max. 200)", phWeaponProps: "Eigenschaften (Leicht, Schwer...)", phDetails: "Details (optional)", phWeight: "kg", phAtkBonus: "Angr", phDmgBonus: "Schad",
-                phSpellName: "Zaubername", phSchool: "Schule", phRange: "Reichweite", phDuration: "Dauer", phClasses: "Klassen (z.B. Magier)", phDescEff: "Beschreibung & Effekte", phCantrip: "Zaubertrick-Verbesserung", phHigherLevel: "Auf höheren Stufen",
-                printStats: "Attribute", printTraits: "Merkmale", printFeatures: "Klassenmerkmale", printMulti: "Zusätzliche Merkmale", printArmor: "Rüstung", printWeapons: "Waffen", printEquip: "Ausrüstung", printFeats: "Talente", printSpells: "Zauber",
+                printStats: "Attribute", printTraits: "Merkmale", printFeatures: "Klassenmerkmale", printMulti: "Zusätzliche Merkmale", printArmor: "Rüstung", printWeapons: "Waffen", printEquip: "Ausrüstung", printFeats: "Talente",
                 lblFile: "Datei", lblSaved: "Gespeichert", lblUnsaved: "Ungespeichert", lblNoSave: "Nie"
             },
             es: {
-                appTitle: "Gestor de Personaje D&D 5e", readMode: "Lectura", editMode: "Editar", summary: "Resumen", save: "Guardar", open: "Abrir", changelogTitle: "Registro de Cambios",
+                appTitle: "Gestor de Personaje D&D 5e", readMode: "Lectura", editMode: "Editar", summary: "Resumen", save: "Guardar", open: "Abrir",
                 pCharacter: "Personaje", lblCharName: "Nombre:", lblCharRace: "Raza:", lblCharClass: "Clase Prin.:", lblCharLvl: "Nivel de Clase:", lblTotLvl: "Nivel Total:", lblHeight: "Altura:", lblWeight: "Peso:", lblProfBonus: "Bono Comp.:",
                 lblWeightCarried: "Peso Llevado:", lblKg: "kg",
                 pStats: "Características", pSaves: "Tiradas de Salvación", pSkills: "Habilidades",
@@ -798,7 +689,6 @@
                 pFeats: "Dotes", btnAddFeat: "Añadir Dote", pLangs: "Idiomas", btnAddLang: "Añadir Idioma",
                 pWiz: "Preparación de Mago", lblWizLvl: "Nivel de Mago:", lblWizInt: "Mod INT:", lblWizPrep: "Conjuros Preparados:", lblWizNote: "(Auto: Nivel + INT. Mínimo 1)",
                 pSlots: "Espacios de Conjuros", btnAddCareer: "Añadir Carrera",
-                pSpells: "Conjuros", lblDbLoad: "Cargar desde la base de datos:", optSelectSpell: "-- Seleccionar un Conjuro --", btnAddSpell: "Añadir Conjuro", lblClassesSpells: "Clases:", lblHigherLvl: "A Niveles Superiores:",
                 lblWeapDbLoad: "Cargar desde la base de datos:", optSelectWeap: "-- Seleccionar una Arma --",
                 pNotes: "Notas y Trasfondo", lblHiddenPanels: "Paneles Ocultos",
                 lblEquipDbLoad: "Cargar desde la base de datos:",
@@ -809,11 +699,10 @@
                 phLangType: "Tipo", phLangSpeakers: "Hablantes Típicos",
                 phFeatRaces: "Razas/Subrazas Asociadas",
                 phSearchEquip: "Buscar un objeto...",
-                phSearchWeapon: "Buscar un arma...", phSearchSpell: "Buscar un conjuro...",
+                phSearchWeapon: "Buscar un arma...",
                 optNone: "-- Objetivo --", optStr: "FUE", optDex: "DES", optCon: "CON", optInt: "INT", optWis: "SAB", optCha: "CAR", optAtk: "Ataque", optDmg: "Daño",
                 phTraitName: "Nombre del Rasgo", phFeatName: "Nombre del Rasgo", phDesc: "Descripción (máx 200 car.)", phOtherNotes: "Otras notas (máx 200)", phProp: "Propiedades (máx 200 car.)", phWeaponProps: "Propiedades (Sutil, Pesada...)", phDetails: "Detalles (opcional)", phWeight: "kg", phAtkBonus: "Ataq", phDmgBonus: "Daño",
-                phSpellName: "Nombre del Conjuro", phSchool: "Escuela", phRange: "Alcance", phDuration: "Duración", phClasses: "Clases (ej. Mago)", phDescEff: "Descripción y Efectos", phCantrip: "Mejora de Truco", phHigherLevel: "A Niveles Superiores",
-                printStats: "Características", printTraits: "Rasgos", printFeatures: "Rasgos de Clase", printMulti: "Rasgos Adicionales", printArmor: "Armadura", printWeapons: "Armas", printEquip: "Equipamiento", printFeats: "Dotes", printSpells: "Conjuros",
+                printStats: "Características", printTraits: "Rasgos", printFeatures: "Rasgos de Clase", printMulti: "Rasgos Adicionales", printArmor: "Armadura", printWeapons: "Armas", printEquip: "Equipamiento", printFeats: "Dotes",
                 lblFile: "Archivo", lblSaved: "Guardado", lblUnsaved: "No guardado", lblNoSave: "Nunca"
             }
         };
@@ -845,7 +734,6 @@
             updateSheet();
             updateMyStuffSummary();
             updateFileInfo();
-            loadSpellsDB();
             loadFeatsDB();
             loadLanguagesDB();
             loadMyStuffDB();
@@ -897,34 +785,18 @@
         };
 
         const charLists = {
-            feats: [], spells: [],
+            feats: [],
             wealthLog: [], raceTraits: [], classFeatures: [], multiClassFeatures: [],
             languages: [], myStuff: [], abracadabra: [], slotProgressions: [], hiddenPanels: []
         };
 
         // --- Data Bases (JSON) ---
-        let spellDatabase = [];
         let featsDatabase = [];
         let languagesDatabase = [];
         let myStuffDatabase = [];
         let abracadabraDatabase = [];
         let myStuffCategoryOrder = [];
         let myStuffCategoryOrderMap = {};
-
-        async function loadSpellsDB() {
-            try {
-                const response = await fetch(`jsons/spells_${currentLang}.json`);
-                if (response.ok) {
-                    spellDatabase = await response.json();
-                    spellDatabase.sort((a, b) => a.name.localeCompare(b.name));
-                } else {
-                    spellDatabase = [];
-                }
-            } catch (e) {
-                console.log(`Error loading jsons/spells_${currentLang}.json. Remember to use a local web server to bypass CORS issues.`, e);
-                spellDatabase = [];
-            }
-        }
 
         async function loadFeatsDB() {
             try {
@@ -1026,7 +898,6 @@
 
         function getSearchElements(type) {
             const map = {
-                spell: { inputId: 'spellSearchInput', resultsId: 'spellSearchResults' },
                 feat: { inputId: 'featSearchInput', resultsId: 'featSearchResults' },
                 language: { inputId: 'langSearchInput', resultsId: 'languageSearchResults' },
                 mystuff: { inputId: 'mystuffSearchInput', resultsId: 'mystuffSearchResults' },
@@ -1179,7 +1050,7 @@
         }
 
         function filterItems(type) {
-            const db = (type === 'spell') ? spellDatabase : (type === 'feat' ? featsDatabase : (type === 'mystuff' ? myStuffDatabase : (type === 'abracadabra' ? abracadabraDatabase : languagesDatabase)));
+            const db = (type === 'feat') ? featsDatabase : (type === 'mystuff' ? myStuffDatabase : (type === 'abracadabra' ? abracadabraDatabase : languagesDatabase));
             const { input, resultsContainer } = getSearchElements(type);
             if (!input || !resultsContainer) return;
 
@@ -1213,12 +1084,11 @@
                     const itemIndex = db.indexOf(item);
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'search-result-item';
-                    itemDiv.textContent = (type === 'spell')
-                        ? `${item.name} (Lvl ${item.level})`
-                        : (type === 'mystuff'
-                            ? `${item.name} [${item.category}]`
-                            : (type === 'abracadabra' ? `${item.name} [${item.school}] (Lvl ${item.level})` : item.name));
-                    itemDiv.onclick = (event) => {
+                    itemDiv.textContent = (type === 'mystuff')
+                        ? `${item.name} [${item.category}]`
+                        : (type === 'abracadabra' ? `${item.name} [${item.school}] (Lvl ${item.level})` : item.name);
+                    itemDiv.onmousedown = (event) => {
+                        event.preventDefault();
                         event.stopPropagation();
                         selectItem(type, itemIndex);
                     };
@@ -1231,7 +1101,7 @@
         }
 
         function showItemResults(type) {
-            const db = (type === 'spell') ? spellDatabase : (type === 'feat' ? featsDatabase : (type === 'mystuff' ? myStuffDatabase : (type === 'abracadabra' ? abracadabraDatabase : languagesDatabase)));
+            const db = (type === 'feat') ? featsDatabase : (type === 'mystuff' ? myStuffDatabase : (type === 'abracadabra' ? abracadabraDatabase : languagesDatabase));
             const { resultsContainer } = getSearchElements(type);
             if (!resultsContainer) return;
 
@@ -1239,12 +1109,11 @@
             db.forEach((item, index) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'search-result-item';
-                itemDiv.textContent = (type === 'spell')
-                    ? `${item.name} (Lvl ${item.level})`
-                    : (type === 'mystuff'
-                        ? `${item.name} [${item.category}]`
-                        : (type === 'abracadabra' ? `${item.name} [${item.school}] (Lvl ${item.level})` : item.name));
-                itemDiv.onclick = (event) => {
+                itemDiv.textContent = (type === 'mystuff')
+                    ? `${item.name} [${item.category}]`
+                    : (type === 'abracadabra' ? `${item.name} [${item.school}] (Lvl ${item.level})` : item.name);
+                itemDiv.onmousedown = (event) => {
+                    event.preventDefault();
                     event.stopPropagation();
                     selectItem(type, index);
                 };
@@ -1254,12 +1123,11 @@
         }
 
         function selectItem(type, index) {
-            const db = (type === 'spell') ? spellDatabase : (type === 'feat' ? featsDatabase : (type === 'mystuff' ? myStuffDatabase : (type === 'abracadabra' ? abracadabraDatabase : languagesDatabase)));
+            const db = (type === 'feat') ? featsDatabase : (type === 'mystuff' ? myStuffDatabase : (type === 'abracadabra' ? abracadabraDatabase : languagesDatabase));
             const item = db[index];
+            if (!item) return;
 
-            if (type === 'spell') {
-                populateSpellForm(item);
-            } else if (type === 'feat') {
+            if (type === 'feat') {
                 populateFeatForm(item);
             } else if (type === 'language') {
                 populateLanguageForm(item);
@@ -1275,35 +1143,6 @@
                 resultsContainer.innerHTML = '';
                 resultsContainer.style.display = 'none';
             }
-        }
-
-        function populateSpellForm(spell) {
-            document.getElementById("spellName").value = spell.name || "";
-            document.getElementById("spellLevel").value = spell.level !== undefined ? spell.level : "";
-            document.getElementById("spellSchool").value = spell.school || "";
-            document.getElementById("spellRange").value = spell.range || "";
-            document.getElementById("spellDuration").value = spell.duration || "";
-            document.getElementById("spellCantrip").value = spell.cantripUpgrade || "";
-            document.getElementById("spellHigherLevel").value = spell.higherLevelSlot || "";
-
-            let classesStr = "";
-            if (Array.isArray(spell.classes)) {
-                classesStr = spell.classes.join(', ');
-            } else if (spell.classes) {
-                classesStr = spell.classes;
-            }
-            document.getElementById("spellClasses").value = classesStr;
-
-            let fullDesc = spell.description || "";
-            let metaParts = [];
-            if (spell.actionType) metaParts.push(`Act: ${spell.actionType}`);
-            if (spell.components) metaParts.push(`Comp: ${spell.components.join(',')}`);
-
-            let meta = metaParts.length > 0 ? `[${metaParts.join(' | ')}]` : "";
-            if (spell.concentration) meta += " [C]";
-            if (spell.ritual) meta += " [R]";
-
-            document.getElementById("spellDesc").value = (meta ? meta + "\n" : "") + fullDesc;
         }
 
         function populateFeatForm(item) {
@@ -1368,6 +1207,150 @@
             document.getElementById("mystuffModVal").value = item.modVal || "";
             document.getElementById("mystuffModTarget").value = item.modTarget || "";
             document.getElementById("mystuffDesc").value = item.desc || "";
+        }
+
+        function populateAbracadabraForm(item) {
+            document.getElementById("abracadabraName").value = item.name || "";
+            document.getElementById("abracadabraLevel").value = item.level ?? 0;
+            document.getElementById("abracadabraSchool").value = item.school || "";
+            document.getElementById("abracadabraRange").value = item.range || "";
+            document.getElementById("abracadabraCastingTime").value = item.castingTime || "";
+            document.getElementById("abracadabraDuration").value = item.duration || "";
+            document.getElementById("abracadabraComponents").value = item.components || "";
+            document.getElementById("abracadabraMaterial").value = item.material || "";
+            document.getElementById("abracadabraAttackType").value = item.attackType || "";
+            document.getElementById("abracadabraRitual").checked = !!item.ritual;
+            document.getElementById("abracadabraConcentration").checked = !!item.concentration;
+            document.getElementById("abracadabraDamage").value = item.damage || "";
+            document.getElementById("abracadabraHigherLevel").value = item.higherLevel || "";
+            document.getElementById("abracadabraDesc").value = item.desc || "";
+            document.getElementById("abracadabraClasses").value = item.classes || "";
+            document.getElementById("abracadabraSubclasses").value = item.subclasses || "";
+        }
+
+        function addAbracadabraItem() {
+            const name = document.getElementById('abracadabraName').value.trim();
+            if (!name) return;
+
+            const newItem = {
+                name,
+                level: parseInt(document.getElementById('abracadabraLevel').value) || 0,
+                school: document.getElementById('abracadabraSchool').value.trim(),
+                range: document.getElementById('abracadabraRange').value.trim(),
+                castingTime: document.getElementById('abracadabraCastingTime').value.trim(),
+                duration: document.getElementById('abracadabraDuration').value.trim(),
+                components: document.getElementById('abracadabraComponents').value.trim(),
+                material: document.getElementById('abracadabraMaterial').value.trim(),
+                attackType: document.getElementById('abracadabraAttackType').value.trim(),
+                ritual: document.getElementById('abracadabraRitual').checked,
+                concentration: document.getElementById('abracadabraConcentration').checked,
+                damage: document.getElementById('abracadabraDamage').value.trim(),
+                higherLevel: document.getElementById('abracadabraHigherLevel').value.trim(),
+                desc: document.getElementById('abracadabraDesc').value.trim(),
+                classes: document.getElementById('abracadabraClasses').value.trim(),
+                subclasses: document.getElementById('abracadabraSubclasses').value.trim(),
+                usedCount: 0,
+                studiedCount: 0,
+                usedFlag: false,
+                studiedFlag: false,
+                timestamp: new Date().toLocaleString()
+            };
+
+            charLists.abracadabra.unshift(newItem);
+
+            [
+                'abracadabraName', 'abracadabraLevel', 'abracadabraSchool', 'abracadabraRange', 'abracadabraCastingTime',
+                'abracadabraDuration', 'abracadabraComponents', 'abracadabraMaterial', 'abracadabraAttackType',
+                'abracadabraDamage', 'abracadabraHigherLevel', 'abracadabraDesc', 'abracadabraClasses', 'abracadabraSubclasses'
+            ].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+            document.getElementById('abracadabraRitual').checked = false;
+            document.getElementById('abracadabraConcentration').checked = false;
+
+            renderCustomList('abracadabra');
+        }
+
+        function incrementAbracadabraUsed(index) {
+            const item = charLists.abracadabra[index];
+            if (!item) return;
+            item.usedCount = (parseInt(item.usedCount) || 0) + 1;
+            item.usedFlag = item.usedCount > 0;
+            renderCustomList('abracadabra');
+        }
+
+        function incrementAbracadabraStudied(index) {
+            const item = charLists.abracadabra[index];
+            if (!item) return;
+            item.studiedCount = (parseInt(item.studiedCount) || 0) + 1;
+            item.studiedFlag = item.studiedCount > 0;
+            renderCustomList('abracadabra');
+        }
+
+        function resetAbracadabraUsed() {
+            charLists.abracadabra.forEach(item => {
+                item.usedCount = 0;
+                item.usedFlag = false;
+            });
+            renderCustomList('abracadabra');
+        }
+
+        function resetAbracadabraStudied() {
+            charLists.abracadabra.forEach(item => {
+                item.studiedCount = 0;
+                item.studiedFlag = false;
+            });
+            renderCustomList('abracadabra');
+        }
+
+        function updateAbracadabraSummary() {
+            const rows = document.getElementById('abracadabraSummaryRows');
+            if (!rows) return;
+
+            const castByLevel = Array(10).fill(0);
+            const studyByLevel = Array(10).fill(0);
+            let castTotal = 0;
+            let studyTotal = 0;
+            charLists.abracadabra.forEach(item => {
+                const lvl = Math.max(0, Math.min(9, parseInt(item.level) || 0));
+                const u = parseInt(item.usedCount) || 0;
+                const s = parseInt(item.studiedCount) || 0;
+                castByLevel[lvl] += u;
+                studyByLevel[lvl] += s;
+                castTotal += u;
+                studyTotal += s;
+            });
+
+            const levelHeaders = Array.from({ length: 10 }, (_, lvl) => `<th style="padding:4px 6px; text-align:center; border:1px solid #333;">${lvl}</th>`).join('');
+            const usedCells = castByLevel.map(v => `<td style="padding:4px 6px; text-align:center; border:1px solid #333;">${v}</td>`).join('');
+            const studiedCells = studyByLevel.map(v => `<td style="padding:4px 6px; text-align:center; border:1px solid #333;">${v}</td>`).join('');
+
+            rows.innerHTML = `
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; min-width:760px;">
+                        <thead>
+                            <tr>
+                                <th style="padding:4px 6px; text-align:left; border:1px solid #333;">Classe</th>
+                                ${levelHeaders}
+                                <th style="padding:4px 6px; text-align:center; border:1px solid #333;">Totale</th>
+                                <th style="padding:4px 6px; text-align:center; border:1px solid #333;">Reset</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding:4px 6px; border:1px solid #333;"><strong>Utilizzati</strong></td>
+                                ${usedCells}
+                                <td style="padding:4px 6px; text-align:center; border:1px solid #333;"><strong>${castTotal}</strong></td>
+                                <td style="padding:4px 6px; text-align:center; border:1px solid #333;"><button class="edit-only" style="padding:2px 6px;" onclick="resetAbracadabraUsed()">R</button></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:4px 6px; border:1px solid #333;"><strong>Studiati</strong></td>
+                                ${studiedCells}
+                                <td style="padding:4px 6px; text-align:center; border:1px solid #333;"><strong>${studyTotal}</strong></td>
+                                <td style="padding:4px 6px; text-align:center; border:1px solid #333;"><button class="edit-only" style="padding:2px 6px;" onclick="resetAbracadabraStudied()">R</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
         }
 
         function parseTagList(value) {
@@ -1444,6 +1427,44 @@
             }
         }
 
+        function initPanelCollapseControls() {
+            document.querySelectorAll('.panel').forEach(panel => {
+                const title = panel.querySelector('.panel-title');
+                if (!title) return;
+                const hideBtn = title.querySelector('.hide-btn');
+                if (!hideBtn || title.querySelector('.collapse-btn')) return;
+
+                const collapseBtn = document.createElement('button');
+                collapseBtn.type = 'button';
+                collapseBtn.className = 'collapse-btn edit-only';
+                collapseBtn.textContent = '▾';
+                collapseBtn.title = 'Collapse panel';
+                collapseBtn.onclick = (event) => {
+                    event.stopPropagation();
+                    togglePanelCollapse(panel.id);
+                };
+                title.insertBefore(collapseBtn, hideBtn);
+            });
+        }
+
+        function setPanelCollapsed(panelId, collapsed) {
+            const panel = document.getElementById(panelId);
+            if (!panel) return;
+            if (collapsed) panel.classList.add('panel-collapsed');
+            else panel.classList.remove('panel-collapsed');
+            const btn = panel.querySelector('.collapse-btn');
+            if (btn) {
+                btn.textContent = collapsed ? '▸' : '▾';
+                btn.title = collapsed ? 'Expand panel' : 'Collapse panel';
+            }
+        }
+
+        function togglePanelCollapse(panelId) {
+            const panel = document.getElementById(panelId);
+            if (!panel) return;
+            setPanelCollapsed(panelId, !panel.classList.contains('panel-collapsed'));
+        }
+
         // --- Application Init ---
         document.addEventListener("DOMContentLoaded", function () {
             setLanguage('en');
@@ -1461,19 +1482,9 @@
             updateFileInfo();
             updateMyStuffSummary();
             updateAbracadabraSummary();
+            initPanelCollapseControls();
 
             window.onclick = function (event) {
-                const changelogModal = document.getElementById('changelogModal');
-                if (event.target == changelogModal) {
-                    changelogModal.style.display = "none";
-                }
-
-                const spellResults = document.getElementById('spellSearchResults');
-                const spellInput = document.getElementById('spellSearchInput');
-                if (spellResults && spellResults.style.display === 'block' && !spellResults.contains(event.target) && event.target !== spellInput) {
-                    spellResults.style.display = 'none';
-                }
-
                 const featResults = document.getElementById('featSearchResults');
                 const featInput = document.getElementById('featSearchInput');
                 if (featResults && featResults.style.display === 'block' && !featResults.contains(event.target) && event.target !== featInput) {
@@ -1491,17 +1502,23 @@
                 if (mystuffResults && mystuffResults.style.display === 'block' && !mystuffResults.contains(event.target) && event.target !== mystuffInput) {
                     mystuffResults.style.display = 'none';
                 }
+
+                const abraResults = document.getElementById('abracadabraSearchResults');
+                const abraInput = document.getElementById('abracadabraSearchInput');
+                if (abraResults && abraResults.style.display === 'block' && !abraResults.contains(event.target) && event.target !== abraInput) {
+                    abraResults.style.display = 'none';
+                }
             };
 
             document.addEventListener('keydown', (ev) => {
                 if (ev.key !== 'Escape') return;
-                ['spellSearchResults', 'featSearchResults', 'languageSearchResults', 'mystuffSearchResults'].forEach(id => {
+                ['featSearchResults', 'languageSearchResults', 'mystuffSearchResults', 'abracadabraSearchResults'].forEach(id => {
                     const popup = document.getElementById(id);
                     if (popup) popup.style.display = 'none';
                 });
             });
 
-            ['spell', 'feat', 'lang', 'mystuff'].forEach(prefix => {
+            ['feat', 'lang', 'mystuff', 'abracadabra'].forEach(prefix => {
                 const inputId = prefix === 'lang' ? 'langSearchInput' : `${prefix}SearchInput`;
                 const popupId = prefix === 'lang' ? 'languageSearchResults' : `${prefix}SearchResults`;
                 const input = document.getElementById(inputId);
@@ -1516,9 +1533,6 @@
                 });
             });
         });
-
-        function openChangelog() { document.getElementById('changelogModal').style.display = 'block'; }
-        function closeChangelog() { document.getElementById('changelogModal').style.display = 'none'; }
 
         function applyViewModeState(isViewMode) {
             const elements = document.querySelectorAll('#mainContainer input, #mainContainer textarea, #mainContainer select');
@@ -1868,27 +1882,6 @@
                 timestamp: new Date().toLocaleString()
             };
 
-            if (listName === 'spells') {
-                newItem.level = document.getElementById('spellLevel') ? document.getElementById('spellLevel').value : "";
-                newItem.school = document.getElementById('spellSchool') ? document.getElementById('spellSchool').value.trim() : "";
-                newItem.range = document.getElementById('spellRange') ? document.getElementById('spellRange').value.trim() : "";
-                newItem.duration = document.getElementById('spellDuration') ? document.getElementById('spellDuration').value.trim() : "";
-                newItem.cantripUpgrade = document.getElementById('spellCantrip') ? document.getElementById('spellCantrip').value.trim() : "";
-                newItem.higherLevelSlot = document.getElementById('spellHigherLevel') ? document.getElementById('spellHigherLevel').value.trim() : "";
-                newItem.classes = document.getElementById('spellClasses') ? document.getElementById('spellClasses').value.trim() : "";
-                newItem.prepared = false;
-                newItem.cast = false;
-
-                if (document.getElementById('spellLevel')) document.getElementById('spellLevel').value = "";
-                if (document.getElementById('spellSchool')) document.getElementById('spellSchool').value = "";
-                if (document.getElementById('spellRange')) document.getElementById('spellRange').value = "";
-                if (document.getElementById('spellDuration')) document.getElementById('spellDuration').value = "";
-                if (document.getElementById('spellCantrip')) document.getElementById('spellCantrip').value = "";
-                if (document.getElementById('spellHigherLevel')) document.getElementById('spellHigherLevel').value = "";
-                if (document.getElementById('spellClasses')) document.getElementById('spellClasses').value = "";
-
-            }
-
             charLists[listName].unshift(newItem);
             nameInput.value = "";
             if (descInput) descInput.value = "";
@@ -1979,10 +1972,6 @@
             renderCustomList('languages');
         }
 
-        function toggleItemState(listName, index, prop, state) {
-            if (charLists[listName][index]) charLists[listName][index][prop] = state;
-        }
-
         function toggleMyStuffUse(index) {
             if (!charLists.myStuff[index]) return;
             charLists.myStuff[index].inUse = !charLists.myStuff[index].inUse;
@@ -1993,15 +1982,68 @@
         function renderCustomList(listName) {
             const containerMap = {
                 "feats": "featsList",
-                "spells": "spellsList", "raceTraits": "raceTraitsList", "classFeatures": "classFeaturesList",
+                "raceTraits": "raceTraitsList", "classFeatures": "classFeaturesList",
                 "multiClassFeatures": "multiFeaturesList", "languages": "languagesList",
-                "myStuff": "mystuffList"
+                "myStuff": "mystuffList", "abracadabra": "abracadabraList"
             };
             const containerId = containerMap[listName];
             if (!containerId) return;
 
             const container = document.getElementById(containerId);
             container.innerHTML = "";
+
+            if (listName === "abracadabra") {
+                const grouped = {};
+                charLists.abracadabra.forEach((item, index) => {
+                    const lvl = Math.max(0, Math.min(9, parseInt(item.level) || 0));
+                    if (!grouped[lvl]) grouped[lvl] = [];
+                    grouped[lvl].push({ item, index });
+                });
+
+                for (let lvl = 0; lvl <= 9; lvl++) {
+                    if (!grouped[lvl] || grouped[lvl].length === 0) continue;
+                    container.innerHTML += `<div class="mystuff-category-title">Level ${lvl}</div>`;
+                    grouped[lvl]
+                        .slice()
+                        .sort((a, b) => (a.item.school || '').localeCompare(b.item.school || '') || (a.item.name || '').localeCompare(b.item.name || ''))
+                        .forEach(({ item, index }) => {
+                            let tags = ` <span style="font-size:0.85em; color:#aaa;">[${item.school || 'No School'}]</span>`;
+                            if (item.range) tags += ` <span style="font-size:0.85em; color:#aaa;">[${item.range}]</span>`;
+                            if (item.castingTime) tags += ` <span style="font-size:0.85em; color:#aaa;">[${item.castingTime}]</span>`;
+                            if (item.ritual) tags += ` <span style="font-size:0.85em; color:#00bcd4;">[Ritual]</span>`;
+                            if (item.concentration) tags += ` <span style="font-size:0.85em; color:#ff9800;">[Conc]</span>`;
+                            tags += ` <span style="font-size:0.85em; color:var(--positive-color);">[U:${item.usedCount || 0}]</span>`;
+                            tags += ` <span style="font-size:0.85em; color:var(--accent-color);">[S:${item.studiedCount || 0}]</span>`;
+
+                            let details = "";
+                            if (item.classes) details += `<div style="font-size:0.8em; color:#888; margin-top:2px;"><i>Classes:</i> ${item.classes}</div>`;
+                            if (item.subclasses) details += `<div style="font-size:0.8em; color:#777; margin-top:2px;"><i>Subclasses:</i> ${item.subclasses}</div>`;
+                            if (item.damage) details += `<div style="font-size:0.8em; color:#f44336; white-space:pre-wrap; margin-top:2px;"><i>Damage:</i> ${item.damage}</div>`;
+                            if (item.higherLevel) details += `<div style="font-size:0.8em; color:var(--positive-color); white-space:pre-wrap; margin-top:2px;"><i>Higher:</i> ${item.higherLevel}</div>`;
+                            if (item.desc) details += `<div style="font-size:0.85em; color:#aaa; white-space:pre-wrap; margin-top:4px;">${item.desc}</div>`;
+
+                            container.innerHTML += `
+                                <div class="list-item">
+                                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                        <div style="flex-grow:1;">
+                                            <strong style="color:var(--accent-color);">${item.name}</strong>${tags}
+                                            ${details}
+                                        </div>
+                                        <div>
+                                            <button style="padding:2px 6px; margin-right:4px;" class="edit-only" title="Used +1" onclick="incrementAbracadabraUsed(${index})">U</button>
+                                            <button style="padding:2px 6px; margin-right:4px;" class="edit-only" title="Studied +1" onclick="incrementAbracadabraStudied(${index})">S</button>
+                                            <button style="padding:2px 6px; margin-right:4px;" class="edit-only" title="Modifica" onclick="editCustomItem('abracadabra', ${index})">E</button>
+                                            <button style="padding:2px 6px;" class="edit-only" title="Elimina" onclick="removeCustomItem('abracadabra', ${index})">X</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                }
+                updateAbracadabraSummary();
+                if (document.body.classList.contains('view-mode')) applyViewModeState(true);
+                return;
+            }
 
             if (listName === "myStuff") {
                 const grouped = {};
@@ -2070,23 +2112,6 @@
                 let controlsHTML = "";
                 let titleExtras = "";
 
-                if (listName === "spells") {
-                    let spellInfo = "";
-                    if (item.level !== undefined && item.level !== "") spellInfo += `Lvl ${item.level}`;
-                    if (item.school) spellInfo += (spellInfo ? ` - ${item.school}` : `${item.school}`);
-                    if (item.range) spellInfo += ` | ${item.range}`;
-                    if (item.duration) spellInfo += ` | ${item.duration}`;
-
-                    if (spellInfo) titleExtras += ` <span style="font-size:0.85em; color:var(--accent-color);">[${spellInfo}]</span>`;
-
-                    controlsHTML = `
-                        <div style="font-size: 0.85em; display: flex; gap: 10px; align-items: center; margin-right: 10px;">
-                            <label><input type="checkbox" ${item.prepared ? 'checked' : ''} onchange="toggleItemState('${listName}', ${index}, 'prepared', this.checked)"> Prep</label>
-                            <label><input type="checkbox" ${item.cast ? 'checked' : ''} onchange="toggleItemState('${listName}', ${index}, 'cast', this.checked)"> Cast</label>
-                        </div>
-                    `;
-                }
-
                 if (item.modVal && item.modTarget) {
                     const transTargetKey = 'opt' + item.modTarget.charAt(0).toUpperCase() + item.modTarget.slice(1);
                     const transTarget = i18n[currentLang][transTargetKey] || item.modTarget;
@@ -2099,18 +2124,8 @@
                 if (item.timestamp) {
                     descHtml += `<div style="font-size:0.65em; color:#555; margin-top:2px;">${item.timestamp}</div>`;
                 }
-
-                if (listName === "spells" && item.classes) {
-                    descHtml += `<div style="font-size: 0.8em; color: #888; font-style: italic; margin-top: 2px;">${i18n[currentLang].lblClassesSpells || "Classes:"} ${item.classes}</div>`;
-                }
                 if (item.desc) {
                     descHtml += `<div style="font-size: 0.85em; color: #aaa; margin-top: 4px; white-space: pre-wrap;">${item.desc}</div>`;
-                }
-                if (listName === "spells" && item.cantripUpgrade) {
-                    descHtml += `<div style="font-size: 0.85em; color: var(--accent-color); margin-top: 4px;"><strong>Upgrade:</strong> ${item.cantripUpgrade}</div>`;
-                }
-                if (listName === "spells" && item.higherLevelSlot) {
-                    descHtml += `<div style="font-size: 0.85em; color: var(--positive-color); margin-top: 4px;"><strong>${i18n[currentLang].lblHigherLvl || "Higher Levels:"}</strong> ${item.higherLevelSlot}</div>`;
                 }
 
                 container.innerHTML += `
@@ -2176,6 +2191,24 @@
                 document.getElementById('mystuffModVal').value = item.modVal || "";
                 document.getElementById('mystuffModTarget').value = item.modTarget || "";
             }
+            else if (listName === 'abracadabra') {
+                document.getElementById('abracadabraName').value = item.name || "";
+                document.getElementById('abracadabraLevel').value = item.level ?? 0;
+                document.getElementById('abracadabraSchool').value = item.school || "";
+                document.getElementById('abracadabraRange').value = item.range || "";
+                document.getElementById('abracadabraCastingTime').value = item.castingTime || "";
+                document.getElementById('abracadabraDuration').value = item.duration || "";
+                document.getElementById('abracadabraComponents').value = item.components || "";
+                document.getElementById('abracadabraMaterial').value = item.material || "";
+                document.getElementById('abracadabraAttackType').value = item.attackType || "";
+                document.getElementById('abracadabraRitual').checked = !!item.ritual;
+                document.getElementById('abracadabraConcentration').checked = !!item.concentration;
+                document.getElementById('abracadabraDamage').value = item.damage || "";
+                document.getElementById('abracadabraHigherLevel').value = item.higherLevel || "";
+                document.getElementById('abracadabraDesc').value = item.desc || "";
+                document.getElementById('abracadabraClasses').value = item.classes || "";
+                document.getElementById('abracadabraSubclasses').value = item.subclasses || "";
+            }
             else if (listName === 'feats') {
                 document.getElementById('featName').value = item.name;
                 document.getElementById('featDesc').value = item.desc;
@@ -2186,17 +2219,6 @@
                 if (document.getElementById('langType')) document.getElementById('langType').value = item.type || "";
                 if (document.getElementById('langSpeakers')) document.getElementById('langSpeakers').value = item.speakers || "";
                 document.getElementById('langDesc').value = item.desc || "";
-            }
-            else if (listName === 'spells') {
-                if (document.getElementById('spellName')) document.getElementById('spellName').value = item.name;
-                if (document.getElementById('spellDesc')) document.getElementById('spellDesc').value = item.desc;
-                if (document.getElementById('spellLevel')) document.getElementById('spellLevel').value = item.level !== undefined ? item.level : "";
-                if (document.getElementById('spellSchool')) document.getElementById('spellSchool').value = item.school || "";
-                if (document.getElementById('spellRange')) document.getElementById('spellRange').value = item.range || "";
-                if (document.getElementById('spellDuration')) document.getElementById('spellDuration').value = item.duration || "";
-                if (document.getElementById('spellCantrip')) document.getElementById('spellCantrip').value = item.cantripUpgrade || "";
-                if (document.getElementById('spellHigherLevel')) document.getElementById('spellHigherLevel').value = item.higherLevelSlot || "";
-                if (document.getElementById('spellClasses')) document.getElementById('spellClasses').value = item.classes || "";
             }
             else if (listName === 'wealthLog') {
                 document.getElementById('wealthAmount').value = Math.abs(item.amount); document.getElementById('wealthType').value = item.type; document.getElementById('wealthReason').value = item.reason;
@@ -2219,6 +2241,7 @@
             else renderCustomList(listName);
             if (listName === 'myStuff') updateSheet();
             if (listName === 'myStuff') updateMyStuffSummary();
+            if (listName === 'abracadabra') updateAbracadabraSummary();
         }
 
         function addWealth() {
@@ -2312,7 +2335,7 @@
                 content += `<div class="row"><span>${statNamesIt[stat] || stat}:</span> <strong>${val} (${mod})</strong></div>`;
             });
 
-            const formatList = (title, list, isSpell = false) => {
+            const formatList = (title, list) => {
                 if (list.length === 0) return '';
                 let html = `<h2>${title}</h2>`;
                 list.forEach(item => {
@@ -2325,21 +2348,9 @@
                         const sign = item.modVal > 0 ? "+" : "";
                         extra += ` [${transTarget}: ${sign}${item.modVal}]`;
                     }
-
-                    if (isSpell) {
-                        if (item.level !== undefined && item.level !== "") extra += ` [Lvl: ${item.level}]`;
-                        if (item.school) extra += ` [${item.school}]`;
-                        if (item.range) extra += ` [Rng: ${item.range}]`;
-                        if (item.duration) extra += ` [Dur: ${item.duration}]`;
-                        extra += item.prepared ? " [Prep]" : "";
-                    }
                     html += `<div class="item"><span class="item-title">- ${item.name}</span>${extra}`;
 
-                    if (isSpell && item.classes) html += `<br><span style="font-size:0.85em; padding-left:15px; display:block; color: #666;"><i>${t.lblClassesSpells || "Classes:"} ${item.classes}</i></span>`;
-
                     if (item.desc) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; white-space: pre-wrap;">${item.desc}</span>`;
-                    if (isSpell && item.cantripUpgrade) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block; color: #555;"><strong>Upgrade:</strong> ${item.cantripUpgrade}</span>`;
-                    if (isSpell && item.higherLevelSlot) html += `<br><span style="font-size:0.9em; padding-left:15px; display:block;"><strong>${t.lblHigherLvl || "Higher Levels:"}</strong> ${item.higherLevelSlot}</span>`;
                     html += `</div>`;
                 });
                 return html;
@@ -2406,7 +2417,6 @@
             content += formatList(t.printMulti || "Multi Features", charLists.multiClassFeatures);
             content += formatMyStuffSection();
             content += formatList(t.printFeats || "Feats", charLists.feats);
-            content += formatList(t.printSpells || "Spells", charLists.spells, true);
 
             content += `</div></body></html>`;
             printWin.document.write(content);
@@ -2422,6 +2432,7 @@
             document.querySelectorAll('.panel').forEach(p => {
                 if (p.style.width || p.style.height) panelSizes[p.id] = { width: p.style.width, height: p.style.height };
             });
+            const collapsedPanels = Array.from(document.querySelectorAll('.panel.panel-collapsed')).map(p => p.id);
 
             // Updating Save Date & Filename
             currentSaveDate = new Date().toLocaleString();
@@ -2457,7 +2468,7 @@
                 notes: safeVal("notesArea"),
                 stats: {}, saves: {}, skills: {},
 
-                myStuff: charLists.myStuff, feats: charLists.feats, spells: charLists.spells, wealthLog: charLists.wealthLog, raceTraits: charLists.raceTraits, classFeatures: charLists.classFeatures, multiClassFeatures: charLists.multiClassFeatures, languages: charLists.languages, slotProgressions: charLists.slotProgressions, hiddenPanels: charLists.hiddenPanels,
+                myStuff: charLists.myStuff, abracadabra: charLists.abracadabra, feats: charLists.feats, wealthLog: charLists.wealthLog, raceTraits: charLists.raceTraits, classFeatures: charLists.classFeatures, multiClassFeatures: charLists.multiClassFeatures, languages: charLists.languages, slotProgressions: charLists.slotProgressions, hiddenPanels: charLists.hiddenPanels, collapsedPanels: collapsedPanels,
 
                 layout: Array.from(document.getElementById("mainContainer").children).map(el => el.id),
                 panelSizes: panelSizes
@@ -2607,12 +2618,14 @@
                     const legacyEquipment = migrateList(data.equipment).map(toMyStuffFromEquipment);
                     const legacyProtections = migrateList(data.protections).map(toMyStuffFromProtection);
                     charLists.myStuff = migratedMyStuff.concat(legacyWeapons, legacyEquipment, legacyProtections);
+                    charLists.abracadabra = migrateList(data.abracadabra).map(item => ({
+                        ...item,
+                        usedCount: parseInt(item.usedCount) || 0,
+                        studiedCount: parseInt(item.studiedCount) || 0,
+                        usedFlag: !!item.usedFlag,
+                        studiedFlag: !!item.studiedFlag
+                    }));
                     charLists.feats = migrateList(data.feats);
-
-                    let legacySpells = [];
-                    if (data.arcaneSpells) legacySpells = legacySpells.concat(migrateList(data.arcaneSpells));
-                    if (data.divineSpells) legacySpells = legacySpells.concat(migrateList(data.divineSpells));
-                    charLists.spells = data.spells ? migrateList(data.spells) : legacySpells;
 
                     charLists.raceTraits = migrateList(data.raceTraits);
                     charLists.classFeatures = migrateList(data.classFeatures);
@@ -2626,8 +2639,10 @@
                         const el = document.getElementById(p.id);
                         if (el) el.style.display = 'none';
                     });
+                    document.querySelectorAll('.panel').forEach(p => setPanelCollapsed(p.id, false));
+                    (data.collapsedPanels || []).forEach(id => setPanelCollapsed(id, true));
 
-                    ["myStuff", "feats", "spells", "raceTraits", "classFeatures", "multiClassFeatures", "languages"].forEach(renderCustomList);
+                    ["myStuff", "abracadabra", "feats", "raceTraits", "classFeatures", "multiClassFeatures", "languages"].forEach(renderCustomList);
                     renderWealthLog(); updateWealthTotals();
                     renderSlotProgressions();
                     renderHiddenPanels();
