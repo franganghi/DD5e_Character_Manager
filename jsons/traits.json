@@ -6,6 +6,7 @@
             {
                 "index": "rock-gnome",
                 "name": "Rock Gnome",
+                "name_it": "Gnomo delle Rocce",
                 "url": {
                     "target_file": "subraces.json",
                     "target_entry": "rock-gnome"
@@ -13,8 +14,12 @@
             }
         ],
         "name": "Artificer's Lore",
+        "name_it": "Conoscenze dell'Artificiere",
         "desc": [
             "Whenever you make an Intelligence (History) check related to magic items, alchemical objects, or technological devices, you can add twice your proficiency bonus, instead of any proficiency bonus you normally apply."
+        ],
+        "desc_it": [
+            "Ogni volta che effettui una prova di Intelligenza (Storia) relativa a oggetti magici, oggetti alchemici o dispositivi tecnologici, puoi aggiungere il doppio del tuo bonus di competenza, invece di qualsiasi bonus di competenza che applichi normalmente."
         ],
         "proficiencies": [],
         "url": {
@@ -29,6 +34,7 @@
             {
                 "index": "halfling",
                 "name": "Halfling",
+                "name_it": "Halfling",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "halfling"
@@ -37,8 +43,12 @@
         ],
         "subraces": [],
         "name": "Brave",
+        "name_it": "Coraggioso",
         "desc": [
             "You have advantage on saving throw against being frightened."
+        ],
+        "desc_it": [
+            "Hai vantaggio sui tiri salvezza contro l'essere spaventato."
         ],
         "proficiencies": [],
         "url": {
@@ -53,6 +63,7 @@
             {
                 "index": "dragonborn",
                 "name": "Dragonborn",
+                "name_it": "Dragonide",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dragonborn"
@@ -61,10 +72,16 @@
         ],
         "subraces": [],
         "name": "Breath Weapon",
+        "name_it": "Arma a Soffio",
         "desc": [
             "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation.",
             "When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level.",
             "After you use your breath weapon, you cannot use it again until you complete a short or long rest."
+        ],
+        "desc_it": [
+            "Puoi usare la tua azione per esalare energia distruttiva. La tua ascendenza draconica determina la dimensione, la forma e il tipo di danno dell'esalazione.",
+            "Quando usi la tua arma a soffio, ogni creatura nell'area dell'esalazione deve effettuare un tiro salvezza, il cui tipo è determinato dalla tua ascendenza draconica. La CD per questo tiro salvezza è pari a 8 + il tuo modificatore di Costituzione + il tuo bonus di competenza. Una creatura subisce 2d6 danni se fallisce il tiro salvezza, e la metà dei danni se lo supera. I danni aumentano a 3d6 al 6° livello, 4d6 all'11° livello e 5d6 al 16° livello.",
+            "Dopo aver usato il tuo soffio, non puoi usarlo di nuovo finché non completi un riposo breve o lungo."
         ],
         "proficiencies": [],
         "url": {
@@ -79,6 +96,7 @@
             {
                 "index": "dragonborn",
                 "name": "Dragonborn",
+                "name_it": "Dragonide",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dragonborn"
@@ -87,8 +105,12 @@
         ],
         "subraces": [],
         "name": "Damage Resistance",
+        "name_it": "Resistenza ai danni",
         "desc": [
             "You have resistance to the damage type associated with your draconic ancestry."
+        ],
+        "desc_it": [
+            "Hai resistenza al tipo di danno associato alla tua ascendenza draconica."
         ],
         "proficiencies": [],
         "url": {
@@ -103,6 +125,7 @@
             {
                 "index": "dwarf",
                 "name": "Dwarf",
+                "name_it": "Nano",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dwarf"
@@ -111,6 +134,7 @@
             {
                 "index": "elf",
                 "name": "Elf",
+                "name_it": "Elfo",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "elf"
@@ -119,6 +143,7 @@
             {
                 "index": "gnome",
                 "name": "Gnome",
+                "name_it": "Gnomo",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "gnome"
@@ -127,6 +152,7 @@
             {
                 "index": "half-elf",
                 "name": "Half-Elf",
+                "name_it": "Mezzelfo",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "half-elf"
@@ -135,6 +161,7 @@
             {
                 "index": "half-orc",
                 "name": "Half-Orc",
+                "name_it": "Mezzorco",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "half-orc"
@@ -143,6 +170,7 @@
             {
                 "index": "tiefling",
                 "name": "Tiefling",
+                "name_it": "Tiefling",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "tiefling"
@@ -151,8 +179,12 @@
         ],
         "subraces": [],
         "name": "Darkvision",
+        "name_it": "Scurovisione",
         "desc": [
             "You have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You cannot discern color in darkness, only shades of gray."
+        ],
+        "desc_it": [
+            "Hai una visione superiore in condizioni di oscurità e penombra. Puoi vedere in penombra entro 18 metri da te come se fosse luce intensa, e nell'oscurità come se fosse penombra. Non puoi distinguere i colori nell'oscurità, solo sfumature di grigio."
         ],
         "proficiencies": [],
         "url": {
@@ -167,6 +199,7 @@
             {
                 "index": "dragonborn",
                 "name": "Dragonborn",
+                "name_it": "Dragonide",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dragonborn"
@@ -175,12 +208,17 @@
         ],
         "subraces": [],
         "name": "Draconic Ancestry (Black)",
+        "name_it": "Ascendenza Draconica (Nera)",
         "desc": [
             "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."
+        ],
+        "desc_it": [
+            "Hai un'ascendenza draconica. Scegli un tipo di drago dalla tabella Ascendenza Draconica. La tua arma a soffio e la resistenza ai danni sono determinate dal tipo di drago, come indicato nella tabella."
         ],
         "parent": {
             "index": "draconic-ancestry",
             "name": "Draconic Ancestry",
+            "name_it": "Ascendenza Draconica",
             "url": {
                 "target_file": "traits.json",
                 "target_entry": "draconic-ancestry"
@@ -191,6 +229,7 @@
             "damage_type": {
                 "index": "acid",
                 "name": "Acid",
+                "name_it": "Acido",
                 "url": {
                     "target_file": "damage-types.json",
                     "target_entry": "acid"
@@ -198,7 +237,9 @@
             },
             "breath_weapon": {
                 "name": "Breath Weapon",
+                "name_it": "Soffio Ardente",
                 "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can't use it again until you complete a short or long rest.",
+                "desc_it": "Puoi usare la tua azione per esalare energia distruttiva. La tua discendenza draconica determina la dimensione, la forma e il tipo di danno dell'esalazione. Quando usi la tua arma a soffio, ogni creatura nell'area dell'esalazione deve effettuare un tiro salvezza, il cui tipo è determinato dalla tua discendenza draconica. La CD per questo tiro salvezza è pari a 8 + il tuo modificatore di Costituzione + il tuo bonus di competenza. Una creatura subisce 2d6 danni se fallisce il tiro salvezza, e la metà dei danni se lo supera. I danni aumentano a 3d6 al 6° livello, 4d6 all'11° livello e 5d6 al 16° livello. Dopo aver usato la tua arma a soffio, non puoi usarla di nuovo finché non completi un riposo breve o lungo.",
                 "area_of_effect": {
                     "size": 30,
                     "type": "line"
@@ -211,6 +252,7 @@
                     "dc_type": {
                         "index": "dex",
                         "name": "DEX",
+                        "name_it": "DES",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "dex"
@@ -223,6 +265,7 @@
                         "damage_type": {
                             "index": "acid",
                             "name": "Acid",
+                            "name_it": "Acido",
                             "url": {
                                 "target_file": "damage-types.json",
                                 "target_entry": "acid"
@@ -250,6 +293,7 @@
             {
                 "index": "dragonborn",
                 "name": "Dragonborn",
+                "name_it": "Dragonide",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dragonborn"
@@ -258,12 +302,17 @@
         ],
         "subraces": [],
         "name": "Draconic Ancestry (Blue)",
+        "name_it": "Ascendenza Draconica (Blu)",
         "desc": [
             "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."
+        ],
+        "desc_it": [
+            "Hai un'ascendenza draconica. Scegli un tipo di drago dalla tabella Ascendenza Draconica. La tua arma a soffio e la resistenza ai danni sono determinate dal tipo di drago, come indicato nella tabella."
         ],
         "parent": {
             "index": "draconic-ancestry",
             "name": "Draconic Ancestry",
+            "name_it": "Ascendenza Draconica",
             "url": {
                 "target_file": "traits.json",
                 "target_entry": "draconic-ancestry"
@@ -274,6 +323,7 @@
             "damage_type": {
                 "index": "lightning",
                 "name": "Lightning",
+                "name_it": "Fulmine",
                 "url": {
                     "target_file": "damage-types.json",
                     "target_entry": "lightning"
@@ -281,7 +331,9 @@
             },
             "breath_weapon": {
                 "name": "Breath Weapon",
+                "name_it": "Soffio Ardente",
                 "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can't use it again until you complete a short or long rest.",
+                "desc_it": "Puoi usare la tua azione per esalare energia distruttiva. La tua discendenza draconica determina la dimensione, la forma e il tipo di danno dell'esalazione. Quando usi la tua arma a soffio, ogni creatura nell'area dell'esalazione deve effettuare un tiro salvezza, il cui tipo è determinato dalla tua discendenza draconica. La CD per questo tiro salvezza è pari a 8 + il tuo modificatore di Costituzione + il tuo bonus di competenza. Una creatura subisce 2d6 danni se fallisce il tiro salvezza, e la metà dei danni se lo supera. I danni aumentano a 3d6 al 6° livello, 4d6 all'11° livello e 5d6 al 16° livello. Dopo aver usato la tua arma a soffio, non puoi usarla di nuovo finché non completi un riposo breve o lungo.",
                 "area_of_effect": {
                     "size": 30,
                     "type": "line"
@@ -294,6 +346,7 @@
                     "dc_type": {
                         "index": "dex",
                         "name": "DEX",
+                        "name_it": "DES",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "dex"
@@ -306,6 +359,7 @@
                         "damage_type": {
                             "index": "lightning",
                             "name": "Lightning",
+                            "name_it": "Fulmine",
                             "url": {
                                 "target_file": "damage-types.json",
                                 "target_entry": "lightning"
@@ -333,6 +387,7 @@
             {
                 "index": "dragonborn",
                 "name": "Dragonborn",
+                "name_it": "Dragonide",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dragonborn"
@@ -341,12 +396,17 @@
         ],
         "subraces": [],
         "name": "Draconic Ancestry (Brass)",
+        "name_it": "Ascendenza Draconica (Ottone)",
         "desc": [
             "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."
+        ],
+        "desc_it": [
+            "Hai un'ascendenza draconica. Scegli un tipo di drago dalla tabella Ascendenza Draconica. La tua arma a soffio e la resistenza ai danni sono determinate dal tipo di drago, come indicato nella tabella."
         ],
         "parent": {
             "index": "draconic-ancestry",
             "name": "Draconic Ancestry",
+            "name_it": "Ascendenza Draconica",
             "url": {
                 "target_file": "traits.json",
                 "target_entry": "draconic-ancestry"
@@ -357,6 +417,7 @@
             "damage_type": {
                 "index": "fire",
                 "name": "Fire",
+                "name_it": "Fuoco",
                 "url": {
                     "target_file": "damage-types.json",
                     "target_entry": "fire"
@@ -364,7 +425,9 @@
             },
             "breath_weapon": {
                 "name": "Breath Weapon",
+                "name_it": "Arma a Soffio",
                 "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can't use it again until you complete a short or long rest.",
+                "desc_it": "Puoi usare la tua azione per esalare energia distruttiva. La tua ascendenza draconica determina la dimensione, la forma e il tipo di danno dell'esalazione. Quando usi la tua arma a soffio, ogni creatura nell'area dell'esalazione deve effettuare un tiro salvezza, il cui tipo è determinato dalla tua ascendenza draconica. La CD per questo tiro salvezza è pari a 8 + il tuo modificatore di Costituzione + il tuo bonus di competenza. Una creatura subisce 2d6 danni se fallisce il tiro salvezza, e la metà dei danni se lo supera. I danni aumentano a 3d6 al 6° livello, 4d6 all'11° livello e 5d6 al 16° livello. Dopo aver usato la tua arma a soffio, non puoi usarla di nuovo finché non completi un riposo breve o lungo.",
                 "area_of_effect": {
                     "size": 30,
                     "type": "line"
@@ -377,6 +440,7 @@
                     "dc_type": {
                         "index": "dex",
                         "name": "DEX",
+                        "name_it": "DES",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "dex"
@@ -389,6 +453,7 @@
                         "damage_type": {
                             "index": "fire",
                             "name": "Fire",
+                            "name_it": "Fuoco",
                             "url": {
                                 "target_file": "damage-types.json",
                                 "target_entry": "fire"
@@ -416,6 +481,7 @@
             {
                 "index": "dragonborn",
                 "name": "Dragonborn",
+                "name_it": "Dragonide",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dragonborn"
@@ -424,12 +490,17 @@
         ],
         "subraces": [],
         "name": "Draconic Ancestry (Bronze)",
+        "name_it": "Ascendenza Draconica (Bronzo)",
         "desc": [
             "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."
+        ],
+        "desc_it": [
+            "Hai un'ascendenza draconica. Scegli un tipo di drago dalla tabella Ascendenza Draconica. La tua arma a soffio e la resistenza ai danni sono determinate dal tipo di drago, come indicato nella tabella."
         ],
         "parent": {
             "index": "draconic-ancestry",
             "name": "Draconic Ancestry",
+            "name_it": "Ascendenza Draconica",
             "url": {
                 "target_file": "traits.json",
                 "target_entry": "draconic-ancestry"
@@ -440,6 +511,7 @@
             "damage_type": {
                 "index": "lightning",
                 "name": "Lightning",
+                "name_it": "Fulmine",
                 "url": {
                     "target_file": "damage-types.json",
                     "target_entry": "lightning"
@@ -447,7 +519,9 @@
             },
             "breath_weapon": {
                 "name": "Breath Weapon",
+                "name_it": "Arma a Soffio",
                 "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can't use it again until you complete a short or long rest.",
+                "desc_it": "Puoi usare la tua azione per esalare energia distruttiva. La tua ascendenza draconica determina la dimensione, la forma e il tipo di danno dell'esalazione. Quando usi la tua arma a soffio, ogni creatura nell'area dell'esalazione deve effettuare un tiro salvezza, il cui tipo è determinato dalla tua ascendenza draconica. La CD per questo tiro salvezza è pari a 8 + il tuo modificatore di Costituzione + il tuo bonus di competenza. Una creatura subisce 2d6 danni se fallisce il tiro salvezza, e la metà dei danni se lo supera. I danni aumentano a 3d6 al 6° livello, 4d6 all'11° livello e 5d6 al 16° livello. Dopo aver usato la tua arma a soffio, non puoi usarla di nuovo finché non completi un riposo breve o lungo.",
                 "area_of_effect": {
                     "size": 30,
                     "type": "line"
@@ -460,6 +534,7 @@
                     "dc_type": {
                         "index": "dex",
                         "name": "DEX",
+                        "name_it": "DES",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "dex"
@@ -472,6 +547,7 @@
                         "damage_type": {
                             "index": "lightning",
                             "name": "Lightning",
+                            "name_it": "Fulmine",
                             "url": {
                                 "target_file": "damage-types.json",
                                 "target_entry": "lightning"
@@ -499,6 +575,7 @@
             {
                 "index": "dragonborn",
                 "name": "Dragonborn",
+                "name_it": "Dragonide",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dragonborn"
@@ -507,12 +584,17 @@
         ],
         "subraces": [],
         "name": "Draconic Ancestry (Copper)",
+        "name_it": "Ascendenza Draconica (Rame)",
         "desc": [
             "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."
+        ],
+        "desc_it": [
+            "Hai un'ascendenza draconica. Scegli un tipo di drago dalla tabella Ascendenza Draconica. La tua arma a soffio e la resistenza ai danni sono determinate dal tipo di drago, come indicato nella tabella."
         ],
         "parent": {
             "index": "draconic-ancestry",
             "name": "Draconic Ancestry",
+            "name_it": "Ascendenza Draconica",
             "url": {
                 "target_file": "traits.json",
                 "target_entry": "draconic-ancestry"
@@ -523,6 +605,7 @@
             "damage_type": {
                 "index": "acid",
                 "name": "Acid",
+                "name_it": "Acido",
                 "url": {
                     "target_file": "damage-types.json",
                     "target_entry": "acid"
@@ -530,7 +613,9 @@
             },
             "breath_weapon": {
                 "name": "Breath Weapon",
+                "name_it": "Arma a Soffio",
                 "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can't use it again until you complete a short or long rest.",
+                "desc_it": "Puoi usare la tua azione per esalare energia distruttiva. La tua ascendenza draconica determina la dimensione, la forma e il tipo di danno dell'esalazione. Quando usi la tua arma a soffio, ogni creatura nell'area dell'esalazione deve effettuare un tiro salvezza, il cui tipo è determinato dalla tua ascendenza draconica. La CD per questo tiro salvezza è pari a 8 + il tuo modificatore di Costituzione + il tuo bonus di competenza. Una creatura subisce 2d6 danni se fallisce il tiro salvezza, e la metà dei danni se lo supera. I danni aumentano a 3d6 al 6° livello, 4d6 all'11° livello e 5d6 al 16° livello. Dopo aver usato la tua arma a soffio, non puoi usarla di nuovo finché non completi un riposo breve o lungo.",
                 "area_of_effect": {
                     "size": 30,
                     "type": "line"
@@ -543,6 +628,7 @@
                     "dc_type": {
                         "index": "dex",
                         "name": "DEX",
+                        "name_it": "DES",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "dex"
@@ -555,6 +641,7 @@
                         "damage_type": {
                             "index": "acid",
                             "name": "Acid",
+                            "name_it": "Acido",
                             "url": {
                                 "target_file": "damage-types.json",
                                 "target_entry": "acid"
@@ -582,6 +669,7 @@
             {
                 "index": "dragonborn",
                 "name": "Dragonborn",
+                "name_it": "Dragonide",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dragonborn"
@@ -590,12 +678,17 @@
         ],
         "subraces": [],
         "name": "Draconic Ancestry (Gold)",
+        "name_it": "Ascendenza Draconica (Oro)",
         "desc": [
             "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."
+        ],
+        "desc_it": [
+            "Hai un'ascendenza draconica. Scegli un tipo di drago dalla tabella Ascendenza Draconica. La tua arma a soffio e la resistenza ai danni sono determinate dal tipo di drago, come indicato nella tabella."
         ],
         "parent": {
             "index": "draconic-ancestry",
             "name": "Draconic Ancestry",
+            "name_it": "Ascendenza Draconica",
             "url": {
                 "target_file": "traits.json",
                 "target_entry": "draconic-ancestry"
@@ -606,6 +699,7 @@
             "damage_type": {
                 "index": "fire",
                 "name": "Fire",
+                "name_it": "Fuoco",
                 "url": {
                     "target_file": "damage-types.json",
                     "target_entry": "fire"
@@ -613,7 +707,9 @@
             },
             "breath_weapon": {
                 "name": "Breath Weapon",
+                "name_it": "Arma a Soffio",
                 "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can't use it again until you complete a short or long rest.",
+                "desc_it": "Puoi usare la tua azione per esalare energia distruttiva. La tua discendenza draconica determina la dimensione, la forma e il tipo di danno dell'esalazione. Quando usi la tua arma a soffio, ogni creatura nell'area dell'esalazione deve effettuare un tiro salvezza, il cui tipo è determinato dalla tua discendenza draconica. La CD per questo tiro salvezza è pari a 8 + il tuo modificatore di Costituzione + il tuo bonus di competenza. Una creatura subisce 2d6 danni se fallisce il tiro salvezza, e la metà dei danni se lo supera. I danni aumentano a 3d6 al 6° livello, 4d6 all'11° livello e 5d6 al 16° livello. Dopo aver usato la tua arma a soffio, non puoi usarla di nuovo finché non completi un riposo breve o lungo.",
                 "area_of_effect": {
                     "size": 15,
                     "type": "cone"
@@ -626,6 +722,7 @@
                     "dc_type": {
                         "index": "dex",
                         "name": "DEX",
+                        "name_it": "DES",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "dex"
@@ -638,6 +735,7 @@
                         "damage_type": {
                             "index": "fire",
                             "name": "Fire",
+                            "name_it": "Fuoco",
                             "url": {
                                 "target_file": "damage-types.json",
                                 "target_entry": "fire"
@@ -665,6 +763,7 @@
             {
                 "index": "dragonborn",
                 "name": "Dragonborn",
+                "name_it": "Dragonide",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dragonborn"
@@ -673,12 +772,17 @@
         ],
         "subraces": [],
         "name": "Draconic Ancestry (Green)",
+        "name_it": "Ascendenza Draconica (Verde)",
         "desc": [
             "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."
+        ],
+        "desc_it": [
+            "Hai un'ascendenza draconica. Scegli un tipo di drago dalla tabella Ascendenza Draconica. La tua arma a soffio e la resistenza ai danni sono determinate dal tipo di drago, come indicato nella tabella."
         ],
         "parent": {
             "index": "draconic-ancestry",
             "name": "Draconic Ancestry",
+            "name_it": "Ascendenza Draconica",
             "url": {
                 "target_file": "traits.json",
                 "target_entry": "draconic-ancestry"
@@ -689,6 +793,7 @@
             "damage_type": {
                 "index": "poison",
                 "name": "Poison",
+                "name_it": "Veleno",
                 "url": {
                     "target_file": "damage-types.json",
                     "target_entry": "poison"
@@ -696,7 +801,9 @@
             },
             "breath_weapon": {
                 "name": "Breath Weapon",
+                "name_it": "Arma a Soffio",
                 "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can't use it again until you complete a short or long rest.",
+                "desc_it": "Puoi usare la tua azione per esalare energia distruttiva. La tua discendenza draconica determina la dimensione, la forma e il tipo di danno dell'esalazione. Quando usi la tua arma a soffio, ogni creatura nell'area dell'esalazione deve effettuare un tiro salvezza, il cui tipo è determinato dalla tua discendenza draconica. La CD per questo tiro salvezza è pari a 8 + il tuo modificatore di Costituzione + il tuo bonus di competenza. Una creatura subisce 2d6 danni se fallisce il tiro salvezza, e la metà dei danni se lo supera. I danni aumentano a 3d6 al 6° livello, 4d6 all'11° livello e 5d6 al 16° livello. Dopo aver usato la tua arma a soffio, non puoi usarla di nuovo finché non completi un riposo breve o lungo.",
                 "area_of_effect": {
                     "size": 15,
                     "type": "cone"
@@ -709,6 +816,7 @@
                     "dc_type": {
                         "index": "con",
                         "name": "CON",
+                        "name_it": "COS",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "con"
@@ -721,6 +829,7 @@
                         "damage_type": {
                             "index": "poison",
                             "name": "Poison",
+                            "name_it": "Veleno",
                             "url": {
                                 "target_file": "damage-types.json",
                                 "target_entry": "poison"
@@ -748,6 +857,7 @@
             {
                 "index": "dragonborn",
                 "name": "Dragonborn",
+                "name_it": "Dragonide",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dragonborn"
@@ -756,12 +866,17 @@
         ],
         "subraces": [],
         "name": "Draconic Ancestry (Red)",
+        "name_it": "Ascendenza Draconica (Rosso)",
         "desc": [
             "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."
+        ],
+        "desc_it": [
+            "Hai un'ascendenza draconica. Scegli un tipo di drago dalla tabella Ascendenza Draconica. La tua arma a soffio e la resistenza ai danni sono determinate dal tipo di drago, come indicato nella tabella."
         ],
         "parent": {
             "index": "draconic-ancestry",
             "name": "Draconic Ancestry",
+            "name_it": "Ascendenza Draconica",
             "url": {
                 "target_file": "traits.json",
                 "target_entry": "draconic-ancestry"
@@ -772,6 +887,7 @@
             "damage_type": {
                 "index": "fire",
                 "name": "Fire",
+                "name_it": "Fuoco",
                 "url": {
                     "target_file": "damage-types.json",
                     "target_entry": "fire"
@@ -779,7 +895,9 @@
             },
             "breath_weapon": {
                 "name": "Breath Weapon",
+                "name_it": "Arma a Soffio",
                 "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can't use it again until you complete a short or long rest.",
+                "desc_it": "Puoi usare la tua azione per esalare energia distruttiva. La tua discendenza draconica determina la dimensione, la forma e il tipo di danno dell'esalazione. Quando usi la tua arma a soffio, ogni creatura nell'area dell'esalazione deve effettuare un tiro salvezza, il cui tipo è determinato dalla tua discendenza draconica. La CD per questo tiro salvezza è pari a 8 + il tuo modificatore di Costituzione + il tuo bonus di competenza. Una creatura subisce 2d6 danni se fallisce il tiro salvezza, e la metà dei danni se lo supera. I danni aumentano a 3d6 al 6° livello, 4d6 all'11° livello e 5d6 al 16° livello. Dopo aver usato la tua arma a soffio, non puoi usarla di nuovo finché non completi un riposo breve o lungo.",
                 "area_of_effect": {
                     "size": 15,
                     "type": "cone"
@@ -792,6 +910,7 @@
                     "dc_type": {
                         "index": "dex",
                         "name": "DEX",
+                        "name_it": "DES",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "dex"
@@ -804,6 +923,7 @@
                         "damage_type": {
                             "index": "fire",
                             "name": "Fire",
+                            "name_it": "Fuoco",
                             "url": {
                                 "target_file": "damage-types.json",
                                 "target_entry": "fire"
@@ -831,6 +951,7 @@
             {
                 "index": "dragonborn",
                 "name": "Dragonborn",
+                "name_it": "Dragonide",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dragonborn"
@@ -839,12 +960,17 @@
         ],
         "subraces": [],
         "name": "Draconic Ancestry (Silver)",
+        "name_it": "Ascendenza Draconica (Argento)",
         "desc": [
             "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."
+        ],
+        "desc_it": [
+            "Hai un'ascendenza draconica. Scegli un tipo di drago dalla tabella Ascendenza Draconica. La tua arma a soffio e la resistenza ai danni sono determinate dal tipo di drago, come indicato nella tabella."
         ],
         "parent": {
             "index": "draconic-ancestry",
             "name": "Draconic Ancestry",
+            "name_it": "Ascendenza Draconica",
             "url": {
                 "target_file": "traits.json",
                 "target_entry": "draconic-ancestry"
@@ -855,6 +981,7 @@
             "damage_type": {
                 "index": "cold",
                 "name": "Cold",
+                "name_it": "Freddo",
                 "url": {
                     "target_file": "damage-types.json",
                     "target_entry": "cold"
@@ -862,7 +989,9 @@
             },
             "breath_weapon": {
                 "name": "Breath Weapon",
+                "name_it": "Arma a Soffio",
                 "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can't use it again until you complete a short or long rest.",
+                "desc_it": "Puoi usare la tua azione per esalare energia distruttiva. La tua ascendenza draconica determina la dimensione, la forma e il tipo di danno dell'esalazione. Quando usi la tua arma a soffio, ogni creatura nell'area dell'esalazione deve effettuare un tiro salvezza, il cui tipo è determinato dalla tua ascendenza draconica. La CD per questo tiro salvezza è pari a 8 + il tuo modificatore di Costituzione + il tuo bonus di competenza. Una creatura subisce 2d6 danni se fallisce il tiro salvezza, e la metà dei danni se lo supera. I danni aumentano a 3d6 al 6° livello, 4d6 all'11° livello e 5d6 al 16° livello. Dopo aver usato la tua arma a soffio, non puoi usarla di nuovo finché non completi un riposo breve o lungo.",
                 "area_of_effect": {
                     "size": 15,
                     "type": "cone"
@@ -875,6 +1004,7 @@
                     "dc_type": {
                         "index": "con",
                         "name": "CON",
+                        "name_it": "COS",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "con"
@@ -887,6 +1017,7 @@
                         "damage_type": {
                             "index": "cold",
                             "name": "Cold",
+                            "name_it": "Freddo",
                             "url": {
                                 "target_file": "damage-types.json",
                                 "target_entry": "cold"
@@ -914,6 +1045,7 @@
             {
                 "index": "dragonborn",
                 "name": "Dragonborn",
+                "name_it": "Dragonide",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dragonborn"
@@ -922,12 +1054,17 @@
         ],
         "subraces": [],
         "name": "Draconic Ancestry (White)",
+        "name_it": "Ascendenza Draconica (Bianco)",
         "desc": [
             "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."
+        ],
+        "desc_it": [
+            "Hai un'ascendenza draconica. Scegli un tipo di drago dalla tabella Ascendenza Draconica. La tua arma a soffio e la resistenza ai danni sono determinate dal tipo di drago, come indicato nella tabella."
         ],
         "parent": {
             "index": "draconic-ancestry",
             "name": "Draconic Ancestry",
+            "name_it": "Ascendenza Draconica",
             "url": {
                 "target_file": "traits.json",
                 "target_entry": "draconic-ancestry"
@@ -938,6 +1075,7 @@
             "damage_type": {
                 "index": "cold",
                 "name": "Cold",
+                "name_it": "Freddo",
                 "url": {
                     "target_file": "damage-types.json",
                     "target_entry": "cold"
@@ -945,7 +1083,9 @@
             },
             "breath_weapon": {
                 "name": "Breath Weapon",
+                "name_it": "Arma a Soffio",
                 "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can't use it again until you complete a short or long rest.",
+                "desc_it": "Puoi usare la tua azione per esalare energia distruttiva. La tua discendenza draconica determina la dimensione, la forma e il tipo di danno dell'esalazione. Quando usi la tua arma a soffio, ogni creatura nell'area dell'esalazione deve effettuare un tiro salvezza, il cui tipo è determinato dalla tua discendenza draconica. La CD per questo tiro salvezza è pari a 8 + il tuo modificatore di Costituzione + il tuo bonus di competenza. Una creatura subisce 2d6 danni se fallisce il tiro salvezza, e la metà dei danni se lo supera. I danni aumentano a 3d6 al 6° livello, 4d6 all'11° livello e 5d6 al 16° livello. Dopo aver usato la tua arma a soffio, non puoi usarla di nuovo finché non completi un riposo breve o lungo.",
                 "area_of_effect": {
                     "size": 15,
                     "type": "cone"
@@ -958,6 +1098,7 @@
                     "dc_type": {
                         "index": "con",
                         "name": "CON",
+                        "name_it": "COS",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "con"
@@ -970,6 +1111,7 @@
                         "damage_type": {
                             "index": "cold",
                             "name": "Cold",
+                            "name_it": "Freddo",
                             "url": {
                                 "target_file": "damage-types.json",
                                 "target_entry": "cold"
@@ -997,6 +1139,7 @@
             {
                 "index": "dragonborn",
                 "name": "Dragonborn",
+                "name_it": "Dragonide",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dragonborn"
@@ -1005,8 +1148,12 @@
         ],
         "subraces": [],
         "name": "Draconic Ancestry",
+        "name_it": "Ascendenza Draconica",
         "desc": [
             "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."
+        ],
+        "desc_it": [
+            "Hai un'ascendenza draconica. Scegli un tipo di drago dalla tabella Ascendenza Draconica. La tua arma a soffio e la resistenza ai danni sono determinate dal tipo di drago, come indicato nella tabella."
         ],
         "proficiencies": [],
         "trait_specific": {
@@ -1020,6 +1167,7 @@
                             "item": {
                                 "index": "draconic-ancestry-black",
                                 "name": "Draconic Ancestry (Black)",
+                                "name_it": "Ascendenza Draconica (Nero)",
                                 "url": {
                                     "target_file": "traits.json",
                                     "target_entry": "draconic-ancestry-black"
@@ -1031,6 +1179,7 @@
                             "item": {
                                 "index": "draconic-ancestry-blue",
                                 "name": "Draconic Ancestry (Blue)",
+                                "name_it": "Ascendenza Draconica (Blu)",
                                 "url": {
                                     "target_file": "traits.json",
                                     "target_entry": "draconic-ancestry-blue"
@@ -1042,6 +1191,7 @@
                             "item": {
                                 "index": "draconic-ancestry-brass",
                                 "name": "Draconic Ancestry (Brass)",
+                                "name_it": "Ascendenza Draconica (Ottone)",
                                 "url": {
                                     "target_file": "traits.json",
                                     "target_entry": "draconic-ancestry-brass"
@@ -1053,6 +1203,7 @@
                             "item": {
                                 "index": "draconic-ancestry-bronze",
                                 "name": "Draconic Ancestry (Bronze)",
+                                "name_it": "Ascendenza Draconica (Bronzo)",
                                 "url": {
                                     "target_file": "traits.json",
                                     "target_entry": "draconic-ancestry-bronze"
@@ -1064,6 +1215,7 @@
                             "item": {
                                 "index": "draconic-ancestry-copper",
                                 "name": "Draconic Ancestry (Copper)",
+                                "name_it": "Ascendenza Draconica (Rame)",
                                 "url": {
                                     "target_file": "traits.json",
                                     "target_entry": "draconic-ancestry-copper"
@@ -1075,6 +1227,7 @@
                             "item": {
                                 "index": "draconic-ancestry-gold",
                                 "name": "Draconic Ancestry (Gold)",
+                                "name_it": "Ascendenza Draconica (Oro)",
                                 "url": {
                                     "target_file": "traits.json",
                                     "target_entry": "draconic-ancestry-gold"
@@ -1086,6 +1239,7 @@
                             "item": {
                                 "index": "draconic-ancestry-green",
                                 "name": "Draconic Ancestry (Green)",
+                                "name_it": "Ascendenza Draconica (Verde)",
                                 "url": {
                                     "target_file": "traits.json",
                                     "target_entry": "draconic-ancestry-green"
@@ -1097,6 +1251,7 @@
                             "item": {
                                 "index": "draconic-ancestry-red",
                                 "name": "Draconic Ancestry (Red)",
+                                "name_it": "Ascendenza Draconica (Rosso)",
                                 "url": {
                                     "target_file": "traits.json",
                                     "target_entry": "draconic-ancestry-red"
@@ -1108,6 +1263,7 @@
                             "item": {
                                 "index": "draconic-ancestry-silver",
                                 "name": "Draconic Ancestry (Silver)",
+                                "name_it": "Ascendenza Draconica (Argento)",
                                 "url": {
                                     "target_file": "traits.json",
                                     "target_entry": "draconic-ancestry-silver"
@@ -1119,6 +1275,7 @@
                             "item": {
                                 "index": "draconic-ancestry-white",
                                 "name": "Draconic Ancestry (White)",
+                                "name_it": "Ascendenza Draconica (Bianco)",
                                 "url": {
                                     "target_file": "traits.json",
                                     "target_entry": "draconic-ancestry-white"
@@ -1142,6 +1299,7 @@
             {
                 "index": "dwarf",
                 "name": "Dwarf",
+                "name_it": "Nano",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dwarf"
@@ -1150,13 +1308,18 @@
         ],
         "subraces": [],
         "name": "Dwarven Combat Training",
+        "name_it": "Addestramento al Combattimento dei Nani",
         "desc": [
             "You have proficiency with the battleaxe, handaxe, light hammer, and warhammer."
+        ],
+        "desc_it": [
+            "Hai competenza con l'ascia da battaglia, l'ascia, il martello leggero e il martello da guerra."
         ],
         "proficiencies": [
             {
                 "index": "battleaxes",
                 "name": "Battleaxes",
+                "name_it": "Asce da battaglia",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "battleaxes"
@@ -1165,6 +1328,7 @@
             {
                 "index": "handaxes",
                 "name": "Handaxes",
+                "name_it": "Asce da lancio",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "handaxes"
@@ -1173,6 +1337,7 @@
             {
                 "index": "light-hammers",
                 "name": "Light hammers",
+                "name_it": "Martelli leggeri",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "light-hammers"
@@ -1181,6 +1346,7 @@
             {
                 "index": "warhammers",
                 "name": "Warhammers",
+                "name_it": "Martelli da guerra",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "warhammers"
@@ -1199,6 +1365,7 @@
             {
                 "index": "dwarf",
                 "name": "Dwarf",
+                "name_it": "Nano",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dwarf"
@@ -1207,8 +1374,12 @@
         ],
         "subraces": [],
         "name": "Dwarven Resilience",
+        "name_it": "Resilienza Nanica",
         "desc": [
             "You have advantage on saving throws against poison, and you have resistance against poison damage."
+        ],
+        "desc_it": [
+            "Hai vantaggio nei tiri salvezza contro il veleno e hai resistenza ai danni da veleno."
         ],
         "proficiencies": [],
         "url": {
@@ -1224,6 +1395,7 @@
             {
                 "index": "hill-dwarf",
                 "name": "Hill Dwarf",
+                "name_it": "Nano delle colline",
                 "url": {
                     "target_file": "subraces.json",
                     "target_entry": "hill-dwarf"
@@ -1231,8 +1403,12 @@
             }
         ],
         "name": "Dwarven Toughness",
+        "name_it": "Tempra Nanica",
         "desc": [
             "Your hit point maximum increases by 1, and it increases by 1 every time you gain a level."
+        ],
+        "desc_it": [
+            "Il tuo massimo di punti ferita aumenta di 1, e aumenta di 1 ogni volta che guadagni un livello."
         ],
         "proficiencies": [],
         "url": {
@@ -1248,6 +1424,7 @@
             {
                 "index": "high-elf",
                 "name": "High Elf",
+                "name_it": "Alto Elfo",
                 "url": {
                     "target_file": "subraces.json",
                     "target_entry": "high-elf"
@@ -1255,13 +1432,18 @@
             }
         ],
         "name": "Elf Weapon Training",
+        "name_it": "Addestramento alle Armi degli Elfi",
         "desc": [
             "You have proficiency with the longsword, shortsword, shortbow, and longbow."
+        ],
+        "desc_it": [
+            "Hai competenza con spada lunga, spada corta, arco corto e arco lungo."
         ],
         "proficiencies": [
             {
                 "index": "longswords",
                 "name": "Longswords",
+                "name_it": "Spade lunghe",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "longswords"
@@ -1270,6 +1452,7 @@
             {
                 "index": "shortswords",
                 "name": "Shortswords",
+                "name_it": "Spade corte",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "shortswords"
@@ -1278,6 +1461,7 @@
             {
                 "index": "shortbows",
                 "name": "Shortbows",
+                "name_it": "Archi corti",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "shortbows"
@@ -1286,6 +1470,7 @@
             {
                 "index": "longbows",
                 "name": "Longbows",
+                "name_it": "Archilunghi",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "longbows"
@@ -1305,6 +1490,7 @@
             {
                 "index": "high-elf",
                 "name": "High Elf",
+                "name_it": "Alto Elfo",
                 "url": {
                     "target_file": "subraces.json",
                     "target_entry": "high-elf"
@@ -1312,8 +1498,12 @@
             }
         ],
         "name": "Extra Language",
+        "name_it": "Linguaggio Extra",
         "desc": [
             "You can speak, read, and write one extra language of your choice."
+        ],
+        "desc_it": [
+            "Puoi parlare, leggere e scrivere una lingua extra a tua scelta."
         ],
         "proficiencies": [],
         "language_options": {
@@ -1327,6 +1517,7 @@
                         "item": {
                             "index": "dwarvish",
                             "name": "Dwarvish",
+                            "name_it": "Nanico",
                             "url": {
                                 "target_file": "languages.json",
                                 "target_entry": "dwarvish"
@@ -1338,6 +1529,7 @@
                         "item": {
                             "index": "giant",
                             "name": "Giant",
+                            "name_it": "Gigante",
                             "url": {
                                 "target_file": "languages.json",
                                 "target_entry": "giant"
@@ -1349,6 +1541,7 @@
                         "item": {
                             "index": "gnomish",
                             "name": "Gnomish",
+                            "name_it": "Gnomo",
                             "url": {
                                 "target_file": "languages.json",
                                 "target_entry": "gnomish"
@@ -1360,6 +1553,7 @@
                         "item": {
                             "index": "goblin",
                             "name": "Goblin",
+                            "name_it": "Goblin",
                             "url": {
                                 "target_file": "languages.json",
                                 "target_entry": "goblin"
@@ -1371,6 +1565,7 @@
                         "item": {
                             "index": "halfling",
                             "name": "Halfling",
+                            "name_it": "Halfling",
                             "url": {
                                 "target_file": "languages.json",
                                 "target_entry": "halfling"
@@ -1382,6 +1577,7 @@
                         "item": {
                             "index": "orc",
                             "name": "Orc",
+                            "name_it": "Orco",
                             "url": {
                                 "target_file": "languages.json",
                                 "target_entry": "orc"
@@ -1393,6 +1589,7 @@
                         "item": {
                             "index": "abyssal",
                             "name": "Abyssal",
+                            "name_it": "Abissale",
                             "url": {
                                 "target_file": "languages.json",
                                 "target_entry": "abyssal"
@@ -1404,6 +1601,7 @@
                         "item": {
                             "index": "celestial",
                             "name": "Celestial",
+                            "name_it": "Celestiale",
                             "url": {
                                 "target_file": "languages.json",
                                 "target_entry": "celestial"
@@ -1415,6 +1613,7 @@
                         "item": {
                             "index": "draconic",
                             "name": "Draconic",
+                            "name_it": "Draconico",
                             "url": {
                                 "target_file": "languages.json",
                                 "target_entry": "draconic"
@@ -1426,6 +1625,7 @@
                         "item": {
                             "index": "deep-speech",
                             "name": "Deep Speech",
+                            "name_it": "Linguaggio Abissale",
                             "url": {
                                 "target_file": "languages.json",
                                 "target_entry": "deep-speech"
@@ -1437,6 +1637,7 @@
                         "item": {
                             "index": "infernal",
                             "name": "Infernal",
+                            "name_it": "Infernale",
                             "url": {
                                 "target_file": "languages.json",
                                 "target_entry": "infernal"
@@ -1448,6 +1649,7 @@
                         "item": {
                             "index": "primordial",
                             "name": "Primordial",
+                            "name_it": "Primordiale",
                             "url": {
                                 "target_file": "languages.json",
                                 "target_entry": "primordial"
@@ -1459,6 +1661,7 @@
                         "item": {
                             "index": "sylvan",
                             "name": "Sylvan",
+                            "name_it": "Silvano",
                             "url": {
                                 "target_file": "languages.json",
                                 "target_entry": "sylvan"
@@ -1470,6 +1673,7 @@
                         "item": {
                             "index": "undercommon",
                             "name": "Undercommon",
+                            "name_it": "Sottocomune",
                             "url": {
                                 "target_file": "languages.json",
                                 "target_entry": "undercommon"
@@ -1491,6 +1695,7 @@
             {
                 "index": "elf",
                 "name": "Elf",
+                "name_it": "Elfo",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "elf"
@@ -1499,6 +1704,7 @@
             {
                 "index": "half-elf",
                 "name": "Half-Elf",
+                "name_it": "Mezzelfo",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "half-elf"
@@ -1507,8 +1713,12 @@
         ],
         "subraces": [],
         "name": "Fey Ancestry",
+        "name_it": "Retaggio Fatato",
         "desc": [
             "You have advantage on saving throws against being charmed, and magic cannot put you to sleep."
+        ],
+        "desc_it": [
+            "Hai vantaggio nei tiri salvezza contro l'essere ammaliato e la magia non può farti addormentare."
         ],
         "proficiencies": [],
         "url": {
@@ -1523,6 +1733,7 @@
             {
                 "index": "gnome",
                 "name": "Gnome",
+                "name_it": "Gnomo",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "gnome"
@@ -1531,8 +1742,12 @@
         ],
         "subraces": [],
         "name": "Gnome Cunning",
+        "name_it": "Astuzia degli gnomi",
         "desc": [
             "You have advantage on all Intelligence, Wisdom, and Charisma saving throws against magic."
+        ],
+        "desc_it": [
+            "Hai vantaggio su tutti i tiri salvezza di Intelligenza, Saggezza e Carisma contro la magia."
         ],
         "proficiencies": [],
         "url": {
@@ -1547,6 +1762,7 @@
             {
                 "index": "halfling",
                 "name": "Halfling",
+                "name_it": "Halfling",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "halfling"
@@ -1555,8 +1771,12 @@
         ],
         "subraces": [],
         "name": "Halfling Nimbleness",
+        "name_it": "Agilità degli Halfling",
         "desc": [
             "You can move through the space of any creature that is of a size larger than yours."
+        ],
+        "desc_it": [
+            "Puoi muoverti attraverso lo spazio di qualsiasi creatura di una taglia superiore alla tua."
         ],
         "proficiencies": [],
         "url": {
@@ -1571,6 +1791,7 @@
             {
                 "index": "tiefling",
                 "name": "Tiefling",
+                "name_it": "Tiefling",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "tiefling"
@@ -1579,8 +1800,12 @@
         ],
         "subraces": [],
         "name": "Hellish Resistance",
+        "name_it": "Resistenza infernale",
         "desc": [
             "You have resistance to fire damage."
+        ],
+        "desc_it": [
+            "Hai resistenza ai danni da fuoco."
         ],
         "proficiencies": [],
         "url": {
@@ -1596,6 +1821,7 @@
             {
                 "index": "high-elf",
                 "name": "High Elf",
+                "name_it": "Alto Elfo",
                 "url": {
                     "target_file": "subraces.json",
                     "target_entry": "high-elf"
@@ -1603,8 +1829,12 @@
             }
         ],
         "name": "High Elf Cantrip",
+        "name_it": "Trucchetto degli Alti Elfi",
         "desc": [
             "You know one cantrip of your choice form the wizard spell list. Intelligence is your spellcasting ability for it."
+        ],
+        "desc_it": [
+            "Conosci un trucchetto a tua scelta dalla lista degli incantesimi del mago. L'Intelligenza è la tua caratteristica da incantatore per esso."
         ],
         "proficiencies": [],
         "trait_specific": {
@@ -1618,6 +1848,7 @@
                             "item": {
                                 "index": "light",
                                 "name": "Light",
+                                "name_it": "Luce",
                                 "url": {
                                     "target_file": "spells.json",
                                     "target_entry": "light"
@@ -1629,6 +1860,7 @@
                             "item": {
                                 "index": "mage-hand",
                                 "name": "Mage Hand",
+                                "name_it": "Mano Magica",
                                 "url": {
                                     "target_file": "spells.json",
                                     "target_entry": "mage-hand"
@@ -1640,6 +1872,7 @@
                             "item": {
                                 "index": "mending",
                                 "name": "Mending",
+                                "name_it": "Riparare",
                                 "url": {
                                     "target_file": "spells.json",
                                     "target_entry": "mending"
@@ -1651,6 +1884,7 @@
                             "item": {
                                 "index": "message",
                                 "name": "Message",
+                                "name_it": "Messaggio",
                                 "url": {
                                     "target_file": "spells.json",
                                     "target_entry": "message"
@@ -1662,6 +1896,7 @@
                             "item": {
                                 "index": "minor-illusion",
                                 "name": "Minor Illusion",
+                                "name_it": "Illusione Minore",
                                 "url": {
                                     "target_file": "spells.json",
                                     "target_entry": "minor-illusion"
@@ -1673,6 +1908,7 @@
                             "item": {
                                 "index": "acid-splash",
                                 "name": "Acid Splash",
+                                "name_it": "Spruzzo Acido",
                                 "url": {
                                     "target_file": "spells.json",
                                     "target_entry": "acid-splash"
@@ -1684,6 +1920,7 @@
                             "item": {
                                 "index": "prestidigitation",
                                 "name": "Prestidigitation",
+                                "name_it": "Prestidigitazione",
                                 "url": {
                                     "target_file": "spells.json",
                                     "target_entry": "prestidigitation"
@@ -1695,6 +1932,7 @@
                             "item": {
                                 "index": "ray-of-frost",
                                 "name": "Ray of Frost",
+                                "name_it": "Raggio di Gelo",
                                 "url": {
                                     "target_file": "spells.json",
                                     "target_entry": "ray-of-frost"
@@ -1706,6 +1944,7 @@
                             "item": {
                                 "index": "shocking-grasp",
                                 "name": "Shocking Grasp",
+                                "name_it": "Stretta Folgorante",
                                 "url": {
                                     "target_file": "spells.json",
                                     "target_entry": "shocking-grasp"
@@ -1717,6 +1956,7 @@
                             "item": {
                                 "index": "true-strike",
                                 "name": "True Strike",
+                                "name_it": "Colpo Sicuro",
                                 "url": {
                                     "target_file": "spells.json",
                                     "target_entry": "true-strike"
@@ -1728,6 +1968,7 @@
                             "item": {
                                 "index": "chill-touch",
                                 "name": "Chill Touch",
+                                "name_it": "Mano Spettrale",
                                 "url": {
                                     "target_file": "spells.json",
                                     "target_entry": "chill-touch"
@@ -1739,6 +1980,7 @@
                             "item": {
                                 "index": "dancing-lights",
                                 "name": "Dancing Lights",
+                                "name_it": "Luci Danzanti",
                                 "url": {
                                     "target_file": "spells.json",
                                     "target_entry": "dancing-lights"
@@ -1750,6 +1992,7 @@
                             "item": {
                                 "index": "fire-bolt",
                                 "name": "Fire Bolt",
+                                "name_it": "Dardo di Fuoco",
                                 "url": {
                                     "target_file": "spells.json",
                                     "target_entry": "fire-bolt"
@@ -1761,6 +2004,7 @@
                             "item": {
                                 "index": "poison-spray",
                                 "name": "Poison Spray",
+                                "name_it": "Spruzzo Velenoso",
                                 "url": {
                                     "target_file": "spells.json",
                                     "target_entry": "poison-spray"
@@ -1784,6 +2028,7 @@
             {
                 "index": "tiefling",
                 "name": "Tiefling",
+                "name_it": "Tiefling",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "tiefling"
@@ -1792,8 +2037,12 @@
         ],
         "subraces": [],
         "name": "Infernal Legacy",
+        "name_it": "Retaggio Infernale",
         "desc": [
             "You know the thaumaturgy cantrip. When you reach 3rd level, you can cast the hellish rebuke spell as a 2nd-level spell once with this trait and regain the ability to do so when you finish a long rest. When you reach 5th level, you can cast the darkness spell once with this trait and regain the ability to do so when you finish a long rest. Charisma is your spellcasting ability for these spells."
+        ],
+        "desc_it": [
+            "Conosci il trucchetto taumaturgia. Quando raggiungi il 3° livello, puoi lanciare l'incantesimo ritorsione infernale come incantesimo di 2° livello una volta con questo tratto e recuperi la capacità di farlo quando completi un riposo lungo. Quando raggiungi il 5° livello, puoi lanciare l'incantesimo oscurità una volta con questo tratto e recuperi la capacità di farlo quando completi un riposo lungo. Car è la tua caratteristica da incantatore per questi incantesimi."
         ],
         "proficiencies": [],
         "url": {
@@ -1808,6 +2057,7 @@
             {
                 "index": "elf",
                 "name": "Elf",
+                "name_it": "Elfo",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "elf"
@@ -1816,13 +2066,18 @@
         ],
         "subraces": [],
         "name": "Keen Senses",
+        "name_it": "Sensi acuti",
         "desc": [
             "You have proficiency in the Perception skill."
+        ],
+        "desc_it": [
+            "Hai competenza nell'abilità Percezione."
         ],
         "proficiencies": [
             {
                 "index": "skill-perception",
                 "name": "Skill: Perception",
+                "name_it": "Abilità: Percezione",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "skill-perception"
@@ -1841,6 +2096,7 @@
             {
                 "index": "halfling",
                 "name": "Halfling",
+                "name_it": "Halfling",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "halfling"
@@ -1849,8 +2105,12 @@
         ],
         "subraces": [],
         "name": "Lucky",
+        "name_it": "Fortunato",
         "desc": [
             "When you roll a 1 on the d20 for an attack roll, ability check, or saving throw, you can reroll the die and must use the new roll."
+        ],
+        "desc_it": [
+            "Quando ottieni un 1 sul d20 per un tiro per colpire, una prova di abilità o un tiro salvezza, puoi ritirare il dado e devi usare il nuovo tiro."
         ],
         "proficiencies": [],
         "url": {
@@ -1865,6 +2125,7 @@
             {
                 "index": "half-orc",
                 "name": "Half-Orc",
+                "name_it": "Mezzorco",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "half-orc"
@@ -1873,13 +2134,18 @@
         ],
         "subraces": [],
         "name": "Menacing",
+        "name_it": "Minaccioso",
         "desc": [
             "You gain proficiency in the Intimidation skill."
+        ],
+        "desc_it": [
+            "Ottieni competenza nell'abilità Intimidire."
         ],
         "proficiencies": [
             {
                 "index": "skill-intimidation",
                 "name": "Skill: Intimidation",
+                "name_it": "Abilità: Intimidire",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "skill-intimidation"
@@ -1899,6 +2165,7 @@
             {
                 "index": "lightfoot-halfling",
                 "name": "Lightfoot Halfling",
+                "name_it": "Halfling Piedelesto",
                 "url": {
                     "target_file": "subraces.json",
                     "target_entry": "lightfoot-halfling"
@@ -1906,8 +2173,12 @@
             }
         ],
         "name": "Naturally Stealthy",
+        "name_it": "Furtivo Naturale",
         "desc": [
             "You can attempt to hide even when you are obscured only by a creature that is at least one size larger than you."
+        ],
+        "desc_it": [
+            "Puoi tentare di nasconderti anche quando sei oscurato solo da una creatura di almeno una taglia più grande di te."
         ],
         "proficiencies": [],
         "url": {
@@ -1922,6 +2193,7 @@
             {
                 "index": "half-orc",
                 "name": "Half-Orc",
+                "name_it": "Mezzorco",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "half-orc"
@@ -1930,8 +2202,12 @@
         ],
         "subraces": [],
         "name": "Relentless Endurance",
+        "name_it": "Resistenza Implacabile",
         "desc": [
             "When you are reduced to 0 hit points but not killed outright, you can drop to 1 hit point instead. you cannot use this feature again until you finish a long rest."
+        ],
+        "desc_it": [
+            "Quando vieni ridotto a 0 punti ferita ma non ucciso sul colpo, puoi invece scendere a 1 punto ferita. Non puoi usare di nuovo questa capacità finché non completi un riposo lungo."
         ],
         "proficiencies": [],
         "url": {
@@ -1946,6 +2222,7 @@
             {
                 "index": "half-orc",
                 "name": "Half-Orc",
+                "name_it": "Mezzorco",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "half-orc"
@@ -1954,8 +2231,12 @@
         ],
         "subraces": [],
         "name": "Savage Attacks",
+        "name_it": "Attacchi Feroci",
         "desc": [
             "When you score a critical hit with a melee weapon attack, you can roll one of the weapon's damage dice one additional time and add it to the extra damage of the critical hit."
+        ],
+        "desc_it": [
+            "Quando metti a segno un colpo critico con un attacco con arma da mischia, puoi tirare uno dei dadi di danno dell'arma una volta in più e aggiungerlo ai danni extra del colpo critico."
         ],
         "proficiencies": [],
         "url": {
@@ -1970,6 +2251,7 @@
             {
                 "index": "half-elf",
                 "name": "Half-Elf",
+                "name_it": "Mezzelfo",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "half-elf"
@@ -1978,8 +2260,12 @@
         ],
         "subraces": [],
         "name": "Skill Versatility",
+        "name_it": "Versatilità nelle Abilità",
         "desc": [
             "You gain proficiency in two skills of your choice."
+        ],
+        "desc_it": [
+            "Ottieni competenza in due abilità a tua scelta."
         ],
         "proficiencies": [],
         "proficiency_choices": {
@@ -1993,6 +2279,7 @@
                         "item": {
                             "index": "skill-acrobatics",
                             "name": "Skill: Acrobatics",
+                            "name_it": "Abilità: Acrobazia",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-acrobatics"
@@ -2004,6 +2291,7 @@
                         "item": {
                             "index": "skill-animal-handling",
                             "name": "Skill: Animal Handling",
+                            "name_it": "Abilità: Addestrare Animali",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-animal-handling"
@@ -2015,6 +2303,7 @@
                         "item": {
                             "index": "skill-arcana",
                             "name": "Skill: Arcana",
+                            "name_it": "Abilità: Arcano",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-arcana"
@@ -2026,6 +2315,7 @@
                         "item": {
                             "index": "skill-athletics",
                             "name": "Skill: Athletics",
+                            "name_it": "Abilità: Atletica",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-athletics"
@@ -2037,6 +2327,7 @@
                         "item": {
                             "index": "skill-deception",
                             "name": "Skill: Deception",
+                            "name_it": "Abilità: Inganno",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-deception"
@@ -2048,6 +2339,7 @@
                         "item": {
                             "index": "skill-history",
                             "name": "Skill: History",
+                            "name_it": "Abilità: Storia",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-history"
@@ -2059,6 +2351,7 @@
                         "item": {
                             "index": "skill-insight",
                             "name": "Skill: Insight",
+                            "name_it": "Abilità: Intuizione",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-insight"
@@ -2070,6 +2363,7 @@
                         "item": {
                             "index": "skill-intimidation",
                             "name": "Skill: Intimidation",
+                            "name_it": "Abilità: Intimidire",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-intimidation"
@@ -2081,6 +2375,7 @@
                         "item": {
                             "index": "skill-investigation",
                             "name": "Skill: Investigation",
+                            "name_it": "Abilità: Investigare",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-investigation"
@@ -2092,6 +2387,7 @@
                         "item": {
                             "index": "skill-medicine",
                             "name": "Skill: Medicine",
+                            "name_it": "Abilità: Medicina",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-medicine"
@@ -2103,6 +2399,7 @@
                         "item": {
                             "index": "skill-nature",
                             "name": "Skill: Nature",
+                            "name_it": "Abilità: Natura",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-nature"
@@ -2114,6 +2411,7 @@
                         "item": {
                             "index": "skill-perception",
                             "name": "Skill: Perception",
+                            "name_it": "Abilità: Percezione",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-perception"
@@ -2125,6 +2423,7 @@
                         "item": {
                             "index": "skill-performance",
                             "name": "Skill: Performance",
+                            "name_it": "Abilità: Intrattenere",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-performance"
@@ -2136,6 +2435,7 @@
                         "item": {
                             "index": "skill-persuasion",
                             "name": "Skill: Persuasion",
+                            "name_it": "Abilità: Persuasione",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-persuasion"
@@ -2147,6 +2447,7 @@
                         "item": {
                             "index": "skill-religion",
                             "name": "Skill: Religion",
+                            "name_it": "Abilità: Religione",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-religion"
@@ -2158,6 +2459,7 @@
                         "item": {
                             "index": "skill-sleight-of-hand",
                             "name": "Skill: Sleight of Hand",
+                            "name_it": "Abilità: Rapidità di Mano",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-sleight-of-hand"
@@ -2169,6 +2471,7 @@
                         "item": {
                             "index": "skill-stealth",
                             "name": "Skill: Stealth",
+                            "name_it": "Abilità: Furtività",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-stealth"
@@ -2180,6 +2483,7 @@
                         "item": {
                             "index": "skill-survival",
                             "name": "Skill: Survival",
+                            "name_it": "Abilità: Sopravvivenza",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "skill-survival"
@@ -2201,6 +2505,7 @@
             {
                 "index": "dwarf",
                 "name": "Dwarf",
+                "name_it": "Nano",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dwarf"
@@ -2209,8 +2514,12 @@
         ],
         "subraces": [],
         "name": "Stonecunning",
+        "name_it": "Conoscenza delle pietre",
         "desc": [
             "Whenever you make an Intelligence (History) check related to the origin of stonework, you are considered proficient in the History skill and add double your proficiency bonus to the check, instead of your normal proficiency bonus."
+        ],
+        "desc_it": [
+            "Ogni volta che effettui una prova di Intelligenza (Storia) relativa all'origine della lavorazione della pietra, sei considerato competente nell'abilità Storia e aggiungi il doppio del tuo bonus di competenza alla prova, invece del tuo normale bonus di competenza."
         ],
         "proficiencies": [],
         "url": {
@@ -2226,6 +2535,7 @@
             {
                 "index": "rock-gnome",
                 "name": "Rock Gnome",
+                "name_it": "Gnomo delle Rocce",
                 "url": {
                     "target_file": "subraces.json",
                     "target_entry": "rock-gnome"
@@ -2233,6 +2543,7 @@
             }
         ],
         "name": "Tinker",
+        "name_it": "Artefice",
         "desc": [
             "You have proficiency with artisan's tools (tinker's tools). Using those tools, you can spend 1 hour and 10 gp worth of materials to construct a Tiny clockwork device (AC 5, 1 hp). The device ceases to function after 24 hours (unless you spend 1 hour repairing it to keep the device functioning), or when you use your action to dismantle it; at that time, you can reclaim the materials used to create it. You can have up to three such devices active at a time.",
             "When you create a device, choose one of the following options:",
@@ -2240,10 +2551,18 @@
             "Fire Starter: The device produces a miniature flame, which you can use to light a candle, torch, or campfire. Using the device requires your action.",
             "Music Box: When opened, this music box plays a single song at a moderate volume. The box stops playing when it reaches the song's end or when it is closed."
         ],
+        "desc_it": [
+            "Hai competenza con gli strumenti da artigiano (strumenti da inventore). Usando questi strumenti, puoi spendere 1 ora e materiali per un valore di 10 mo per costruire un dispositivo meccanico Minuscolo (CA 5, 1 pf). Il dispositivo smette di funzionare dopo 24 ore (a meno che tu non spenda 1 ora per ripararlo e mantenerlo funzionante), o quando usi la tua azione per smontarlo; in quel momento, puoi recuperare i materiali usati per crearlo. Puoi avere fino a tre di questi dispositivi attivi contemporaneamente.",
+            "Quando crei un congegno, scegli una delle seguenti opzioni:",
+            "Giocattolo a molla: Questo giocattolo è un animale, mostro o persona a molla, come una rana, un topo, un uccello, un drago o un soldato. Quando viene posato a terra, il giocattolo si muove di 1,5 metri sul terreno in una direzione casuale ad ogni tuo turno. Emette suoni appropriati alla creatura che rappresenta.",
+            "Accendifuoco: Il dispositivo produce una fiamma in miniatura, che puoi usare per accendere una candela, una torcia o un falò. Usare il dispositivo richiede la tua azione.",
+            "Carillon: Quando aperto, questo carillon suona una singola melodia a volume moderato. La scatola smette di suonare quando la melodia termina o quando viene chiusa."
+        ],
         "proficiencies": [
             {
                 "index": "tinkers-tools",
                 "name": "Tinker's Tools",
+                "name_it": "Strumenti da Artigiano",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "tinkers-tools"
@@ -2262,6 +2581,7 @@
             {
                 "index": "dwarf",
                 "name": "Dwarf",
+                "name_it": "Nano",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "dwarf"
@@ -2270,8 +2590,12 @@
         ],
         "subraces": [],
         "name": "Tool Proficiency",
+        "name_it": "Competenza negli strumenti",
         "desc": [
             "You gain proficiency with the artisan's tools of your choice: smith's tools, brewer's supplies, or mason's tools."
+        ],
+        "desc_it": [
+            "Ottieni competenza con gli strumenti da artigiano a tua scelta: strumenti da fabbro, forniture da birraio o strumenti da muratore."
         ],
         "proficiencies": [],
         "proficiency_choices": {
@@ -2285,6 +2609,7 @@
                         "item": {
                             "index": "smiths-tools",
                             "name": "Smith's Tools",
+                            "name_it": "Strumenti da fabbro",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "smiths-tools"
@@ -2296,6 +2621,7 @@
                         "item": {
                             "index": "brewers-supplies",
                             "name": "Brewer's Supplies",
+                            "name_it": "Strumenti da Birraio",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "brewers-supplies"
@@ -2307,6 +2633,7 @@
                         "item": {
                             "index": "masons-tools",
                             "name": "Mason's Tools",
+                            "name_it": "Strumenti da muratore",
                             "url": {
                                 "target_file": "proficiencies.json",
                                 "target_entry": "masons-tools"
@@ -2328,6 +2655,7 @@
             {
                 "index": "elf",
                 "name": "Elf",
+                "name_it": "Elfo",
                 "url": {
                     "target_file": "races.json",
                     "target_entry": "elf"
@@ -2336,8 +2664,12 @@
         ],
         "subraces": [],
         "name": "Trance",
+        "name_it": "Trance",
         "desc": [
             "Elves do not need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. (The Common word for such meditation is \"trance.\") While meditating, you can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting this way, you gain the same benefit that a human does from 8 hours of sleep."
+        ],
+        "desc_it": [
+            "Gli elfi non hanno bisogno di dormire. Invece, meditano profondamente, rimanendo in uno stato di semicoscienza, per 4 ore al giorno. (La parola Comune per tale meditazione è \"trance\"). Durante la meditazione, puoi sognare in un certo modo; tali sogni sono in realtà esercizi mentali che sono diventati riflessivi attraverso anni di pratica. Dopo esserti riposato in questo modo, ottieni lo stesso beneficio che un umano ottiene da 8 ore di sonno."
         ],
         "proficiencies": [],
         "url": {

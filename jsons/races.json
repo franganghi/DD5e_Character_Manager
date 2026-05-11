@@ -2,12 +2,15 @@
     {
         "index": "dragonborn",
         "name": "Dragonborn",
+        "name_it": "Dragonide",
         "speed": 30,
+        "speed_it": "9 metri",
         "ability_bonuses": [
             {
                 "ability_score": {
                     "index": "str",
                     "name": "STR",
+                    "name_it": "FOR",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "str"
@@ -19,6 +22,7 @@
                 "ability_score": {
                     "index": "cha",
                     "name": "CHA",
+                    "name_it": "CAR",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "cha"
@@ -28,14 +32,18 @@
             }
         ],
         "alignment": "Dragonborn tend to extremes, making a conscious choice for one side or the other in the cosmic war between good and evil. Most dragonborn are good, but those who side with evil can be terrible villains.",
+        "alignment_it": "I Dragonborn tendono agli estremi, facendo una scelta consapevole per una parte o l'altra nella guerra cosmica tra bene e male. La maggior parte dei Dragonborn è buona, ma quelli che si schierano con il male possono essere terribili malvagi.",
         "age": "Young dragonborn grow quickly. They walk hours after hatching, attain the size and development of a 10-year-old human child by the age of 3, and reach adulthood by 15. They live to be around 80.",
+        "age_it": "I giovani dragonidi crescono rapidamente. Camminano a poche ore dalla schiusa, raggiungono la taglia e lo sviluppo di un bambino umano di 10 anni all'età di 3 anni e diventano adulti a 15. Vivono fino a circa 80 anni.",
         "size": "Medium",
         "size_description": "Dragonborn are taller and heavier than humans, standing well over 6 feet tall and averaging almost 250 pounds. Your size is Medium.",
+        "size_description_it": "I Dragonborn sono più alti e pesanti degli umani, superando abbondantemente i 1,8 metri di altezza e con una media di quasi 113,4 kg. La tua taglia è Media.",
         "starting_proficiencies": [],
         "languages": [
             {
                 "index": "common",
                 "name": "Common",
+                "name_it": "Comune",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "common"
@@ -44,6 +52,7 @@
             {
                 "index": "draconic",
                 "name": "Draconic",
+                "name_it": "Draconico",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "draconic"
@@ -51,10 +60,12 @@
             }
         ],
         "language_desc": "You can speak, read, and write Common and Draconic. Draconic is thought to be one of the oldest languages and is often used in the study of magic. The language sounds harsh to most other creatures and includes numerous hard consonants and sibilants.",
+        "language_desc_it": "Puoi parlare, leggere e scrivere in Comune e Draconico. Il Draconico è considerato una delle lingue più antiche ed è spesso utilizzato nello studio della magia. La lingua suona aspra alla maggior parte delle altre creature e include numerose consonanti dure e sibilanti.",
         "traits": [
             {
                 "index": "draconic-ancestry",
                 "name": "Draconic Ancestry",
+                "name_it": "Retaggio Draconico",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "draconic-ancestry"
@@ -63,6 +74,7 @@
             {
                 "index": "breath-weapon",
                 "name": "Breath Weapon",
+                "name_it": "Arma a Soffio",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "breath-weapon"
@@ -71,6 +83,7 @@
             {
                 "index": "damage-resistance",
                 "name": "Damage Resistance",
+                "name_it": "Resistenza ai danni",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "damage-resistance"
@@ -86,12 +99,15 @@
     {
         "index": "dwarf",
         "name": "Dwarf",
+        "name_it": "Nano",
         "speed": 25,
+        "speed_it": "7.5 metri",
         "ability_bonuses": [
             {
                 "ability_score": {
                     "index": "con",
                     "name": "CON",
+                    "name_it": "COS",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "con"
@@ -101,13 +117,17 @@
             }
         ],
         "alignment": "Most dwarves are lawful, believing firmly in the benefits of a well-ordered society. They tend toward good as well, with a strong sense of fair play and a belief that everyone deserves to share in the benefits of a just order.",
+        "alignment_it": "La maggior parte dei nani è legale, credendo fermamente nei benefici di una società ben ordinata. Tendono anche verso il bene, con un forte senso del gioco leale e la convinzione che tutti meritino di condividere i benefici di un ordine giusto.",
         "age": "Dwarves mature at the same rate as humans, but they're considered young until they reach the age of 50. On average, they live about 350 years.",
+        "age_it": "I nani maturano alla stessa velocità degli umani, ma sono considerati giovani fino a quando non raggiungono i 50 anni. In media, vivono circa 350 anni.",
         "size": "Medium",
         "size_description": "Dwarves stand between 4 and 5 feet tall and average about 150 pounds. Your size is Medium.",
+        "size_description_it": "I nani sono alti tra 1,2 e 1,5 metri e pesano in media circa 68 kg. La tua taglia è Media.",
         "starting_proficiencies": [
             {
                 "index": "battleaxes",
                 "name": "Battleaxes",
+                "name_it": "Asce da battaglia",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "battleaxes"
@@ -116,6 +136,7 @@
             {
                 "index": "handaxes",
                 "name": "Handaxes",
+                "name_it": "Asce leggere",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "handaxes"
@@ -124,6 +145,7 @@
             {
                 "index": "light-hammers",
                 "name": "Light hammers",
+                "name_it": "Martelli leggeri",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "light-hammers"
@@ -132,6 +154,7 @@
             {
                 "index": "warhammers",
                 "name": "Warhammers",
+                "name_it": "Martelli da guerra",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "warhammers"
@@ -145,6 +168,7 @@
                 {
                     "index": "smiths-tools",
                     "name": "Smith's Tools",
+                    "name_it": "Strumenti da fabbro",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "smiths-tools"
@@ -153,6 +177,7 @@
                 {
                     "index": "brewers-supplies",
                     "name": "Brewer's Supplies",
+                    "name_it": "Strumenti da Birraio",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "brewers-supplies"
@@ -161,6 +186,7 @@
                 {
                     "index": "masons-tools",
                     "name": "Mason's Tools",
+                    "name_it": "Strumenti da muratore",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "masons-tools"
@@ -172,6 +198,7 @@
             {
                 "index": "common",
                 "name": "Common",
+                "name_it": "Comune",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "common"
@@ -180,6 +207,7 @@
             {
                 "index": "dwarvish",
                 "name": "Dwarvish",
+                "name_it": "Nanico",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "dwarvish"
@@ -187,10 +215,12 @@
             }
         ],
         "language_desc": "You can speak, read, and write Common and Dwarvish. Dwarvish is full of hard consonants and guttural sounds, and those characteristics spill over into whatever other language a dwarf might speak.",
+        "language_desc_it": "Puoi parlare, leggere e scrivere in Comune e in Nanico. Il Nanico è pieno di consonanti dure e suoni gutturali, e queste caratteristiche si riversano in qualsiasi altra lingua che un nano possa parlare.",
         "traits": [
             {
                 "index": "darkvision",
                 "name": "Darkvision",
+                "name_it": "Scurovisione",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "darkvision"
@@ -199,6 +229,7 @@
             {
                 "index": "dwarven-resilience",
                 "name": "Dwarven Resilience",
+                "name_it": "Resilienza Nanica",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "dwarven-resilience"
@@ -207,6 +238,7 @@
             {
                 "index": "stonecunning",
                 "name": "Stonecunning",
+                "name_it": "Affinità con la Pietra",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "stonecunning"
@@ -215,6 +247,7 @@
             {
                 "index": "dwarven-combat-training",
                 "name": "Dwarven Combat Training",
+                "name_it": "Addestramento al Combattimento dei Nani",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "dwarven-combat-training"
@@ -223,6 +256,7 @@
             {
                 "index": "tool-proficiency",
                 "name": "Tool Proficiency",
+                "name_it": "Competenza negli strumenti",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "tool-proficiency"
@@ -233,6 +267,7 @@
             {
                 "index": "hill-dwarf",
                 "name": "Hill Dwarf",
+                "name_it": "Nano delle colline",
                 "url": {
                     "target_file": "subraces.json",
                     "target_entry": "hill-dwarf"
@@ -247,12 +282,15 @@
     {
         "index": "elf",
         "name": "Elf",
+        "name_it": "Elfo",
         "speed": 30,
+        "speed_it": "9 metri",
         "ability_bonuses": [
             {
                 "ability_score": {
                     "index": "dex",
                     "name": "DEX",
+                    "name_it": "DES",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "dex"
@@ -262,13 +300,17 @@
             }
         ],
         "age": "Although elves reach physical maturity at about the same age as humans, the elven understanding of adulthood goes beyond physical growth to encompass worldly experience. An elf typically claims adulthood and an adult name around the age of 100 and can live to be 750 years old.",
+        "age_it": "Sebbene gli elfi raggiungano la maturità fisica all'incirca alla stessa età degli umani, la concezione elfica dell'età adulta va oltre la crescita fisica per includere l'esperienza del mondo. Un elfo generalmente rivendica l'età adulta e un nome da adulto intorno ai 100 anni e può vivere fino a 750 anni.",
         "alignment": "Elves love freedom, variety, and self-expression, so they lean strongly toward the gentler aspects of chaos. They value and protect others' freedom as well as their own, and they are more often good than not. The drow are an exception; their exile has made them vicious and dangerous. Drow are more often evil than not.",
+        "alignment_it": "Gli elfi amano la libertà, la varietà e l'espressione di sé, quindi tendono fortemente verso gli aspetti più gentili del caos. Valutano e proteggono la libertà altrui così come la propria, e sono più spesso buoni che non. I drow sono un'eccezione; il loro esilio li ha resi spietati e pericolosi. I drow sono più spesso malvagi che non.",
         "size": "Medium",
         "size_description": "Elves range from under 5 to over 6 feet tall and have slender builds. Your size is Medium.",
+        "size_description_it": "Gli elfi variano da meno di 5 a oltre 1,8 metri di altezza e hanno corporature snelle. La tua taglia è Media.",
         "starting_proficiencies": [
             {
                 "index": "skill-perception",
                 "name": "Skill: Perception",
+                "name_it": "Abilità: Percezione",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "skill-perception"
@@ -279,6 +321,7 @@
             {
                 "index": "common",
                 "name": "Common",
+                "name_it": "Comune",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "common"
@@ -287,6 +330,7 @@
             {
                 "index": "elvish",
                 "name": "Elvish",
+                "name_it": "Elfico",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "elvish"
@@ -294,10 +338,12 @@
             }
         ],
         "language_desc": "You can speak, read, and write Common and Elvish. Elvish is fluid, with subtle intonations and intricate grammar. Elven literature is rich and varied, and their songs and poems are famous among other races. Many bards learn their language so they can add Elvish ballads to their repertoires.",
+        "language_desc_it": "Puoi parlare, leggere e scrivere in Comune ed Elfico. L'Elfico è fluido, con sottili intonazioni e una grammatica complessa. La letteratura elfica è ricca e varia, e le loro canzoni e poesie sono famose tra le altre razze. Molti bardi imparano la loro lingua per poter aggiungere ballate elfiche ai loro repertori.",
         "traits": [
             {
                 "index": "darkvision",
                 "name": "Darkvision",
+                "name_it": "Scurovisione",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "darkvision"
@@ -306,6 +352,7 @@
             {
                 "index": "fey-ancestry",
                 "name": "Fey Ancestry",
+                "name_it": "Retaggio Fatato",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "fey-ancestry"
@@ -314,6 +361,7 @@
             {
                 "index": "trance",
                 "name": "Trance",
+                "name_it": "Trance",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "trance"
@@ -324,6 +372,7 @@
             {
                 "index": "high-elf",
                 "name": "High Elf",
+                "name_it": "Alto Elfo",
                 "url": {
                     "target_file": "subraces.json",
                     "target_entry": "high-elf"
@@ -338,12 +387,15 @@
     {
         "index": "gnome",
         "name": "Gnome",
+        "name_it": "Gnomo",
         "speed": 25,
+        "speed_it": "7.5 metri",
         "ability_bonuses": [
             {
                 "ability_score": {
                     "index": "int",
                     "name": "INT",
+                    "name_it": "INT",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "int"
@@ -353,14 +405,18 @@
             }
         ],
         "alignment": "Gnomes are most often good. Those who tend toward law are sages, engineers, researchers, scholars, investigators, or inventors. Those who tend toward chaos are minstrels, tricksters, wanderers, or fanciful jewelers. Gnomes are good-hearted, and even the tricksters among them are more playful than vicious.",
+        "alignment_it": "Gli gnomi sono per lo più buoni. Quelli che tendono verso la legge sono saggi, ingegneri, ricercatori, studiosi, investigatori o inventori. Quelli che tendono verso il caos sono menestrelli, burloni, vagabondi o gioiellieri fantasiosi. Gli gnomi hanno un buon cuore, e persino i burloni tra loro sono più giocosi che malvagi.",
         "age": "Gnomes mature at the same rate humans do, and most are expected to settle down into an adult life by around age 40. They can live 350 to almost 500 years.",
+        "age_it": "Gli gnomi maturano allo stesso ritmo degli umani e ci si aspetta che la maggior parte di loro si stabilisca in una vita adulta intorno ai 40 anni. Possono vivere dai 350 a quasi 500 anni.",
         "size": "Small",
         "size_description": "Gnomes are between 3 and 4 feet tall and average about 40 pounds. Your size is Small.",
+        "size_description_it": "Gli gnomi sono alti tra 90 centimetri e 1,2 metri e pesano in media circa 18,1 kg. La tua taglia è Piccola.",
         "starting_proficiencies": [],
         "languages": [
             {
                 "index": "common",
                 "name": "Common",
+                "name_it": "Comune",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "common"
@@ -369,6 +425,7 @@
             {
                 "index": "gnomish",
                 "name": "Gnomish",
+                "name_it": "Gnomico",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "gnomish"
@@ -376,10 +433,12 @@
             }
         ],
         "language_desc": "You can speak, read, and write Common and Gnomish. The Gnomish language, which uses the Dwarvish script, is renowned for its technical treatises and its catalogs of knowledge about the natural world.",
+        "language_desc_it": "Puoi parlare, leggere e scrivere in Comune e Gnomico. La lingua Gnomica, che utilizza l'alfabeto Nanico, è rinomata per i suoi trattati tecnici e i suoi cataloghi di conoscenze sul mondo naturale.",
         "traits": [
             {
                 "index": "darkvision",
                 "name": "Darkvision",
+                "name_it": "Scurovisione",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "darkvision"
@@ -388,6 +447,7 @@
             {
                 "index": "gnome-cunning",
                 "name": "Gnome Cunning",
+                "name_it": "Astuzia degli Gnomi",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "gnome-cunning"
@@ -398,6 +458,7 @@
             {
                 "index": "rock-gnome",
                 "name": "Rock Gnome",
+                "name_it": "Gnomo delle Rocce",
                 "url": {
                     "target_file": "subraces.json",
                     "target_entry": "rock-gnome"
@@ -412,12 +473,15 @@
     {
         "index": "half-elf",
         "name": "Half-Elf",
+        "name_it": "Mezzelfo",
         "speed": 30,
+        "speed_it": "9 metri",
         "ability_bonuses": [
             {
                 "ability_score": {
                     "index": "cha",
                     "name": "CHA",
+                    "name_it": "CAR",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "cha"
@@ -434,6 +498,7 @@
                     "ability_score": {
                         "index": "str",
                         "name": "STR",
+                        "name_it": "FOR",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "str"
@@ -445,6 +510,7 @@
                     "ability_score": {
                         "index": "dex",
                         "name": "DEX",
+                        "name_it": "DES",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "dex"
@@ -456,6 +522,7 @@
                     "ability_score": {
                         "index": "con",
                         "name": "CON",
+                        "name_it": "COS",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "con"
@@ -467,6 +534,7 @@
                     "ability_score": {
                         "index": "int",
                         "name": "INT",
+                        "name_it": "INT",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "int"
@@ -478,6 +546,7 @@
                     "ability_score": {
                         "index": "wis",
                         "name": "WIS",
+                        "name_it": "SAG",
                         "url": {
                             "target_file": "ability-scores.json",
                             "target_entry": "wis"
@@ -488,9 +557,12 @@
             ]
         },
         "alignment": "Half-elves share the chaotic bent of their elven heritage. They value both personal freedom and creative expression, demonstrating neither love of leaders nor desire for followers. They chafe at rules, resent others' demands, and sometimes prove unreliable, or at least unpredictable.",
+        "alignment_it": "I mezzelfi condividono l'inclinazione caotica della loro eredità elfica. Valorizzano sia la libertà personale che l'espressione creativa, non dimostrando né amore per i leader né desiderio di seguaci. Si irritano per le regole, risentono delle richieste altrui e a volte si dimostrano inaffidabili, o quantomeno imprevedibili.",
         "age": "Half-elves mature at the same rate humans do and reach adulthood around the age of 20. They live much longer than humans, however, often exceeding 180 years.",
+        "age_it": "I mezzelfi maturano alla stessa velocità degli umani e raggiungono l'età adulta intorno ai 20 anni. Tuttavia, vivono molto più a lungo degli umani, spesso superando i 180 anni.",
         "size": "Medium",
         "size_description": "Half-elves are about the same size as humans, ranging from 5 to 6 feet tall. Your size is Medium.",
+        "size_description_it": "I mezzelfi sono all'incirca della stessa taglia degli umani, variando da 1,5 a 1,8 metri di altezza. La tua taglia è Media.",
         "starting_proficiencies": [],
         "starting_proficiency_options": {
             "choose": 2,
@@ -499,6 +571,7 @@
                 {
                     "index": "skill-acrobatics",
                     "name": "Skill: Acrobatics",
+                    "name_it": "Abilità: Acrobazia",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-acrobatics"
@@ -507,6 +580,7 @@
                 {
                     "index": "skill-animal-handling",
                     "name": "Skill: Animal Handling",
+                    "name_it": "Abilità: Addestrare Animali",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-animal-handling"
@@ -515,6 +589,7 @@
                 {
                     "index": "skill-arcana",
                     "name": "Skill: Arcana",
+                    "name_it": "Abilità: Arcano",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-arcana"
@@ -523,6 +598,7 @@
                 {
                     "index": "skill-athletics",
                     "name": "Skill: Athletics",
+                    "name_it": "Abilità: Atletica",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-athletics"
@@ -531,6 +607,7 @@
                 {
                     "index": "skill-deception",
                     "name": "Skill: Deception",
+                    "name_it": "Abilità: Inganno",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-deception"
@@ -539,6 +616,7 @@
                 {
                     "index": "skill-history",
                     "name": "Skill: History",
+                    "name_it": "Abilità: Storia",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-history"
@@ -547,6 +625,7 @@
                 {
                     "index": "skill-insight",
                     "name": "Skill: Insight",
+                    "name_it": "Abilità: Intuizione",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-insight"
@@ -555,6 +634,7 @@
                 {
                     "index": "skill-intimidation",
                     "name": "Skill: Intimidation",
+                    "name_it": "Abilità: Intimidire",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-intimidation"
@@ -563,6 +643,7 @@
                 {
                     "index": "skill-investigation",
                     "name": "Skill: Investigation",
+                    "name_it": "Abilità: Investigare",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-investigation"
@@ -571,6 +652,7 @@
                 {
                     "index": "skill-medicine",
                     "name": "Skill: Medicine",
+                    "name_it": "Abilità: Medicina",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-medicine"
@@ -579,6 +661,7 @@
                 {
                     "index": "skill-nature",
                     "name": "Skill: Nature",
+                    "name_it": "Abilità: Natura",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-nature"
@@ -587,6 +670,7 @@
                 {
                     "index": "skill-perception",
                     "name": "Skill: Perception",
+                    "name_it": "Abilità: Percezione",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-perception"
@@ -595,6 +679,7 @@
                 {
                     "index": "skill-performance",
                     "name": "Skill: Performance",
+                    "name_it": "Abilità: Intrattenere",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-performance"
@@ -603,6 +688,7 @@
                 {
                     "index": "skill-persuasion",
                     "name": "Skill: Persuasion",
+                    "name_it": "Abilità: Persuasione",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-persuasion"
@@ -611,6 +697,7 @@
                 {
                     "index": "skill-religion",
                     "name": "Skill: Religion",
+                    "name_it": "Abilità: Religione",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-religion"
@@ -619,6 +706,7 @@
                 {
                     "index": "skill-sleight-of-hand",
                     "name": "Skill: Sleight of Hand",
+                    "name_it": "Abilità: Rapidità di Mano",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-sleight-of-hand"
@@ -627,6 +715,7 @@
                 {
                     "index": "skill-stealth",
                     "name": "Skill: Stealth",
+                    "name_it": "Abilità: Furtività",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-stealth"
@@ -635,6 +724,7 @@
                 {
                     "index": "skill-survival",
                     "name": "Skill: Survival",
+                    "name_it": "Abilità: Sopravvivenza",
                     "url": {
                         "target_file": "proficiencies.json",
                         "target_entry": "skill-survival"
@@ -646,6 +736,7 @@
             {
                 "index": "common",
                 "name": "Common",
+                "name_it": "Comune",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "common"
@@ -654,6 +745,7 @@
             {
                 "index": "elvish",
                 "name": "Elvish",
+                "name_it": "Elfico",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "elvish"
@@ -667,6 +759,7 @@
                 {
                     "index": "dwarvish",
                     "name": "Dwarvish",
+                    "name_it": "Nanico",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "dwarvish"
@@ -675,6 +768,7 @@
                 {
                     "index": "giant",
                     "name": "Giant",
+                    "name_it": "Gigante",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "giant"
@@ -683,6 +777,7 @@
                 {
                     "index": "gnomish",
                     "name": "Gnomish",
+                    "name_it": "Gnomo",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "gnomish"
@@ -691,6 +786,7 @@
                 {
                     "index": "goblin",
                     "name": "Goblin",
+                    "name_it": "Goblin",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "goblin"
@@ -699,6 +795,7 @@
                 {
                     "index": "halfling",
                     "name": "Halfling",
+                    "name_it": "Halfling",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "halfling"
@@ -707,6 +804,7 @@
                 {
                     "index": "orc",
                     "name": "Orc",
+                    "name_it": "Orco",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "orc"
@@ -715,6 +813,7 @@
                 {
                     "index": "abyssal",
                     "name": "Abyssal",
+                    "name_it": "Abissale",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "abyssal"
@@ -723,6 +822,7 @@
                 {
                     "index": "celestial",
                     "name": "Celestial",
+                    "name_it": "Celestiale",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "celestial"
@@ -731,6 +831,7 @@
                 {
                     "index": "draconic",
                     "name": "Draconic",
+                    "name_it": "Draconico",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "draconic"
@@ -739,6 +840,7 @@
                 {
                     "index": "deep-speech",
                     "name": "Deep Speech",
+                    "name_it": "Linguaggio Profondo",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "deep-speech"
@@ -747,6 +849,7 @@
                 {
                     "index": "infernal",
                     "name": "Infernal",
+                    "name_it": "Infernale",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "infernal"
@@ -755,6 +858,7 @@
                 {
                     "index": "primordial",
                     "name": "Primordial",
+                    "name_it": "Primordiale",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "primordial"
@@ -763,6 +867,7 @@
                 {
                     "index": "sylvan",
                     "name": "Sylvan",
+                    "name_it": "Silvano",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "sylvan"
@@ -771,6 +876,7 @@
                 {
                     "index": "undercommon",
                     "name": "Undercommon",
+                    "name_it": "Sottocomune",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "undercommon"
@@ -779,10 +885,12 @@
             ]
         },
         "language_desc": "You can speak, read, and write Common, Elvish, and one extra language of your choice.",
+        "language_desc_it": "Puoi parlare, leggere e scrivere in Comune, Elfico e in un'altra lingua a tua scelta.",
         "traits": [
             {
                 "index": "darkvision",
                 "name": "Darkvision",
+                "name_it": "Scurovisione",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "darkvision"
@@ -791,6 +899,7 @@
             {
                 "index": "fey-ancestry",
                 "name": "Fey Ancestry",
+                "name_it": "Retaggio Fatato",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "fey-ancestry"
@@ -799,6 +908,7 @@
             {
                 "index": "skill-versatility",
                 "name": "Skill Versatility",
+                "name_it": "Versatilità nelle Abilità",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "skill-versatility"
@@ -814,12 +924,15 @@
     {
         "index": "half-orc",
         "name": "Half-Orc",
+        "name_it": "Mezzorco",
         "speed": 30,
+        "speed_it": "9 metri",
         "ability_bonuses": [
             {
                 "ability_score": {
                     "index": "str",
                     "name": "STR",
+                    "name_it": "FOR",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "str"
@@ -831,6 +944,7 @@
                 "ability_score": {
                     "index": "con",
                     "name": "CON",
+                    "name_it": "COS",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "con"
@@ -840,13 +954,17 @@
             }
         ],
         "alignment": "Half-orcs inherit a tendency toward chaos from their orc parents and are not strongly inclined toward good. Half-orcs raised among orcs and willing to live out their lives among them are usually evil.",
+        "alignment_it": "I mezzorchi ereditano una tendenza al caos dai loro genitori orchi e non sono fortemente inclini al bene. I mezzorchi cresciuti tra gli orchi e disposti a vivere le loro vite tra di loro sono solitamente malvagi.",
         "age": "Half-orcs mature a little faster than humans, reaching adulthood around age 14. They age noticeably faster and rarely live longer than 75 years.",
+        "age_it": "I mezzorchi maturano un po' più velocemente degli umani, raggiungendo l'età adulta intorno ai 14 anni. Invecchiano visibilmente più in fretta e raramente vivono più di 75 anni.",
         "size": "Medium",
         "size_description": "Half-orcs are somewhat larger and bulkier than humans, and they range from 5 to well over 6 feet tall. Your size is Medium.",
+        "size_description_it": "I mezzorchi sono leggermente più grandi e massicci degli umani, e la loro altezza varia da 1,5 a ben oltre 1,8 metri. La tua taglia è Media.",
         "starting_proficiencies": [
             {
                 "index": "skill-intimidation",
                 "name": "Skill: Intimidation",
+                "name_it": "Abilità: Intimidire",
                 "url": {
                     "target_file": "proficiencies.json",
                     "target_entry": "skill-intimidation"
@@ -857,6 +975,7 @@
             {
                 "index": "common",
                 "name": "Common",
+                "name_it": "Comune",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "common"
@@ -865,6 +984,7 @@
             {
                 "index": "orc",
                 "name": "Orc",
+                "name_it": "Orco",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "orc"
@@ -872,10 +992,12 @@
             }
         ],
         "language_desc": "You can speak, read, and write Common and Orc. Orc is a harsh, grating language with hard consonants. It has no script of its own but is written in the Dwarvish script.",
+        "language_desc_it": "Puoi parlare, leggere e scrivere in Comune e Orchesco. L'Orchesco è una lingua aspra e stridente con consonanti dure. Non ha un alfabeto proprio, ma viene scritto con l'alfabeto Nanico.",
         "traits": [
             {
                 "index": "darkvision",
                 "name": "Darkvision",
+                "name_it": "Scurovisione",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "darkvision"
@@ -884,6 +1006,7 @@
             {
                 "index": "savage-attacks",
                 "name": "Savage Attacks",
+                "name_it": "Attacchi Selvaggi",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "savage-attacks"
@@ -892,6 +1015,7 @@
             {
                 "index": "relentless-endurance",
                 "name": "Relentless Endurance",
+                "name_it": "Resistenza Implacabile",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "relentless-endurance"
@@ -907,12 +1031,15 @@
     {
         "index": "halfling",
         "name": "Halfling",
+        "name_it": "Halfling",
         "speed": 25,
+        "speed_it": "7.5 metri",
         "ability_bonuses": [
             {
                 "ability_score": {
                     "index": "dex",
                     "name": "DEX",
+                    "name_it": "DES",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "dex"
@@ -922,14 +1049,18 @@
             }
         ],
         "age": "A halfling reaches adulthood at the age of 20 and generally lives into the middle of his or her second century.",
+        "age_it": "Un halfling raggiunge l'età adulta a 20 anni e generalmente vive fino alla metà del suo secondo secolo.",
         "alignment": "Most halflings are lawful good. As a rule, they are good-hearted and kind, hate to see others in pain, and have no tolerance for oppression. They are also very orderly and traditional, leaning heavily on the support of their community and the comfort of their old ways.",
+        "alignment_it": "La maggior parte degli halfling è legale buona. Di norma, sono di buon cuore e gentili, odiano vedere gli altri soffrire e non tollerano l'oppressione. Sono anche molto ordinati e tradizionalisti, facendo grande affidamento sul supporto della loro comunità e sul conforto delle loro vecchie abitudini.",
         "size": "Small",
         "size_description": "Halflings average about 3 feet tall and weigh about 40 pounds. Your size is Small.",
+        "size_description_it": "Gli halfling sono alti in media circa 0,9 metri e pesano circa 18,1 kg. La tua taglia è Piccola.",
         "starting_proficiencies": [],
         "languages": [
             {
                 "index": "common",
                 "name": "Common",
+                "name_it": "Comune",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "common"
@@ -938,6 +1069,7 @@
             {
                 "index": "halfling",
                 "name": "Halfling",
+                "name_it": "Halfling",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "halfling"
@@ -945,10 +1077,12 @@
             }
         ],
         "language_desc": "You can speak, read, and write Common and Halfling. The Halfling language isn't secret, but halflings are loath to share it with others. They write very little, so they don't have a rich body of literature. Their oral tradition, however, is very strong. Almost all halflings speak Common to converse with the people in whose lands they dwell or through which they are traveling.",
+        "language_desc_it": "Puoi parlare, leggere e scrivere in Comune e in Halfling. La lingua Halfling non è segreta, ma gli halfling sono riluttanti a condividerla con gli altri. Scrivono molto poco, quindi non hanno un ricco corpus letterario. La loro tradizione orale, tuttavia, è molto forte. Quasi tutti gli halfling parlano Comune per conversare con le persone nelle cui terre vivono o attraverso le quali stanno viaggiando.",
         "traits": [
             {
                 "index": "brave",
                 "name": "Brave",
+                "name_it": "Coraggioso",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "brave"
@@ -957,6 +1091,7 @@
             {
                 "index": "halfling-nimbleness",
                 "name": "Halfling Nimbleness",
+                "name_it": "Agilità degli Halfling",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "halfling-nimbleness"
@@ -965,6 +1100,7 @@
             {
                 "index": "lucky",
                 "name": "Lucky",
+                "name_it": "Fortunato",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "lucky"
@@ -975,6 +1111,7 @@
             {
                 "index": "lightfoot-halfling",
                 "name": "Lightfoot Halfling",
+                "name_it": "Halfling Piedelesto",
                 "url": {
                     "target_file": "subraces.json",
                     "target_entry": "lightfoot-halfling"
@@ -989,12 +1126,15 @@
     {
         "index": "human",
         "name": "Human",
+        "name_it": "Umano",
         "speed": 30,
+        "speed_it": "9 metri",
         "ability_bonuses": [
             {
                 "ability_score": {
                     "index": "str",
                     "name": "STR",
+                    "name_it": "FOR",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "str"
@@ -1006,6 +1146,7 @@
                 "ability_score": {
                     "index": "dex",
                     "name": "DEX",
+                    "name_it": "DES",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "dex"
@@ -1017,6 +1158,7 @@
                 "ability_score": {
                     "index": "con",
                     "name": "CON",
+                    "name_it": "COS",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "con"
@@ -1028,6 +1170,7 @@
                 "ability_score": {
                     "index": "int",
                     "name": "INT",
+                    "name_it": "INT",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "int"
@@ -1039,6 +1182,7 @@
                 "ability_score": {
                     "index": "wis",
                     "name": "WIS",
+                    "name_it": "SAG",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "wis"
@@ -1050,6 +1194,7 @@
                 "ability_score": {
                     "index": "cha",
                     "name": "CHA",
+                    "name_it": "CAR",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "cha"
@@ -1059,14 +1204,18 @@
             }
         ],
         "age": "Humans reach adulthood in their late teens and live less than a century.",
+        "age_it": "Gli umani raggiungono l'età adulta verso la fine dell'adolescenza e vivono meno di un secolo.",
         "alignment": "Humans tend toward no particular alignment. The best and the worst are found among them.",
+        "alignment_it": "Gli umani non tendono verso un allineamento particolare. Tra di loro si trovano i migliori e i peggiori.",
         "size": "Medium",
         "size_description": "Humans vary widely in height and build, from barely 5 feet to well over 6 feet tall. Regardless of your position in that range, your size is Medium.",
+        "size_description_it": "Gli Umani variano ampiamente in altezza e corporatura, da poco più di 1,5 metri a ben oltre 1,8 metri di altezza. Indipendentemente dalla tua posizione in questo intervallo, la tua taglia è Media.",
         "starting_proficiencies": [],
         "languages": [
             {
                 "index": "common",
                 "name": "Common",
+                "name_it": "Comune",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "common"
@@ -1080,6 +1229,7 @@
                 {
                     "index": "dwarvish",
                     "name": "Dwarvish",
+                    "name_it": "Nanico",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "dwarvish"
@@ -1088,6 +1238,7 @@
                 {
                     "index": "elvish",
                     "name": "Elvish",
+                    "name_it": "Elfico",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "elvish"
@@ -1096,6 +1247,7 @@
                 {
                     "index": "giant",
                     "name": "Giant",
+                    "name_it": "Gigante",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "giant"
@@ -1104,6 +1256,7 @@
                 {
                     "index": "gnomish",
                     "name": "Gnomish",
+                    "name_it": "Gnomo",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "gnomish"
@@ -1112,6 +1265,7 @@
                 {
                     "index": "goblin",
                     "name": "Goblin",
+                    "name_it": "Goblin",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "goblin"
@@ -1120,6 +1274,7 @@
                 {
                     "index": "halfling",
                     "name": "Halfling",
+                    "name_it": "Halfling",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "halfling"
@@ -1128,6 +1283,7 @@
                 {
                     "index": "orc",
                     "name": "Orc",
+                    "name_it": "Orco",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "orc"
@@ -1136,6 +1292,7 @@
                 {
                     "index": "abyssal",
                     "name": "Abyssal",
+                    "name_it": "Abissale",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "abyssal"
@@ -1144,6 +1301,7 @@
                 {
                     "index": "celestial",
                     "name": "Celestial",
+                    "name_it": "Celestiale",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "celestial"
@@ -1152,6 +1310,7 @@
                 {
                     "index": "draconic",
                     "name": "Draconic",
+                    "name_it": "Draconico",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "draconic"
@@ -1160,6 +1319,7 @@
                 {
                     "index": "deep-speech",
                     "name": "Deep Speech",
+                    "name_it": "Linguaggio Abissale",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "deep-speech"
@@ -1168,6 +1328,7 @@
                 {
                     "index": "infernal",
                     "name": "Infernal",
+                    "name_it": "Infernale",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "infernal"
@@ -1176,6 +1337,7 @@
                 {
                     "index": "primordial",
                     "name": "Primordial",
+                    "name_it": "Primordiale",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "primordial"
@@ -1184,6 +1346,7 @@
                 {
                     "index": "sylvan",
                     "name": "Sylvan",
+                    "name_it": "Silvano",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "sylvan"
@@ -1192,6 +1355,7 @@
                 {
                     "index": "undercommon",
                     "name": "Undercommon",
+                    "name_it": "Sottocomune",
                     "url": {
                         "target_file": "languages.json",
                         "target_entry": "undercommon"
@@ -1200,6 +1364,7 @@
             ]
         },
         "language_desc": "You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
+        "language_desc_it": "Puoi parlare, leggere e scrivere il Comune e una lingua extra a tua scelta. Gli umani imparano tipicamente le lingue degli altri popoli con cui hanno a che fare, inclusi dialetti oscuri. Amano cospargere il loro discorso con parole prese in prestito da altre lingue: imprecazioni orchesche, espressioni musicali elfiche, frasi militari naniche e così via.",
         "traits": [],
         "subraces": [],
         "url": {
@@ -1210,12 +1375,15 @@
     {
         "index": "tiefling",
         "name": "Tiefling",
+        "name_it": "Tiefling",
         "speed": 30,
+        "speed_it": "9 metri",
         "ability_bonuses": [
             {
                 "ability_score": {
                     "index": "int",
                     "name": "INT",
+                    "name_it": "INT",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "int"
@@ -1227,6 +1395,7 @@
                 "ability_score": {
                     "index": "cha",
                     "name": "CHA",
+                    "name_it": "CAR",
                     "url": {
                         "target_file": "ability-scores.json",
                         "target_entry": "cha"
@@ -1236,14 +1405,18 @@
             }
         ],
         "alignment": "Tieflings might not have an innate tendency toward evil, but many of them end up there. Evil or not, an independent nature inclines many tieflings toward a chaotic alignment.",
+        "alignment_it": "I Tiefling potrebbero non avere una tendenza innata verso il male, ma molti di loro finiscono per abbracciarlo. Malvagi o meno, una natura indipendente inclina molti Tiefling verso un allineamento caotico.",
         "age": "Tieflings mature at the same rate as humans but live a few years longer.",
+        "age_it": "I Tiefling maturano alla stessa velocità degli umani ma vivono qualche anno in più.",
         "size": "Medium",
         "size_description": "Tieflings are about the same size and build as humans. Your size is Medium.",
+        "size_description_it": "I tiefling hanno all'incirca la stessa taglia e corporatura degli umani. La tua taglia è Media.",
         "starting_proficiencies": [],
         "languages": [
             {
                 "index": "common",
                 "name": "Common",
+                "name_it": "Comune",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "common"
@@ -1252,6 +1425,7 @@
             {
                 "index": "infernal",
                 "name": "Infernal",
+                "name_it": "Infernale",
                 "url": {
                     "target_file": "languages.json",
                     "target_entry": "infernal"
@@ -1259,10 +1433,12 @@
             }
         ],
         "language_desc": "You can speak, read, and write Common and Infernal.",
+        "language_desc_it": "Puoi parlare, leggere e scrivere il Comune e l'Infernale.",
         "traits": [
             {
                 "index": "darkvision",
                 "name": "Darkvision",
+                "name_it": "Scurovisione",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "darkvision"
@@ -1271,6 +1447,7 @@
             {
                 "index": "hellish-resistance",
                 "name": "Hellish Resistance",
+                "name_it": "Resistenza Infernale",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "hellish-resistance"
@@ -1279,6 +1456,7 @@
             {
                 "index": "infernal-legacy",
                 "name": "Infernal Legacy",
+                "name_it": "Retaggio Infernale",
                 "url": {
                     "target_file": "traits.json",
                     "target_entry": "infernal-legacy"

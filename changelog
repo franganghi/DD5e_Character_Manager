@@ -1,0 +1,99 @@
+# Changelog
+
+## Versione 2.00
+
+### MODIFICHE
+
+#### Internazionalizzazione database (i18n)
+- Aggiunta funzione helper `lf(item, field)`: legge `item[field+'_'+currentLang]` dai JSON di database con fallback inglese; gestisce array con join `'\n'`.
+- `parseAbracadabraEntry` e `parseMyStuffEntry` preservano tutti i campi `_XX` (es. `name_it`, `desc_it`) copiandoli nell'oggetto parsato.
+- Tutte le funzioni `populate*Form` usano `lf` per i campi testuali (nome, descrizione, proprietà, ecc.).
+- `filterItems` e `showItemResults` usano `lf(item, 'name')` per ricerca e display nella lingua corrente.
+- Funzioni di import automatico (`autoFillMainCareerFeatures`, `importRaceTraitsFromRace`, `importClassFeaturesFromClass`) usano `lf` per nome e descrizione.
+- `openCreateWizard` usa `lf` per i dropdown razza e classe.
+- `renderCustomList('myStuff')`: intestazioni categoria localizzate via `myStuffCategoryData`; nomi item localizzati via `myStuffNameMap` (copre anche item salvati in inglese nei JSON precedenti); ordinamento usa i nomi localizzati.
+- Aggiunte variabili runtime `myStuffCategoryData` e `myStuffNameMap` popolate in `loadMyStuffDB`.
+- File JSON estesi con campi `_it`: `spells.json` (319 item: `name_it`, `desc_it`), `equipment.json` (237 item: `name_it`, `weight_it`), `equipment-categories.json` (39 categorie: `name_it`).
+
+#### Panel-stats — tabella bonus sorgenti
+- Rimossa la tabella bonus da `panel-features`.
+- Aggiunta tabella bonus in `panel-stats` (sotto la griglia caratteristiche) con una riga per ogni sorgente: Race Traits, Class Features, Multiclass, Feats, Abracadabra, My Stuff.
+- Colonne: FOR / DES / COS / INT / SAG / CAR / ATK / DMG (8 colonne).
+- Righe senza bonus visualizzate a opacità ridotta; valori positivi in verde, negativi in rosso.
+- Solo item con `inUse !== false` contribuiscono al conteggio.
+- `panel-languages` escluso dalla tabella (il pannello non supporta `modTarget`).
+
+#### Panel-combat — layout a box
+- Rimpiazzato il layout testuale verticale con box quadrati a larghezza fissa (88px) con `flex-wrap`.
+- I box si dispongono su più righe quando il pannello è più stretto della loro larghezza totale.
+- Box presenti: CA Totale, Iniziativa, Percezione Passiva, HP Rimasti, TPC Bonus, DMG Bonus, HP Max, HP Correnti (+/-/R), Dado Vita, Velocità, CA Base (edit-only), +DEX (edit-only).
+- Aggiunti box **TPC** e **DMG**: mostrano il totale dei bonus d'attacco e danno aggregati da tutte le sorgenti `inUse` (calcolati in `updateSheet`).
+- I box TPC e DMG si aggiornano in `updateSheet` insieme ai bonus caratteristica.
+
+#### Panel-combat — riordinamento box
+- Ogni box è riordinabile tramite drag-and-drop (attivato con `mousedown` sul box, disabilitato in view mode).
+- Feedback visivo: box trascinato semitrasparente, box bersaglio evidenziato con bordo accent.
+- L'ordine viene salvato in `charLists.combatBoxOrder` e persistito nel JSON della scheda.
+- Al caricamento di una scheda, `applyCombatBoxOrder()` ripristina l'ordine salvato.
+- Retrocompatibilità: schede senza `combatBoxOrder` usano l'ordine HTML di default.
+
+### FIX
+- Corretto aggiornamento tabella bonus in `panel-stats` dopo aggiunta/rimozione/modifica di incantesimi: il branch `abracadabra` di `renderCustomList` ora chiama `updateFeaturesSummary()` e `updateSheet()` prima del `return`, allineandosi al comportamento degli altri branch.
+- Corretti valori TPC/DMG e colonna `bonus` di `panel-stats` non aggiornati alla modifica degli incantesimi (stessa causa: mancata chiamata `updateSheet` nel branch abracadabra).
+
+---
+
+## Versione 1.43
+
+### MODIFICHE
+- Introdotta schermata iniziale (wizard) con sole opzioni `LOAD` e `CREATE`.
+- Scelta lingua spostata nella wizard iniziale; rimosso il selettore lingua dalla menu bar.
+- Lingua della scheda mantenuta nel salvataggio JSON (compatibile con comportamento precedente).
+- Blocco modifica post-creazione per `Race` e `Main Class` nel panel header.
+- Implementato flusso creazione personaggio con campi obbligatori: nome, razza, classe.
+- Agganciati dataset `races.json` e `classes.json` alla wizard di creazione.
+- `panel-features` aggiornato con selezione da liste compatibili:
+  - `racial traits` da `traits.json` filtrati per razza selezionata.
+  - `class features` da `features.json` filtrati per classe selezionata.
+- Comportamento selezione allineato agli altri panel: click su risultato popola i campi, inserimento solo con pulsante esplicito.
+- Aggiunto riepilogo in testa a `panel-features` con tabella bonus (`Razza` / `Classe` x `STR/DEX/CON/INT/WIS/CHA/ATK/DMG`).
+- Creato `panel-mystuff` con ricerca full-text, import da categorie equipaggiamento, ordinamento per categoria e gestione campi estesi (proprietà, throw range, two-handed damage, cost, ecc.).
+- In `panel-mystuff` aggiunto stato `U` (In Uso / Trasportato) con conteggi dinamici in riepilogo dedicato.
+- Rimosse sezioni legacy dedicate (`panel-weapons`, `panel-equipment`, `panel-protections`) con consolidamento nel modello `myStuff`.
+- In stampa riepilogativa: equipaggiamento `In Uso` in sezione separata in testa.
+- Potenziato `panel-spell-slots` con colonna cantrip (livello 0) per classe e livello.
+- Aggiunta colonna `Known` (incantesimi conosciuti) in `panel-spell-slots` per classi che la prevedono.
+- Creato `panel-abracadabra` (da `jsons/spells.json`) con:
+  - ricerca e selezione,
+  - raggruppamento per livello,
+  - contatori `U` (usati) e `S` (studiati),
+  - riepilogo per livello e totale,
+  - reset contatori separati.
+- Migliorato riepilogo `panel-abracadabra` in formato tabellare (righe `Utilizzati`/`Studiati`, colonne livelli + totale + reset).
+- Aggiunto sistema globale di collasso pannelli (senza nasconderli) con persistenza stato in JSON.
+- Rimosso pulsante/sezione `changelogModal` dall'interfaccia.
+- Definito nuovo ordine di default pannelli alla creazione personaggio.
+- Impostata visibilità default: pannelli core visibili e pannelli avanzati nascosti.
+- `panel-combat`: `PF Attuali` trasformato in contatore con pulsanti `+`, `-`, `R` (mai negativo).
+- `panel-combat`: aggiunto indicatore `PF Residui = PF Massimi - PF Attuali` (anche negativo).
+- `panel-feats`: aggiunti campi bonus (`modificatore` e `caratteristica target`) come negli altri panel.
+- `panel-saves` eliminato e integrato in `panel-stats`.
+- `panel-stats` ristrutturato con colonne `base`, `TS`, `bonus` e checkbox TS vicino alla caratteristica.
+- Colonna `bonus` in `panel-stats` alimentata da bonus caratteristiche provenienti dagli altri panel.
+- Tradotte etichette caratteristiche e intestazioni colonna di `panel-stats` nelle lingue supportate.
+- Aggiornata versione applicativa a `v1.43`.
+
+### FIX
+- Ripristinata selezione item da risultati ricerca nei panel collegati a JSON dopo regressioni sui click.
+- Corretto popup results (chiusure blur/click/escape) su pannelli con ricerca custom.
+- Sistemato mapping della selezione in `panel-abracadabra` quando il click non valorizzava i campi.
+- Corretto caricamento/formattazione dei dati spell in `panel-abracadabra` (campi complessi e liste).
+- Corrette incompatibilità durante rimozioni panel legacy per evitare rotture di funzionalità condivise.
+- Corretto conteggio bonus caratteristiche in `panel-stats` con normalizzazione target multi-lingua (`STR/FOR/FUE/...`).
+- Corretto aggiornamento immediato dei bonus dopo add/edit/remove degli item.
+- Corretto conteggio bonus da `panel-mystuff` nella colonna `bonus` di `panel-stats`.
+- Corretto aggiornamento dinamico testi wizard al cambio lingua in fase di startup.
+
+## Note
+- Le voci sopra riflettono le modifiche principali applicate in sequenza durante questa sessione estesa.
+- Alcune etichette/chiavi legacy restano compatibili per non rompere salvataggi precedenti.

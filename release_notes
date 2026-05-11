@@ -1,0 +1,85 @@
+# Release Notes — DD5e Character Manager
+
+---
+
+## v2.00
+
+### Internazionalizzazione database (i18n)
+- Aggiunta funzione helper `lf(item, field)`: legge `item[field+'_'+currentLang]` dai JSON con fallback inglese; gestisce array con join `'\n'`.
+- `parseAbracadabraEntry` e `parseMyStuffEntry` preservano tutti i campi `_XX` (es. `name_it`, `desc_it`) nell'oggetto parsato.
+- Tutte le funzioni `populate*Form`, `filterItems`, `showItemResults`, import automatici e wizard usano `lf` per i campi testuali.
+- `renderCustomList('myStuff')`: intestazioni categoria e nomi item localizzati; ordinamento usa i nomi localizzati.
+- File JSON estesi con campi `_it`: `spells.json` (319 item), `equipment.json` (237 item), `equipment-categories.json` (39 categorie).
+
+### Panel-stats — tabella bonus sorgenti
+- Rimossa la tabella bonus da `panel-features`.
+- Aggiunta tabella bonus in `panel-stats` con righe per ogni sorgente (Race Traits, Class Features, Multiclass, Feats, Abracadabra, My Stuff) e colonne FOR/DES/COS/INT/SAG/CAR/ATK/DMG.
+- Solo item con `inUse !== false` contribuiscono; righe vuote visualizzate a opacità ridotta.
+- `panel-languages` escluso (il pannello non supporta `modTarget`).
+
+### Panel-combat — layout a box
+- Rimpiazzato il layout testuale verticale con box quadrati a larghezza fissa (88px) con flex-wrap.
+- Aggiunti box **TPC** e **DMG** calcolati automaticamente da tutte le sorgenti `inUse`.
+- Box riordinabili via drag-and-drop; ordine persistito in `charLists.combatBoxOrder` nel JSON di salvataggio.
+
+### Fix
+- Corretti `updateFeaturesSummary()` e `updateSheet()` non chiamati nel branch `abracadabra` di `renderCustomList`, causando mancato aggiornamento della tabella bonus e della colonna bonus in panel-stats.
+
+---
+
+## v1.43
+
+### Modifiche
+- Introdotta schermata iniziale (wizard) con opzioni `LOAD` e `CREATE`; scelta lingua spostata nella wizard.
+- Blocco modifica post-creazione per `Race` e `Main Class`.
+- `panel-features` aggiornato con selezione tratti da `traits.json` e feature da `features.json` filtrati per razza/classe.
+- Tabella bonus riepilogativa in `panel-features` (Razza / Classe × STR/DEX/CON/INT/WIS/CHA/ATK/DMG).
+- Creato `panel-mystuff`: inventario unificato con ricerca, import da categorie equipaggiamento, stati In Uso/Trasportato.
+- Rimossi `panel-weapons`, `panel-equipment`, `panel-protections` (confluiti in `panel-mystuff`).
+- Creato `panel-abracadabra` da `spells.json` con ricerca, raggruppamento per livello, contatori U/S, riepilogo tabellare.
+- `panel-spell-slots` potenziato con colonna cantrip (livello 0) e colonna Known.
+- `panel-saves` eliminato e integrato come colonna TS in `panel-stats`; ristrutturato con colonne base/TS/bonus.
+- `panel-combat`: contatore PF Attuali con pulsanti +/-/R; indicatore PF Residui.
+- Sistema di collasso pannelli con persistenza stato nel JSON.
+- Definito ordine di default e visibilità pannelli alla creazione personaggio.
+
+### Fix
+- Ripristinata selezione item da ricerca in tutti i pannelli collegati a JSON.
+- Corretti popup results (blur/click/ESC) su pannelli con ricerca custom.
+- Corretto mapping selezione in `panel-abracadabra`.
+- Corretto conteggio bonus caratteristiche con normalizzazione target multi-lingua.
+
+---
+
+## v1.19
+Implementazione del sistema di versioning visibile.
+- Aggiunto pulsante e finestra modale per il Changelog integrata nell'interfaccia.
+- Fix: aggiornamento formale del numero di versione dimenticato nella build precedente.
+
+## v1.18
+Ottimizzazione User Experience (UX) verticale.
+- Le liste interne ai box e le textarea si espandono dinamicamente per occupare tutta l'altezza disponibile del box.
+
+## v1.17
+Integrazione interfaccia e stampa.
+- L'intestazione è ora un box standard rinominato "Personaggio", integrato nella griglia fluida.
+- Il tasto "Nascondi" è diventato un'elegante icona 👁️ affiancata al titolo.
+- Sintesi di stampa re-impaginata a 3 colonne per formato A4.
+
+## v1.16
+Evoluzione del Multiclasse e dell'Equipaggiamento.
+- Possibilità di aggiungere una 3ª classe nel pannello Multiclasse.
+- Livello Totale e Bonus Competenza calcolati sommando le 3 carriere.
+- Aggiunto campo "Danno" per le Armi e spunta "Oggetto Magico" per l'Equipaggiamento.
+
+## v1.15
+Restyling Header e Layout Combattimento.
+- Menu superiore reso sticky (rimane visibile durante lo scorrimento).
+- Pulsanti header rinominati e resi più immediati.
+- Giustificazione dinamica destra/sinistra nel box Combattimento.
+
+## v1.14 / v1.13
+Rifacimento Motore Layout ed Editing globale.
+- Passaggio da CSS Grid a Flexbox elastico.
+- Aggiunti campi "Livello" e "Scuola" negli incantesimi.
+- Implementato tasto "E" (Edit) su ogni entry per modificarne i parametri.
