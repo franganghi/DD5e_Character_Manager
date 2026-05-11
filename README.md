@@ -4,6 +4,8 @@ Applicazione web **single-page** per la gestione della scheda personaggio di **D
 
 **Versione corrente: v2.00**
 
+TESTA l'applicazione: https://franganghi.github.io/DD5e_Character_Manager/
+
 ---
 
 ## Caratteristiche principali
